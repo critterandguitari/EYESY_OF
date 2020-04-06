@@ -1,9 +1,15 @@
 print("Hello World!")
 
+knob1 = 120 
+knob2 = 120 
+knob3 = 120 
+knob4 = 120 
+knob5 = 120
+
 counter = 0
 bSmooth = false
 
-cam = of.EasyCam()
+cam = of.Camera()
 
 ----------------------------------------------------
 function setup()
@@ -29,8 +35,14 @@ function draw()
 
     cam:beginCamera()
 	of.fill()
-
-    
+    cam:setFov(knob4/2)
+    cam:setPosition(knob1, knob2, knob3)
+    cam:panDeg(knob5/512)
+    --cam:tiltDeg(knob5/512)
+    --cam:rollDeg(knob5/512)
+    --cam:truck(knob5) --one of the setPosition() functions
+    --cam:dolly(knob5) --one of the setPosition() functions
+    --cam:boom(knob5)  --one of the setPosition() functions
    
     -- of.background(of.random(0, 255), of.random(0, 255), of.random(0, 255))
     of.setColor(of.random(0, 255), of.random(0, 255), of.random(0, 255))
@@ -78,6 +90,9 @@ function draw()
 	end
 	
 	cam:endCamera()
+	
+	of.setHexColor(0xff0000)
+	of.drawBitmapString("owenhh!!!!", 75, 500)
 
 end
 

@@ -28,7 +28,7 @@ function draw()
 
 	of.fill()
    
-    of.background(33, 33, 33)
+    --of.background(33, 33, 33)
     of.setColor(of.random(0, 255), of.random(0, 255), of.random(0, 255))
 	of.drawCircle(knob1, knob2, knob3)
 

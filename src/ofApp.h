@@ -40,11 +40,12 @@ class ofApp : public ofBaseApp, ofxLuaListener {
 		void reloadScript();
 		void nextScript();
 		void prevScript();
-		
+	
 		ofxLua lua;
 		vector<string> scripts;
 		size_t currentScript;
 
+		ofFbo fbo;
         // osc control
         ofxOscReceiver receiver;
 

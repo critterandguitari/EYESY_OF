@@ -10,13 +10,8 @@ knob5 = 120
 function setup()
 	of.setWindowTitle("knobs example")
 	print("script setup")
-
-	of.setCircleResolution(50)
-	of.background(0,0,0)
-	
-	of.setFrameRate(60) -- if vertical sync is off, we can go a bit fast... this caps the framerate at 60fps
-	of.disableSmoothing()
-	--of.disableAlphaBlending()
+    of.setLineWidth(4);
+    of.enableDepthTest();
 end
 
 ----------------------------------------------------
@@ -25,19 +20,46 @@ end
 
 ----------------------------------------------------
 function draw()
+    local movementSpeed = .1 * (knob1 / 1000)
+	local cloudSize = 1200--of.getWidth() / 2
+	local maxBoxSize = 100
+	local spacing = 1
+	local boxCount = 100
+	
+	for i=0,boxCount do
 
-	of.fill()
-   
-    of.background(33, 33, 33)
-    of.setColor(33, 202, 101)
-	of.drawCircle(knob1, knob2, knob3)
+		of.pushMatrix()
 
+		local t = (of.getElapsedTimef() + i * spacing) * movementSpeed
+		local pos = glm.vec3(of.signedNoise(t, 0, 0), of.signedNoise(0, t, 0), of.signedNoise(0, 0, t))
+
+
+
+		boxSize = maxBoxSize * of.noise(pos.x, pos.y, pos.z)
+
+		pos = pos * cloudSize
+		of.translate(pos)
+		of.rotateXDeg(pos.x)
+		of.rotateYDeg(pos.y)
+		of.rotateZDeg(pos.z)
+
+	--	ofLogo.bind();
+		of.fill()
+		of.setColor(255)
+		of.drawBox(boxSize)
+		--ofLogo.unbind();
+
+		of.noFill()
+		of.setColor(20,100,200)
+		of.drawBox(boxSize * 1.1)
+
+		of.popMatrix()
+	end
 end
 
 ----------------------------------------------------
 function exit()
 	print("script finished")
 end
-
 
 

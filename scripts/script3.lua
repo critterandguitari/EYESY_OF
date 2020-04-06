@@ -6,17 +6,18 @@ knob3 = 120
 knob4 = 120 
 knob5 = 120
 
+image = of.Image()
+
 ----------------------------------------------------
 function setup()
 	of.setWindowTitle("knobs example")
 	print("script setup")
-
-	of.setCircleResolution(5)
-	of.background(0,0,0)
 	
-	of.setFrameRate(60) -- if vertical sync is off, we can go a bit fast... this caps the framerate at 60fps
-	of.disableSmoothing()
-	--of.disableAlphaBlending()
+	of.enableNormalizedTexCoords()
+	
+	image:load("/home/music/openFrameworks/apps/myApps/eyesy/bin/data/images/tdf_1972_poster.jpg")
+	
+    of.setLineWidth(4);
 end
 
 ----------------------------------------------------
@@ -26,12 +27,30 @@ end
 ----------------------------------------------------
 function draw()
 
-	of.fill()
-    of.setCircleResolution((knob4 / 10) + 3)
-    of.background(33, 33, 33)
-    of.setColor(22, 109, 109)
-	of.drawCircle(knob1, knob2, knob3)
+	of.pushMatrix()
 
+	local boxSize = knob5 + 10
+
+	of.translate(500,500)
+	of.rotateXDeg(knob2)
+	of.rotateYDeg(knob3)
+	of.rotateZDeg(knob4)
+
+	of.fill()
+
+    image:bind();
+	of.setColor(255,255,255)
+--	of.drawBox(boxSize)
+	of.drawSphere(boxSize)
+	image:unbind();
+	
+	
+	of.noFill()
+	of.setColor(255,100,255)
+	of.drawBox(boxSize * 2)
+	
+
+	of.popMatrix()
 end
 
 ----------------------------------------------------

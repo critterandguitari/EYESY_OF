@@ -12,8 +12,9 @@
 
 //--------------------------------------------------------------
 void ofApp::setup() {
-
-	// listen on the given port
+    
+	
+    // listen on the given port
 	cout << "listening for osc messages on port " << PORT << "\n";
 	receiver.setup(PORT);	
     
@@ -21,6 +22,7 @@ void ofApp::setup() {
 	ofSetFrameRate(30);
 	ofSetLogLevel("ofxLua", OF_LOG_VERBOSE);
 		
+	fbo.allocate(ofGetWidth(), ofGetHeight() );
 	// scripts to run
 	scripts.push_back("../../scripts/graphicsExample.lua");
 	scripts.push_back("../../scripts/imageLoaderExample.lua");
@@ -71,11 +73,11 @@ void ofApp::update() {
             }
         }
         if(m.getAddress() == "/knobs") {
-            lua.setNumber("knob1", m.getArgAsInt32(0));
-            lua.setNumber("knob2", m.getArgAsInt32(1));
-            lua.setNumber("knob3", m.getArgAsInt32(2));
-            lua.setNumber("knob4", m.getArgAsInt32(3));
-            lua.setNumber("knob5", m.getArgAsInt32(4));
+            lua.setNumber("knob1", m.getArgAsInt32(4));
+            lua.setNumber("knob2", m.getArgAsInt32(2));
+            lua.setNumber("knob3", m.getArgAsInt32(0));
+            lua.setNumber("knob4", m.getArgAsInt32(1));
+            lua.setNumber("knob5", m.getArgAsInt32(3));
         }
 	}
 	
@@ -86,12 +88,15 @@ void ofApp::update() {
 
 //--------------------------------------------------------------
 void ofApp::draw() {
+    //fbo.begin();
 	// call the script's draw() function
 	lua.scriptDraw();
 	
 	ofSetColor(0);
 	ofDrawBitmapString("use <- & -> to change between scripts", 10, ofGetHeight()-22);
 	ofDrawBitmapString(scripts[currentScript], 10, ofGetHeight()-10);
+    //fbo.end();
+    //fbo.draw(0,0);
 }
 
 //--------------------------------------------------------------

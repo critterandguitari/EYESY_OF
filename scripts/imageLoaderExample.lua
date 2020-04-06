@@ -7,11 +7,13 @@ local tdfSmall = of.Image()
 local transparency = of.Image()
 local bikeIcon = of.Image()
 
+knob1 = 12
 ----------------------------------------------------
 function setup()
 
 	of.setWindowTitle("image loader example")
 	of.setFrameRate(30)
+	of.setBackgroundAuto(false);
 
 	bikers:load("images/bikers.jpg")
 	gears:load("images/gears.gif")
@@ -33,7 +35,7 @@ end
 
 ----------------------------------------------------
 function draw()
-	of.setColor(255)
+	of.setColor(knob1)
 
 	bikers:draw(0, 0)
 	gears:draw(600, 0)
