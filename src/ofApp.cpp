@@ -24,17 +24,17 @@ void ofApp::setup() {
 		
 	fbo.allocate(ofGetWidth(), ofGetHeight() );
 	// scripts to run
-	scripts.push_back("../../scripts/graphicsExample.lua");
-	scripts.push_back("../../scripts/imageLoaderExample.lua");
-	scripts.push_back("../../scripts/polygonExample.lua");
-	scripts.push_back("../../scripts/fontsExample.lua");
-	scripts.push_back("../../scripts/owen.lua");
-	scripts.push_back("../../scripts/chris.lua");
-	scripts.push_back("../../scripts/knobsExample.lua");
-	scripts.push_back("../../scripts/script1.lua");
-	scripts.push_back("../../scripts/script2.lua");
-	scripts.push_back("../../scripts/script3.lua");
-	scripts.push_back("../../scripts/script4.lua");
+	scripts.push_back("/sdcard/lua/graphicsExample.lua");
+	scripts.push_back("/sdcard/lua/imageLoaderExample.lua");
+	scripts.push_back("/sdcard/lua/polygonExample.lua");
+	scripts.push_back("/sdcard/lua/fontsExample.lua");
+	scripts.push_back("/sdcard/lua/owen.lua");
+	scripts.push_back("/sdcard/lua/chris.lua");
+	scripts.push_back("/sdcard/lua/knobsExample.lua");
+	scripts.push_back("/sdcard/lua/script1.lua");
+	scripts.push_back("/sdcard/lua/script2.lua");
+	scripts.push_back("/sdcard/lua/script3.lua");
+	scripts.push_back("/sdcard/lua/script4.lua");
 	currentScript = 0;
 	
 	// init the lua state
