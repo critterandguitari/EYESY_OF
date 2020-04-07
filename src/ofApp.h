@@ -49,4 +49,20 @@ class ofApp : public ofBaseApp, ofxLuaListener {
         // osc control
         ofxOscReceiver receiver;
 
+        // audio stuff
+		void audioIn(ofSoundBuffer & input);
+	
+		vector <lua_Number> left;
+		vector <lua_Number> right;
+		vector <float> volHistory;
+		
+		int 	bufferCounter;
+		int 	drawCounter;
+		
+		float smoothedVol;
+		float scaledVol;
+		
+		ofSoundStream soundStream;
+
+
 };

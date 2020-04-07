@@ -23,7 +23,9 @@ void ofApp::setup() {
 	ofSetLogLevel("ofxLua", OF_LOG_VERBOSE);
 		
 	fbo.allocate(ofGetWidth(), ofGetHeight() );
-	// scripts to run
+
+    // scripts to run
+	scripts.push_back("/sdcard/lua/script1.lua");
 	scripts.push_back("/sdcard/lua/graphicsExample.lua");
 	scripts.push_back("/sdcard/lua/imageLoaderExample.lua");
 	scripts.push_back("/sdcard/lua/polygonExample.lua");
@@ -31,7 +33,6 @@ void ofApp::setup() {
 	scripts.push_back("/sdcard/lua/owen.lua");
 	scripts.push_back("/sdcard/lua/chris.lua");
 	scripts.push_back("/sdcard/lua/knobsExample.lua");
-	scripts.push_back("/sdcard/lua/script1.lua");
 	scripts.push_back("/sdcard/lua/script2.lua");
 	scripts.push_back("/sdcard/lua/script3.lua");
 	scripts.push_back("/sdcard/lua/script4.lua");
@@ -51,6 +52,38 @@ void ofApp::setup() {
 	
 	// call the script's setup() function
 	lua.scriptSetup();
+	
+    // setup audio
+	soundStream.printDeviceList();
+	
+	int bufferSize = 256;
+
+	left.assign(bufferSize, 0.0);
+	right.assign(bufferSize, 0.0);
+	volHistory.assign(400, 0.0);
+	
+	bufferCounter	= 0;
+	drawCounter		= 0;
+	smoothedVol     = 0.0;
+	scaledVol		= 0.0;
+
+	ofSoundStreamSettings settings;
+	
+    // device by name
+	auto devices = soundStream.getMatchingDevices("default");
+	if(!devices.empty()){
+		settings.setInDevice(devices[0]);
+	}
+
+	settings.setInListener(this);
+	settings.sampleRate = 22050;
+	settings.numOutputChannels = 0;
+	settings.numInputChannels = 2;
+	settings.bufferSize = bufferSize;
+	soundStream.setup(settings);    
+    
+    
+
 }
 
 //--------------------------------------------------------------
@@ -90,13 +123,54 @@ void ofApp::update() {
 void ofApp::draw() {
     //fbo.begin();
 	// call the script's draw() function
-	lua.scriptDraw();
+    
+    lua.setNumberVector("inL", left);
+	
+    lua.scriptDraw();
 	
 	ofSetColor(0);
 	ofDrawBitmapString("use <- & -> to change between scripts", 10, ofGetHeight()-22);
 	ofDrawBitmapString(scripts[currentScript], 10, ofGetHeight()-10);
     //fbo.end();
     //fbo.draw(0,0);
+
+}
+
+//--------------------------------------------------------------
+void ofApp::audioIn(ofSoundBuffer & input){
+	
+	float curVol = 0.0;
+	
+	// samples are "interleaved"
+	int numCounted = 0;	
+
+	//lets go through each sample and calculate the root mean square which is a rough way to calculate volume
+
+//    lua.pushTable("inL");
+	for (size_t i = 0; i < input.getNumFrames(); i++){
+		left[i]		= input[i*2]*0.5;
+		//right[i]	= input[i*2+1]*0.5;
+  //      lua.setNumber(i, input[i*2]*0.5);
+		//curVol += left[i] * left[i];
+		//curVol += right[i] * right[i];
+		//numCounted+=2;
+	}
+    //lua.popTable();
+	
+	//this is how we get the mean of rms :) 
+	//curVol /= (float)numCounted;
+	
+	// this is how we get the root of rms :) 
+	//curVol = sqrt( curVol );
+	
+	//smoothedVol *= 0.93;
+	//smoothedVol += 0.07 * curVol;
+    
+    //lua.setNumberVector("inL", left);
+    //lua.setNumberVector("inR", right);
+
+	bufferCounter++;
+	
 }
 
 //--------------------------------------------------------------
