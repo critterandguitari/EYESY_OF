@@ -126,9 +126,8 @@ void ofApp::draw() {
     
     lua.setNumberVector("inL", left);
    // lua.setNumberVector("inR", right);
-	
     lua.scriptDraw();
-	
+    
 	/*ofSetColor(0);
 	ofDrawBitmapString("use <- & -> to change between scripts", 10, ofGetHeight()-22);
 	ofDrawBitmapString(scripts[currentScript], 10, ofGetHeight()-10);*/
@@ -202,6 +201,7 @@ void ofApp::keyPressed(int key) {
 			
 		case ' ':
 			lua.doString("print(\"this is a lua string saying you hit the space bar!\")");
+            cout << "fps: " << ofGetFrameRate() << "\n";	
 			break;
 	}
 	
