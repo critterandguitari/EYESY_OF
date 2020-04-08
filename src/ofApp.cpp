@@ -26,7 +26,7 @@ void ofApp::setup() {
 
     // scripts to run
 	scripts.push_back("/sdcard/lua/script1.lua");
-	scripts.push_back("/sdcard/lua/graphicsExample.lua");
+/*	scripts.push_back("/sdcard/lua/graphicsExample.lua");
 	scripts.push_back("/sdcard/lua/imageLoaderExample.lua");
 	scripts.push_back("/sdcard/lua/polygonExample.lua");
 	scripts.push_back("/sdcard/lua/fontsExample.lua");
@@ -35,7 +35,7 @@ void ofApp::setup() {
 	scripts.push_back("/sdcard/lua/knobsExample.lua");
 	scripts.push_back("/sdcard/lua/script2.lua");
 	scripts.push_back("/sdcard/lua/script3.lua");
-	scripts.push_back("/sdcard/lua/script4.lua");
+	scripts.push_back("/sdcard/lua/script4.lua");*/
 	currentScript = 0;
 	
 	// init the lua state
@@ -125,12 +125,13 @@ void ofApp::draw() {
 	// call the script's draw() function
     
     lua.setNumberVector("inL", left);
+   // lua.setNumberVector("inR", right);
 	
     lua.scriptDraw();
 	
-	ofSetColor(0);
+	/*ofSetColor(0);
 	ofDrawBitmapString("use <- & -> to change between scripts", 10, ofGetHeight()-22);
-	ofDrawBitmapString(scripts[currentScript], 10, ofGetHeight()-10);
+	ofDrawBitmapString(scripts[currentScript], 10, ofGetHeight()-10);*/
     //fbo.end();
     //fbo.draw(0,0);
 
@@ -149,7 +150,7 @@ void ofApp::audioIn(ofSoundBuffer & input){
 //    lua.pushTable("inL");
 	for (size_t i = 0; i < input.getNumFrames(); i++){
 		left[i]		= input[i*2]*0.5;
-		//right[i]	= input[i*2+1]*0.5;
+	//	right[i]	= input[i*2+1]*0.5;
   //      lua.setNumber(i, input[i*2]*0.5);
 		//curVol += left[i] * left[i];
 		//curVol += right[i] * right[i];
