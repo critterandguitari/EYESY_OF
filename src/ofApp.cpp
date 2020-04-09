@@ -24,6 +24,8 @@ void ofApp::setup() {
 		
 	fbo.allocate(ofGetWidth(), ofGetHeight() );
 
+    ofHideCursor();
+
     // scripts to run
 	scripts.push_back("/sdcard/lua/script1.lua");
 /*	scripts.push_back("/sdcard/lua/graphicsExample.lua");
