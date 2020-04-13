@@ -45,7 +45,6 @@ class ofApp : public ofBaseApp, ofxLuaListener {
 		vector<string> scripts;
 		size_t currentScript;
 
-		ofFbo fbo;
         // osc control
         ofxOscReceiver receiver;
 
@@ -64,5 +63,8 @@ class ofApp : public ofBaseApp, ofxLuaListener {
 		
 		ofSoundStream soundStream;
 
+        int                 snapCounter;
+        string              snapString;
+        ofImage             img;
 
 };

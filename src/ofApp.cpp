@@ -22,7 +22,6 @@ void ofApp::setup() {
 	ofSetFrameRate(30);
 	ofSetLogLevel("ofxLua", OF_LOG_VERBOSE);
 		
-	fbo.allocate(ofGetWidth(), ofGetHeight() );
 
     ofHideCursor();
 
@@ -84,8 +83,6 @@ void ofApp::setup() {
 	settings.bufferSize = bufferSize;
 	soundStream.setup(settings);    
     
-    
-
 }
 
 //--------------------------------------------------------------
@@ -106,6 +103,14 @@ void ofApp::update() {
                 cout << "fwd" << "\n";
                 nextScript();
             }
+            if (m.getArgAsFloat(0) == 5 && m.getArgAsFloat(1) > 0) {
+                img.grabScreen(0,0,ofGetWidth(),ofGetHeight());
+                string fileName = "snapshot_"+ofToString(10000+snapCounter)+".png";
+                cout << "saving " + fileName + "...";
+                img.save("/sdcard/Grabs/" + fileName);
+                cout << "saved\n";
+                snapCounter++;
+            }
         }
         if(m.getAddress() == "/knobs") {
             lua.setNumber("knob1", m.getArgAsInt32(4));
@@ -123,18 +128,16 @@ void ofApp::update() {
 
 //--------------------------------------------------------------
 void ofApp::draw() {
-    //fbo.begin();
-	// call the script's draw() function
     
     lua.setNumberVector("inL", left);
-   // lua.setNumberVector("inR", right);
+    lua.setNumberVector("inR", right);
+    
+	// call the script's draw() function
     lua.scriptDraw();
     
 	/*ofSetColor(0);
 	ofDrawBitmapString("use <- & -> to change between scripts", 10, ofGetHeight()-22);
 	ofDrawBitmapString(scripts[currentScript], 10, ofGetHeight()-10);*/
-    //fbo.end();
-    //fbo.draw(0,0);
 
 }
 
@@ -146,18 +149,13 @@ void ofApp::audioIn(ofSoundBuffer & input){
 	// samples are "interleaved"
 	int numCounted = 0;	
 
-	//lets go through each sample and calculate the root mean square which is a rough way to calculate volume
-
-//    lua.pushTable("inL");
 	for (size_t i = 0; i < input.getNumFrames(); i++){
 		left[i]		= input[i*2]*0.5;
-	//	right[i]	= input[i*2+1]*0.5;
-  //      lua.setNumber(i, input[i*2]*0.5);
+		right[i]	= input[i*2+1]*0.5;
 		//curVol += left[i] * left[i];
 		//curVol += right[i] * right[i];
 		//numCounted+=2;
 	}
-    //lua.popTable();
 	
 	//this is how we get the mean of rms :) 
 	//curVol /= (float)numCounted;
@@ -168,8 +166,6 @@ void ofApp::audioIn(ofSoundBuffer & input){
 	//smoothedVol *= 0.93;
 	//smoothedVol += 0.07 * curVol;
     
-    //lua.setNumberVector("inL", left);
-    //lua.setNumberVector("inR", right);
 
 	bufferCounter++;
 	
