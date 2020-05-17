@@ -26,7 +26,7 @@ void ofApp::setup() {
     ofHideCursor();
 
     // scripts to run
-	scripts.push_back("/sdcard/lua/script1.lua");
+	scripts.push_back("/sdcard/Modes/oFLua/Basic Scope/main.lua");
 /*	scripts.push_back("/sdcard/lua/graphicsExample.lua");
 	scripts.push_back("/sdcard/lua/imageLoaderExample.lua");
 	scripts.push_back("/sdcard/lua/polygonExample.lua");
