@@ -25,6 +25,36 @@ void ofApp::setup() {
 
     ofHideCursor();
 
+        // setup audio
+	soundStream.printDeviceList();
+	
+	int bufferSize = 256;
+
+	left.assign(bufferSize, 0.0);
+	right.assign(bufferSize, 0.0);
+	volHistory.assign(400, 0.0);
+	
+	bufferCounter	= 0;
+	drawCounter		= 0;
+	smoothedVol     = 0.0;
+	scaledVol		= 0.0;
+
+	ofSoundStreamSettings settings;
+	
+    // device by name
+	auto devices = soundStream.getMatchingDevices("default");
+	if(!devices.empty()){
+		settings.setInDevice(devices[0]);
+	}
+
+	settings.setInListener(this);
+	settings.sampleRate = 22050;
+	settings.numOutputChannels = 0;
+	settings.numInputChannels = 2;
+	settings.bufferSize = bufferSize;
+	soundStream.setup(settings);    
+    
+    
     // scripts to run
 	scripts.push_back("/sdcard/Modes/oFLua/Basic Scope/main.lua");
 /*	scripts.push_back("/sdcard/lua/graphicsExample.lua");
@@ -54,35 +84,20 @@ void ofApp::setup() {
 	// call the script's setup() function
 	lua.scriptSetup();
 	
-    // setup audio
-	soundStream.printDeviceList();
-	
-	int bufferSize = 256;
 
-	left.assign(bufferSize, 0.0);
-	right.assign(bufferSize, 0.0);
-	volHistory.assign(400, 0.0);
-	
-	bufferCounter	= 0;
-	drawCounter		= 0;
-	smoothedVol     = 0.0;
-	scaledVol		= 0.0;
+	//some path, may be absolute or relative to bin/data
+	string path = "/sdcard/Modes/oFLua"; 
+	ofDirectory dir(path);
+	//only show png files
+	//dir.allowExt("png");
+	//populate the directory object
+	dir.listDir();
 
-	ofSoundStreamSettings settings;
-	
-    // device by name
-	auto devices = soundStream.getMatchingDevices("default");
-	if(!devices.empty()){
-		settings.setInDevice(devices[0]);
+	//go through and print out all the paths
+	for(int i = 0; i < dir.size(); i++){
+		ofLogNotice(dir.getPath(i) + "/main.lua");
+	    scripts.push_back(dir.getPath(i) + "/main.lua");
 	}
-
-	settings.setInListener(this);
-	settings.sampleRate = 22050;
-	settings.numOutputChannels = 0;
-	settings.numInputChannels = 2;
-	settings.bufferSize = bufferSize;
-	soundStream.setup(settings);    
-    
 }
 
 //--------------------------------------------------------------
@@ -235,7 +250,13 @@ void ofApp::errorReceived(std::string& msg) {
 void ofApp::reloadScript() {
 	// exit, reinit the lua state, and reload the current script
 	lua.scriptExit();
-	lua.init();
+	
+    // init OF
+    ofSetupScreen();
+    ofSetupGraphicDefaults();
+
+    // load new
+    lua.init();
 	lua.doScript(scripts[currentScript], true);
 	lua.scriptSetup();
 }
