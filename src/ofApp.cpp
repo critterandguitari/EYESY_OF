@@ -1,18 +1,15 @@
 /*
- * Copyright (c) 2012 Dan Wilcox <danomatika@gmail.com>
+ * Copyright (c) 2020 Owen Osborn, Critter & Gutiari, Inc.
  *
  * BSD Simplified License.
  * For information on usage and redistribution, and for a DISCLAIMER OF ALL
  * WARRANTIES, see the file, "LICENSE.txt," in this distribution.
- *
- * See https://github.com/danomatika/ofxLua for documentation
  *
  */
 #include "ofApp.h"
 
 //--------------------------------------------------------------
 void ofApp::setup() {
-    
 	
     // listen on the given port
 	cout << "listening for osc messages on port " << PORT << "\n";
@@ -21,7 +18,6 @@ void ofApp::setup() {
     ofSetVerticalSync(true);
 	ofSetFrameRate(30);
 	ofSetLogLevel("ofxLua", OF_LOG_VERBOSE);
-		
 
     ofHideCursor();
 
@@ -53,20 +49,22 @@ void ofApp::setup() {
 	settings.numInputChannels = 2;
 	settings.bufferSize = bufferSize;
 	soundStream.setup(settings);    
-    
-    
-    // scripts to run
-	scripts.push_back("/sdcard/Modes/oFLua/Basic Scope/main.lua");
-/*	scripts.push_back("/sdcard/lua/graphicsExample.lua");
-	scripts.push_back("/sdcard/lua/imageLoaderExample.lua");
-	scripts.push_back("/sdcard/lua/polygonExample.lua");
-	scripts.push_back("/sdcard/lua/fontsExample.lua");
-	scripts.push_back("/sdcard/lua/owen.lua");
-	scripts.push_back("/sdcard/lua/chris.lua");
-	scripts.push_back("/sdcard/lua/knobsExample.lua");
-	scripts.push_back("/sdcard/lua/script2.lua");
-	scripts.push_back("/sdcard/lua/script3.lua");
-	scripts.push_back("/sdcard/lua/script4.lua");*/
+
+	//some path, may be absolute or relative to bin/data
+	string path = "/sdcard/Modes/oFLua"; 
+	ofDirectory dir(path);
+	//only show png files
+	//dir.allowExt("png");
+	//populate the directory object
+	dir.listDir();
+
+	//go through and print out all the paths
+	for(int i = 0; i < dir.size(); i++){
+		ofLogNotice(dir.getPath(i) + "/main.lua");
+	    scripts.push_back(dir.getPath(i) + "/main.lua");
+	}
+
+   // scripts to run
 	currentScript = 0;
 	
 	// init the lua state
@@ -83,21 +81,6 @@ void ofApp::setup() {
 	
 	// call the script's setup() function
 	lua.scriptSetup();
-	
-
-	//some path, may be absolute or relative to bin/data
-	string path = "/sdcard/Modes/oFLua"; 
-	ofDirectory dir(path);
-	//only show png files
-	//dir.allowExt("png");
-	//populate the directory object
-	dir.listDir();
-
-	//go through and print out all the paths
-	for(int i = 0; i < dir.size(); i++){
-		ofLogNotice(dir.getPath(i) + "/main.lua");
-	    scripts.push_back(dir.getPath(i) + "/main.lua");
-	}
 }
 
 //--------------------------------------------------------------
@@ -110,15 +93,15 @@ void ofApp::update() {
 		receiver.getNextMessage(m);
 		//cout << "new message on port " << PORT << m.getAddress() << "\n";
         if(m.getAddress() == "/key") {   
-            if (m.getArgAsFloat(0) == 4 && m.getArgAsFloat(1) > 0) {
+            if (m.getArgAsInt32(0) == 4 && m.getArgAsInt32(1) > 0) {
                 cout << "back" << "\n";
                 prevScript();
             }
-            if (m.getArgAsFloat(0) == 2 && m.getArgAsFloat(1) > 0) {
+            if (m.getArgAsInt32(0) == 5 && m.getArgAsInt32(1) > 0) {
                 cout << "fwd" << "\n";
                 nextScript();
             }
-            if (m.getArgAsFloat(0) == 5 && m.getArgAsFloat(1) > 0) {
+            if (m.getArgAsInt32(0) == 9 && m.getArgAsInt32(1) > 0) {
                 img.grabScreen(0,0,ofGetWidth(),ofGetHeight());
                 string fileName = "snapshot_"+ofToString(10000+snapCounter)+".png";
                 cout << "saving " + fileName + "...";
@@ -128,13 +111,17 @@ void ofApp::update() {
             }
         }
         if(m.getAddress() == "/knobs") {
-            lua.setNumber("knob1", m.getArgAsInt32(4));
-            lua.setNumber("knob2", m.getArgAsInt32(2));
-            lua.setNumber("knob3", m.getArgAsInt32(0));
-            lua.setNumber("knob4", m.getArgAsInt32(1));
-            lua.setNumber("knob5", m.getArgAsInt32(3));
+            lua.setNumber("knob1", (float)m.getArgAsInt32(0) / 1023);
+            lua.setNumber("knob2", (float)m.getArgAsInt32(1) / 1023);
+            lua.setNumber("knob3", (float)m.getArgAsInt32(2) / 1023);
+            lua.setNumber("knob4", (float)m.getArgAsInt32(3) / 1023);
+            lua.setNumber("knob5", (float)m.getArgAsInt32(4) / 1023);
         }
-	}
+        if(m.getAddress() == "/reload") {
+            cout << "reloading\n";
+            reloadScript();
+        }
+    }
 	
     // call the script's update() function
 	lua.scriptUpdate();
@@ -167,22 +154,9 @@ void ofApp::audioIn(ofSoundBuffer & input){
 	for (size_t i = 0; i < input.getNumFrames(); i++){
 		left[i]		= input[i*2]*0.5;
 		right[i]	= input[i*2+1]*0.5;
-		//curVol += left[i] * left[i];
-		//curVol += right[i] * right[i];
-		//numCounted+=2;
 	}
 	
-	//this is how we get the mean of rms :) 
-	//curVol /= (float)numCounted;
-	
-	// this is how we get the root of rms :) 
-	//curVol = sqrt( curVol );
-	
-	//smoothedVol *= 0.93;
-	//smoothedVol += 0.07 * curVol;
-    
-
-	bufferCounter++;
+    bufferCounter++;
 	
 }
 
