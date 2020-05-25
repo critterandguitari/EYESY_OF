@@ -31,9 +31,6 @@ void ofApp::setup() {
 	volHistory.assign(400, 0.0);
 	
 	bufferCounter	= 0;
-	drawCounter		= 0;
-	smoothedVol     = 0.0;
-	scaledVol		= 0.0;
 
 	ofSoundStreamSettings settings;
 	
@@ -44,7 +41,7 @@ void ofApp::setup() {
 	}
 
 	settings.setInListener(this);
-	settings.sampleRate = 22050;
+	settings.sampleRate = 11025;
 	settings.numOutputChannels = 0;
 	settings.numInputChannels = 2;
 	settings.bufferSize = bufferSize;
