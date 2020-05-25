@@ -1,11 +1,9 @@
 /*
- * Copyright (c) 2012 Dan Wilcox <danomatika@gmail.com>
+ * Copyright (c) 2020 Owen Osborn, Critter & Gutiari, Inc.
  *
  * BSD Simplified License.
  * For information on usage and redistribution, and for a DISCLAIMER OF ALL
  * WARRANTIES, see the file, "LICENSE.txt," in this distribution.
- *
- * See https://github.com/danomatika/ofxLua for documentation
  *
  */
 #pragma once
