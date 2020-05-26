@@ -465,10 +465,6 @@ obj/linuxarmv6l/Release/src/ofApp.o: \
  /usr/include/glib-2.0/glib/gpattern.h \
  /usr/include/glib-2.0/glib/gprimes.h /usr/include/glib-2.0/glib/gqsort.h \
  /usr/include/glib-2.0/glib/gqueue.h /usr/include/glib-2.0/glib/grand.h \
- /usr/include/glib-2.0/glib/grcbox.h \
- /usr/include/glib-2.0/glib/grefcount.h \
- /usr/include/glib-2.0/glib/grefstring.h \
- /usr/include/glib-2.0/glib/gmem.h /usr/include/glib-2.0/glib/gmacros.h \
  /usr/include/glib-2.0/glib/gregex.h \
  /usr/include/glib-2.0/glib/gscanner.h \
  /usr/include/glib-2.0/glib/gsequence.h \
@@ -482,7 +478,7 @@ obj/linuxarmv6l/Release/src/ofApp.o: \
  /usr/include/glib-2.0/glib/gtrashstack.h \
  /usr/include/glib-2.0/glib/gtree.h \
  /usr/include/glib-2.0/glib/gurifuncs.h \
- /usr/include/glib-2.0/glib/guuid.h /usr/include/glib-2.0/glib/gversion.h \
+ /usr/include/glib-2.0/glib/gversion.h \
  /usr/include/glib-2.0/glib/deprecated/gallocator.h \
  /usr/include/glib-2.0/glib/deprecated/gcache.h \
  /usr/include/glib-2.0/glib/deprecated/gcompletion.h \
@@ -511,11 +507,11 @@ obj/linuxarmv6l/Release/src/ofApp.o: \
  /usr/include/glib-2.0/gobject/gvaluearray.h \
  /usr/include/glib-2.0/gobject/gvaluetypes.h \
  /usr/include/glib-2.0/gobject/gobject-autocleanups.h \
- /usr/include/gstreamer-1.0/gst/gstconfig.h \
  /usr/include/gstreamer-1.0/gst/gstversion.h \
  /usr/include/gstreamer-1.0/gst/gstatomicqueue.h \
  /usr/include/gstreamer-1.0/gst/gstbin.h \
  /usr/include/gstreamer-1.0/gst/gstelement.h \
+ /usr/include/gstreamer-1.0/gst/gstconfig.h \
  /usr/include/gstreamer-1.0/gst/gstobject.h \
  /usr/include/gstreamer-1.0/gst/gstcontrolbinding.h \
  /usr/include/gstreamer-1.0/gst/gstcontrolsource.h \
@@ -525,12 +521,12 @@ obj/linuxarmv6l/Release/src/ofApp.o: \
  /usr/include/gstreamer-1.0/gst/gstminiobject.h \
  /usr/include/gstreamer-1.0/gst/gstallocator.h \
  /usr/include/gstreamer-1.0/gst/gstmemory.h \
+ /usr/include/gstreamer-1.0/gst/gstmeta.h \
+ /usr/include/gstreamer-1.0/gst/gstbufferlist.h \
  /usr/include/gstreamer-1.0/gst/gstcaps.h \
  /usr/include/gstreamer-1.0/gst/gststructure.h \
  /usr/include/gstreamer-1.0/gst/gstdatetime.h \
  /usr/include/gstreamer-1.0/gst/gstcapsfeatures.h \
- /usr/include/gstreamer-1.0/gst/gstmeta.h \
- /usr/include/gstreamer-1.0/gst/gstbufferlist.h \
  /usr/include/gstreamer-1.0/gst/gstpadtemplate.h \
  /usr/include/gstreamer-1.0/gst/gstevent.h \
  /usr/include/gstreamer-1.0/gst/gstformat.h \
@@ -543,8 +539,8 @@ obj/linuxarmv6l/Release/src/ofApp.o: \
  /usr/include/gstreamer-1.0/gst/gsttoc.h \
  /usr/include/gstreamer-1.0/gst/gstcontext.h \
  /usr/include/gstreamer-1.0/gst/gstdevice.h \
- /usr/include/gstreamer-1.0/gst/gststreams.h \
  /usr/include/gstreamer-1.0/gst/gststreamcollection.h \
+ /usr/include/gstreamer-1.0/gst/gststreams.h \
  /usr/include/gstreamer-1.0/gst/gsttask.h \
  /usr/include/gstreamer-1.0/gst/gsttaskpool.h \
  /usr/include/gstreamer-1.0/gst/gstbus.h \
@@ -560,7 +556,6 @@ obj/linuxarmv6l/Release/src/ofApp.o: \
  /usr/include/gstreamer-1.0/gst/gstdevicemonitor.h \
  /usr/include/gstreamer-1.0/gst/gstdeviceprovider.h \
  /usr/include/gstreamer-1.0/gst/gstdeviceproviderfactory.h \
- /usr/include/gstreamer-1.0/gst/gstdynamictypefactory.h \
  /usr/include/gstreamer-1.0/gst/gstelementmetadata.h \
  /usr/include/gstreamer-1.0/gst/gsterror.h \
  /usr/include/gstreamer-1.0/gst/gstghostpad.h \
@@ -572,7 +567,6 @@ obj/linuxarmv6l/Release/src/ofApp.o: \
  /usr/include/gstreamer-1.0/gst/gstpreset.h \
  /usr/include/gstreamer-1.0/gst/gstprotection.h \
  /usr/include/gstreamer-1.0/gst/gstregistry.h \
- /usr/include/gstreamer-1.0/gst/gstpromise.h \
  /usr/include/gstreamer-1.0/gst/gstsystemclock.h \
  /usr/include/gstreamer-1.0/gst/gsttagsetter.h \
  /usr/include/gstreamer-1.0/gst/gsttocsetter.h \
@@ -585,7 +579,6 @@ obj/linuxarmv6l/Release/src/ofApp.o: \
  /usr/include/gstreamer-1.0/gst/gstparse.h \
  /usr/include/gstreamer-1.0/gst/gstcompat.h \
  /usr/include/gstreamer-1.0/gst/video/video.h \
- /usr/include/gstreamer-1.0/gst/video/video-prelude.h \
  /usr/include/gstreamer-1.0/gst/video/video-format.h \
  /usr/include/gstreamer-1.0/gst/video/video-enumtypes.h \
  /usr/include/gstreamer-1.0/gst/video/video-tile.h \
@@ -602,7 +595,6 @@ obj/linuxarmv6l/Release/src/ofApp.o: \
  /usr/include/gstreamer-1.0/gst/video/colorbalance.h \
  /usr/include/gstreamer-1.0/gst/video/gstvideodecoder.h \
  /usr/include/gstreamer-1.0/gst/base/gstadapter.h \
- /usr/include/gstreamer-1.0/gst/base/base-prelude.h \
  /usr/include/gstreamer-1.0/gst/video/gstvideoutils.h \
  /usr/include/gstreamer-1.0/gst/video/gstvideoencoder.h \
  /usr/include/gstreamer-1.0/gst/video/gstvideofilter.h \
@@ -619,16 +611,15 @@ obj/linuxarmv6l/Release/src/ofApp.o: \
  /usr/include/gstreamer-1.0/gst/video/videoorientation.h \
  /usr/include/gstreamer-1.0/gst/video/video-overlay-composition.h \
  /usr/include/gstreamer-1.0/gst/video/videooverlay.h \
- /usr/include/gstreamer-1.0/gst/video/gstvideoaffinetransformationmeta.h \
  /home/music/openFrameworks/libs/openFrameworks/video/ofVideoPlayer.h \
  /home/music/openFrameworks/libs/openFrameworks/video/ofGstVideoPlayer.h \
  /home/music/openFrameworks/libs/openFrameworks/3d/of3dUtils.h \
  /home/music/openFrameworks/libs/openFrameworks/3d/ofCamera.h \
  /home/music/openFrameworks/libs/openFrameworks/3d/ofEasyCam.h \
  /home/music/openFrameworks/addons/ofxLua/src/ofxLua.h \
- /usr/include/luajit-2.1/lua.hpp /usr/include/luajit-2.1/lua.h \
- /usr/include/luajit-2.1/luaconf.h /usr/include/luajit-2.1/lauxlib.h \
- /usr/include/luajit-2.1/lualib.h /usr/include/luajit-2.1/luajit.h \
+ /usr/include/luajit-2.0/lua.hpp /usr/include/luajit-2.0/lua.h \
+ /usr/include/luajit-2.0/luaconf.h /usr/include/luajit-2.0/lauxlib.h \
+ /usr/include/luajit-2.0/lualib.h /usr/include/luajit-2.0/luajit.h \
  /home/music/openFrameworks/addons/ofxLua/src/ofxLuaFileWriter.h \
  /home/music/openFrameworks/addons/ofxOsc/src/ofxOsc.h \
  /home/music/openFrameworks/addons/ofxOsc/src/ofxOscArg.h \
@@ -1615,16 +1606,6 @@ obj/linuxarmv6l/Release/src/ofApp.o: \
 
 /usr/include/glib-2.0/glib/grand.h:
 
-/usr/include/glib-2.0/glib/grcbox.h:
-
-/usr/include/glib-2.0/glib/grefcount.h:
-
-/usr/include/glib-2.0/glib/grefstring.h:
-
-/usr/include/glib-2.0/glib/gmem.h:
-
-/usr/include/glib-2.0/glib/gmacros.h:
-
 /usr/include/glib-2.0/glib/gregex.h:
 
 /usr/include/glib-2.0/glib/gscanner.h:
@@ -1652,8 +1633,6 @@ obj/linuxarmv6l/Release/src/ofApp.o: \
 /usr/include/glib-2.0/glib/gtree.h:
 
 /usr/include/glib-2.0/glib/gurifuncs.h:
-
-/usr/include/glib-2.0/glib/guuid.h:
 
 /usr/include/glib-2.0/glib/gversion.h:
 
@@ -1713,8 +1692,6 @@ obj/linuxarmv6l/Release/src/ofApp.o: \
 
 /usr/include/glib-2.0/gobject/gobject-autocleanups.h:
 
-/usr/include/gstreamer-1.0/gst/gstconfig.h:
-
 /usr/include/gstreamer-1.0/gst/gstversion.h:
 
 /usr/include/gstreamer-1.0/gst/gstatomicqueue.h:
@@ -1722,6 +1699,8 @@ obj/linuxarmv6l/Release/src/ofApp.o: \
 /usr/include/gstreamer-1.0/gst/gstbin.h:
 
 /usr/include/gstreamer-1.0/gst/gstelement.h:
+
+/usr/include/gstreamer-1.0/gst/gstconfig.h:
 
 /usr/include/gstreamer-1.0/gst/gstobject.h:
 
@@ -1741,6 +1720,10 @@ obj/linuxarmv6l/Release/src/ofApp.o: \
 
 /usr/include/gstreamer-1.0/gst/gstmemory.h:
 
+/usr/include/gstreamer-1.0/gst/gstmeta.h:
+
+/usr/include/gstreamer-1.0/gst/gstbufferlist.h:
+
 /usr/include/gstreamer-1.0/gst/gstcaps.h:
 
 /usr/include/gstreamer-1.0/gst/gststructure.h:
@@ -1748,10 +1731,6 @@ obj/linuxarmv6l/Release/src/ofApp.o: \
 /usr/include/gstreamer-1.0/gst/gstdatetime.h:
 
 /usr/include/gstreamer-1.0/gst/gstcapsfeatures.h:
-
-/usr/include/gstreamer-1.0/gst/gstmeta.h:
-
-/usr/include/gstreamer-1.0/gst/gstbufferlist.h:
 
 /usr/include/gstreamer-1.0/gst/gstpadtemplate.h:
 
@@ -1777,9 +1756,9 @@ obj/linuxarmv6l/Release/src/ofApp.o: \
 
 /usr/include/gstreamer-1.0/gst/gstdevice.h:
 
-/usr/include/gstreamer-1.0/gst/gststreams.h:
-
 /usr/include/gstreamer-1.0/gst/gststreamcollection.h:
+
+/usr/include/gstreamer-1.0/gst/gststreams.h:
 
 /usr/include/gstreamer-1.0/gst/gsttask.h:
 
@@ -1811,8 +1790,6 @@ obj/linuxarmv6l/Release/src/ofApp.o: \
 
 /usr/include/gstreamer-1.0/gst/gstdeviceproviderfactory.h:
 
-/usr/include/gstreamer-1.0/gst/gstdynamictypefactory.h:
-
 /usr/include/gstreamer-1.0/gst/gstelementmetadata.h:
 
 /usr/include/gstreamer-1.0/gst/gsterror.h:
@@ -1834,8 +1811,6 @@ obj/linuxarmv6l/Release/src/ofApp.o: \
 /usr/include/gstreamer-1.0/gst/gstprotection.h:
 
 /usr/include/gstreamer-1.0/gst/gstregistry.h:
-
-/usr/include/gstreamer-1.0/gst/gstpromise.h:
 
 /usr/include/gstreamer-1.0/gst/gstsystemclock.h:
 
@@ -1860,8 +1835,6 @@ obj/linuxarmv6l/Release/src/ofApp.o: \
 /usr/include/gstreamer-1.0/gst/gstcompat.h:
 
 /usr/include/gstreamer-1.0/gst/video/video.h:
-
-/usr/include/gstreamer-1.0/gst/video/video-prelude.h:
 
 /usr/include/gstreamer-1.0/gst/video/video-format.h:
 
@@ -1895,8 +1868,6 @@ obj/linuxarmv6l/Release/src/ofApp.o: \
 
 /usr/include/gstreamer-1.0/gst/base/gstadapter.h:
 
-/usr/include/gstreamer-1.0/gst/base/base-prelude.h:
-
 /usr/include/gstreamer-1.0/gst/video/gstvideoutils.h:
 
 /usr/include/gstreamer-1.0/gst/video/gstvideoencoder.h:
@@ -1929,8 +1900,6 @@ obj/linuxarmv6l/Release/src/ofApp.o: \
 
 /usr/include/gstreamer-1.0/gst/video/videooverlay.h:
 
-/usr/include/gstreamer-1.0/gst/video/gstvideoaffinetransformationmeta.h:
-
 /home/music/openFrameworks/libs/openFrameworks/video/ofVideoPlayer.h:
 
 /home/music/openFrameworks/libs/openFrameworks/video/ofGstVideoPlayer.h:
@@ -1943,17 +1912,17 @@ obj/linuxarmv6l/Release/src/ofApp.o: \
 
 /home/music/openFrameworks/addons/ofxLua/src/ofxLua.h:
 
-/usr/include/luajit-2.1/lua.hpp:
+/usr/include/luajit-2.0/lua.hpp:
 
-/usr/include/luajit-2.1/lua.h:
+/usr/include/luajit-2.0/lua.h:
 
-/usr/include/luajit-2.1/luaconf.h:
+/usr/include/luajit-2.0/luaconf.h:
 
-/usr/include/luajit-2.1/lauxlib.h:
+/usr/include/luajit-2.0/lauxlib.h:
 
-/usr/include/luajit-2.1/lualib.h:
+/usr/include/luajit-2.0/lualib.h:
 
-/usr/include/luajit-2.1/luajit.h:
+/usr/include/luajit-2.0/luajit.h:
 
 /home/music/openFrameworks/addons/ofxLua/src/ofxLuaFileWriter.h:
 
