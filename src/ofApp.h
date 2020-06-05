@@ -64,5 +64,7 @@ class ofApp : public ofBaseApp, ofxLuaListener {
         int                 snapCounter;
         string              snapString;
         ofImage             img;
+	
+	ofFbo fbo;
 
 };

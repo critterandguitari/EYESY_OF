@@ -15,11 +15,14 @@ void ofApp::setup() {
 	cout << "listening for osc messages on port " << PORT << "\n";
 	receiver.setup(PORT);	
     
-    ofSetVerticalSync(true);
-	ofSetFrameRate(30);
+    	ofSetVerticalSync(true);
+	ofSetFrameRate(60);
 	ofSetLogLevel("ofxLua", OF_LOG_VERBOSE);
 
-    ofHideCursor();
+    	ofHideCursor();
+	//ofSetBackgroundAuto(false);
+
+	fbo.allocate(ofGetWidth(), ofGetHeight() );
 
         // setup audio
 	soundStream.printDeviceList();
@@ -131,10 +134,14 @@ void ofApp::draw() {
     lua.setNumberVector("inL", left);
     lua.setNumberVector("inR", right);
     
+    fbo.begin();   // draw to fbo
 	// call the script's draw() function
     lua.scriptDraw();
     
-	/*ofSetColor(0);
+    fbo.end();
+    fbo.draw(0,0);
+	
+    /*ofSetColor(0);
 	ofDrawBitmapString("use <- & -> to change between scripts", 10, ofGetHeight()-22);
 	ofDrawBitmapString(scripts[currentScript], 10, ofGetHeight()-10);*/
 
