@@ -66,5 +66,5 @@ class ofApp : public ofBaseApp, ofxLuaListener {
         ofImage             img;
 	
 	ofFbo fbo;
-
+	int persistSetting;
 };

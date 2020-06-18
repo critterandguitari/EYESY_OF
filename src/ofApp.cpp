@@ -64,6 +64,8 @@ void ofApp::setup() {
 	    scripts.push_back(dir.getPath(i) + "/main.lua");
 	}
 
+	persistSetting = 0;
+
    // scripts to run
 	currentScript = 0;
 	
@@ -109,6 +111,11 @@ void ofApp::update() {
                 cout << "saved\n";
                 snapCounter++;
             }
+            if (m.getArgAsInt32(0) == 3 && m.getArgAsInt32(1) > 0) {
+                cout << "change persist" << "\n";
+	    	persistSetting++;
+		persistSetting &= 1;
+            }
         }
         if(m.getAddress() == "/knobs") {
             lua.setNumber("knob1", (float)m.getArgAsInt32(0) / 1023);
@@ -133,18 +140,25 @@ void ofApp::draw() {
     
     lua.setNumberVector("inL", left);
     lua.setNumberVector("inR", right);
+    if (persistSetting) {    
+    	fbo.begin();   // draw to fbo
+		// call the script's draw() function
+    	lua.scriptDraw();
     
-    fbo.begin();   // draw to fbo
-	// call the script's draw() function
-    lua.scriptDraw();
-    
-    fbo.end();
-    fbo.draw(0,0);
+   	 fbo.end();
+    	fbo.draw(0,0);
 	
     /*ofSetColor(0);
 	ofDrawBitmapString("use <- & -> to change between scripts", 10, ofGetHeight()-22);
 	ofDrawBitmapString(scripts[currentScript], 10, ofGetHeight()-10);*/
-
+    } else  {    
+		// call the script's draw() function
+    	lua.scriptDraw();
+    
+    /*ofSetColor(0);
+	ofDrawBitmapString("use <- & -> to change between scripts", 10, ofGetHeight()-22);
+	ofDrawBitmapString(scripts[currentScript], 10, ofGetHeight()-10);*/    
+    }
 }
 
 //--------------------------------------------------------------
