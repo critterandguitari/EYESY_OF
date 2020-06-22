@@ -21,7 +21,6 @@ void ofApp::setup() {
 
     ofHideCursor();
 
-    //ofBackground(0,0,0);
     ofSetBackgroundColor(0,0,0);
         
     // setup audio
@@ -78,17 +77,8 @@ void ofApp::setup() {
     // call the script's setup() function
     lua.scriptSetup();
 
-	persist = 0;
-
 	// clear main screen
 	ofClear(0,0,0);
-
-	// clear the fbo
-	ofColor(255,255,255); // maybe for weird bug
-	fbo.allocate(ofGetWidth(), ofGetHeight() );
-	fbo.begin();
-	ofClear(0,0,0);
-	fbo.end();
 }
 
 //--------------------------------------------------------------
@@ -123,14 +113,6 @@ void ofApp::update() {
             }
 			if (m.getArgAsInt32(0) == 3 && m.getArgAsInt32(1) > 0) {
             	cout << "change persist" << "\n";
-				persist++;
-				persist &= 1;
-	            // clear it
-                if (persist) {
-                    fbo.begin();
-	                ofClear(0,0,0);
-	                fbo.end();
-                }
             } 
         }
         if(m.getAddress() == "/knobs") {
@@ -157,19 +139,10 @@ void ofApp::draw() {
     lua.setNumberVector("inL", left);
     lua.setNumberVector("inR", right);
    
-	ofSetColor(255,255,255);  // might be needed for fbo weirdness
-
-	if (persist) {
-		fbo.begin();
-		lua.scriptDraw();
-		fbo.end();
-		fbo.draw(0,0);
-	}	
-	else {
-    	lua.scriptDraw();
-	}
+    lua.scriptDraw();
  
     //ofDrawBitmapString(scripts[currentScript], 10, ofGetHeight()-10);
+    
     // clear flags    
     lua.setBool("trig", false);
 }
@@ -177,11 +150,6 @@ void ofApp::draw() {
 //--------------------------------------------------------------
 void ofApp::audioIn(ofSoundBuffer & input){
     
-    float curVol = 0.0;
-    
-    // samples are "interleaved"
-    int numCounted = 0;    
-
     for (size_t i = 0; i < input.getNumFrames(); i++){
         left[i]        = input[i*2]*0.5;
         right[i]    = input[i*2+1]*0.5;
@@ -259,7 +227,6 @@ void ofApp::reloadScript() {
     // init OF
     ofSetupScreen();
     ofSetupGraphicDefaults();
-    
     ofSetBackgroundColor(0,0,0);
 
     // load new
