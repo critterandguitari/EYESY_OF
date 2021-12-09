@@ -245,104 +245,53 @@ obj/linuxarmv6l/Release/src/main.o: \
  /home/music/openFrameworks/libs/glm/include/glm/trigonometric.hpp \
  /home/music/openFrameworks/libs/glm/include/glm/detail/setup.hpp \
  /home/music/openFrameworks/libs/glm/include/glm/detail/func_trigonometric.inl \
- /home/music/openFrameworks/libs/glm/include/glm/ext.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/glm.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/packing.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/detail/func_packing.inl \
- /home/music/openFrameworks/libs/glm/include/glm/detail/type_half.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/detail/type_half.inl \
- /home/music/openFrameworks/libs/glm/include/glm/integer.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/detail/func_integer.inl \
- /home/music/openFrameworks/libs/glm/include/glm/./ext/matrix_relational.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./ext/matrix_relational.inl \
- /home/music/openFrameworks/libs/glm/include/glm/./ext/../ext/vector_relational.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./ext/../ext/vector_relational.inl \
- /home/music/openFrameworks/libs/glm/include/glm/./ext/../ext/../detail/type_float.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./ext/../ext/../detail/setup.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./ext/quaternion_double.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./ext/../detail/type_quat.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./ext/../detail/../ext/quaternion_relational.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./ext/../detail/../ext/quaternion_relational.inl \
- /home/music/openFrameworks/libs/glm/include/glm/./ext/../detail/../gtc/matrix_transform.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./ext/../detail/../gtc/../ext/matrix_projection.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./ext/../detail/../gtc/../ext/matrix_projection.inl \
- /home/music/openFrameworks/libs/glm/include/glm/./ext/../detail/../gtc/../ext/matrix_clip_space.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./ext/../detail/../gtc/../ext/matrix_clip_space.inl \
- /home/music/openFrameworks/libs/glm/include/glm/./ext/../detail/../gtc/../ext/matrix_transform.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./ext/../detail/../gtc/../ext/matrix_transform.inl \
- /home/music/openFrameworks/libs/glm/include/glm/./ext/../detail/../gtc/matrix_transform.inl \
- /home/music/openFrameworks/libs/glm/include/glm/./ext/../detail/type_quat.inl \
- /home/music/openFrameworks/libs/glm/include/glm/./ext/../detail/../ext/quaternion_geometric.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./ext/../detail/../ext/quaternion_geometric.inl \
- /home/music/openFrameworks/libs/glm/include/glm/./ext/quaternion_double_precision.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./ext/quaternion_float.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./ext/quaternion_float_precision.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./ext/scalar_int_sized.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./ext/scalar_relational.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./ext/scalar_relational.inl \
- /home/music/openFrameworks/libs/glm/include/glm/./ext/../ext/scalar_uint_sized.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./ext/../ext/../detail/setup.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./ext/vector_bool1.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./ext/vector_bool1_precision.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./ext/vector_double1.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./ext/vector_double1_precision.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./ext/vector_float1.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./ext/vector_float1_precision.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./ext/vector_int1.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./ext/vector_int1_precision.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./ext/vector_uint1.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./ext/vector_uint1_precision.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./gtc/bitfield.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./gtc/../detail/setup.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./gtc/type_precision.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./gtc/../gtc/quaternion.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./gtc/../gtc/../ext/quaternion_common.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./gtc/../gtc/../ext/quaternion_common.inl \
- /home/music/openFrameworks/libs/glm/include/glm/./gtc/../gtc/../ext/quaternion_trigonometric.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./gtc/../gtc/../ext/quaternion_trigonometric.inl \
- /home/music/openFrameworks/libs/glm/include/glm/./gtc/../gtc/../ext/quaternion_transform.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./gtc/../gtc/../ext/quaternion_transform.inl \
- /home/music/openFrameworks/libs/glm/include/glm/./gtc/../gtc/quaternion.inl \
- /home/music/openFrameworks/libs/glm/include/glm/./gtc/../gtc/epsilon.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./gtc/../gtc/../detail/setup.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./gtc/../gtc/epsilon.inl \
- /home/music/openFrameworks/libs/glm/include/glm/./gtc/../gtc/vec1.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./gtc/type_precision.inl \
- /home/music/openFrameworks/libs/glm/include/glm/./gtc/bitfield.inl \
- /home/music/openFrameworks/libs/glm/include/glm/./gtc/../simd/integer.h \
- /home/music/openFrameworks/libs/glm/include/glm/./gtc/color_space.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./gtc/color_space.inl \
- /home/music/openFrameworks/libs/glm/include/glm/./gtc/integer.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./gtc/integer.inl \
- /home/music/openFrameworks/libs/glm/include/glm/./gtc/matrix_access.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./gtc/matrix_access.inl \
- /home/music/openFrameworks/libs/glm/include/glm/./gtc/matrix_integer.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./gtc/matrix_inverse.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./gtc/matrix_inverse.inl \
- /home/music/openFrameworks/libs/glm/include/glm/./gtc/noise.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./gtc/../detail/_noise.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./gtc/noise.inl \
- /home/music/openFrameworks/libs/glm/include/glm/./gtc/packing.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./gtc/packing.inl \
- /home/music/openFrameworks/libs/glm/include/glm/./gtc/random.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./gtc/random.inl \
- /home/music/openFrameworks/libs/glm/include/glm/./gtc/reciprocal.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./gtc/reciprocal.inl \
- /home/music/openFrameworks/libs/glm/include/glm/./gtc/round.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./gtc/round.inl \
- /home/music/openFrameworks/libs/glm/include/glm/./gtc/../ext/vector_integer.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./gtc/../ext/../detail/setup.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./gtc/../ext/vector_integer.inl \
- /home/music/openFrameworks/libs/glm/include/glm/./gtc/../ext/scalar_integer.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./gtc/../ext/scalar_integer.inl \
- /home/music/openFrameworks/libs/glm/include/glm/./gtc/type_ptr.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./gtc/type_ptr.inl \
- /home/music/openFrameworks/libs/glm/include/glm/./gtc/ulp.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./gtc/ulp.inl \
- /home/music/openFrameworks/libs/glm/include/glm/./gtc/../ext/scalar_ulp.hpp \
- /home/music/openFrameworks/libs/glm/include/glm/./gtc/../ext/scalar_ulp.inl \
+ /home/music/openFrameworks/libs/glm/include/glm/gtc/matrix_transform.hpp \
+ /home/music/openFrameworks/libs/glm/include/glm/gtc/../ext/matrix_projection.hpp \
+ /home/music/openFrameworks/libs/glm/include/glm/gtc/../ext/matrix_projection.inl \
+ /home/music/openFrameworks/libs/glm/include/glm/gtc/../ext/matrix_clip_space.hpp \
+ /home/music/openFrameworks/libs/glm/include/glm/gtc/../ext/matrix_clip_space.inl \
+ /home/music/openFrameworks/libs/glm/include/glm/gtc/../ext/matrix_transform.hpp \
+ /home/music/openFrameworks/libs/glm/include/glm/gtc/../ext/matrix_transform.inl \
+ /home/music/openFrameworks/libs/glm/include/glm/gtc/matrix_transform.inl \
+ /home/music/openFrameworks/libs/glm/include/glm/gtc/matrix_inverse.hpp \
+ /home/music/openFrameworks/libs/glm/include/glm/gtc/../detail/setup.hpp \
+ /home/music/openFrameworks/libs/glm/include/glm/gtc/matrix_inverse.inl \
+ /home/music/openFrameworks/libs/glm/include/glm/gtc/quaternion.hpp \
+ /home/music/openFrameworks/libs/glm/include/glm/gtc/../ext/vector_relational.hpp \
+ /home/music/openFrameworks/libs/glm/include/glm/gtc/../ext/vector_relational.inl \
+ /home/music/openFrameworks/libs/glm/include/glm/gtc/../ext/../detail/type_float.hpp \
+ /home/music/openFrameworks/libs/glm/include/glm/gtc/../ext/../detail/setup.hpp \
+ /home/music/openFrameworks/libs/glm/include/glm/gtc/../ext/quaternion_common.hpp \
+ /home/music/openFrameworks/libs/glm/include/glm/gtc/../ext/../ext/quaternion_geometric.hpp \
+ /home/music/openFrameworks/libs/glm/include/glm/gtc/../ext/../ext/quaternion_geometric.inl \
+ /home/music/openFrameworks/libs/glm/include/glm/gtc/../ext/quaternion_common.inl \
+ /home/music/openFrameworks/libs/glm/include/glm/gtc/../ext/quaternion_float.hpp \
+ /home/music/openFrameworks/libs/glm/include/glm/gtc/../ext/../detail/type_quat.hpp \
+ /home/music/openFrameworks/libs/glm/include/glm/gtc/../ext/../detail/../ext/quaternion_relational.hpp \
+ /home/music/openFrameworks/libs/glm/include/glm/gtc/../ext/../detail/../ext/quaternion_relational.inl \
+ /home/music/openFrameworks/libs/glm/include/glm/gtc/../ext/../detail/type_quat.inl \
+ /home/music/openFrameworks/libs/glm/include/glm/gtc/../ext/quaternion_float_precision.hpp \
+ /home/music/openFrameworks/libs/glm/include/glm/gtc/../ext/quaternion_double.hpp \
+ /home/music/openFrameworks/libs/glm/include/glm/gtc/../ext/quaternion_double_precision.hpp \
+ /home/music/openFrameworks/libs/glm/include/glm/gtc/../ext/quaternion_trigonometric.hpp \
+ /home/music/openFrameworks/libs/glm/include/glm/gtc/../ext/quaternion_trigonometric.inl \
+ /home/music/openFrameworks/libs/glm/include/glm/gtc/../ext/quaternion_transform.hpp \
+ /home/music/openFrameworks/libs/glm/include/glm/gtc/../ext/quaternion_transform.inl \
+ /home/music/openFrameworks/libs/glm/include/glm/gtc/quaternion.inl \
+ /home/music/openFrameworks/libs/glm/include/glm/gtc/epsilon.hpp \
+ /home/music/openFrameworks/libs/glm/include/glm/gtc/epsilon.inl \
  /home/music/openFrameworks/libs/glm/include/glm/gtx/norm.hpp \
  /home/music/openFrameworks/libs/glm/include/glm/gtx/../gtx/quaternion.hpp \
+ /home/music/openFrameworks/libs/glm/include/glm/gtx/../gtx/../glm.hpp \
+ /home/music/openFrameworks/libs/glm/include/glm/gtx/../gtx/../detail/_fixes.hpp \
+ /home/music/openFrameworks/libs/glm/include/glm/gtx/../gtx/../detail/setup.hpp \
+ /home/music/openFrameworks/libs/glm/include/glm/gtx/../gtx/../packing.hpp \
+ /home/music/openFrameworks/libs/glm/include/glm/gtx/../gtx/../detail/func_packing.inl \
+ /home/music/openFrameworks/libs/glm/include/glm/gtx/../gtx/../detail/type_half.hpp \
+ /home/music/openFrameworks/libs/glm/include/glm/gtx/../gtx/../detail/setup.hpp \
+ /home/music/openFrameworks/libs/glm/include/glm/gtx/../gtx/../detail/type_half.inl \
+ /home/music/openFrameworks/libs/glm/include/glm/gtx/../gtx/../integer.hpp \
+ /home/music/openFrameworks/libs/glm/include/glm/gtx/../gtx/../detail/func_integer.inl \
  /home/music/openFrameworks/libs/glm/include/glm/gtx/../gtx/../ext/quaternion_exponential.hpp \
  /home/music/openFrameworks/libs/glm/include/glm/gtx/../gtx/../ext/quaternion_exponential.inl \
  /home/music/openFrameworks/libs/glm/include/glm/gtx/../gtx/quaternion.inl \
@@ -366,6 +315,19 @@ obj/linuxarmv6l/Release/src/main.o: \
  /home/music/openFrameworks/libs/glm/include/glm/gtx/vector_angle.inl \
  /home/music/openFrameworks/libs/glm/include/glm/gtx/scalar_multiplication.hpp \
  /home/music/openFrameworks/libs/glm/include/glm/gtx/../detail/setup.hpp \
+ /home/music/openFrameworks/libs/glm/include/glm/gtc/type_ptr.hpp \
+ /home/music/openFrameworks/libs/glm/include/glm/gtc/../gtc/vec1.hpp \
+ /home/music/openFrameworks/libs/glm/include/glm/gtc/../gtc/../ext/vector_bool1.hpp \
+ /home/music/openFrameworks/libs/glm/include/glm/gtc/../gtc/../ext/vector_bool1_precision.hpp \
+ /home/music/openFrameworks/libs/glm/include/glm/gtc/../gtc/../ext/vector_float1.hpp \
+ /home/music/openFrameworks/libs/glm/include/glm/gtc/../gtc/../ext/vector_float1_precision.hpp \
+ /home/music/openFrameworks/libs/glm/include/glm/gtc/../gtc/../ext/vector_double1.hpp \
+ /home/music/openFrameworks/libs/glm/include/glm/gtc/../gtc/../ext/vector_double1_precision.hpp \
+ /home/music/openFrameworks/libs/glm/include/glm/gtc/../gtc/../ext/vector_int1.hpp \
+ /home/music/openFrameworks/libs/glm/include/glm/gtc/../gtc/../ext/vector_int1_precision.hpp \
+ /home/music/openFrameworks/libs/glm/include/glm/gtc/../gtc/../ext/vector_uint1.hpp \
+ /home/music/openFrameworks/libs/glm/include/glm/gtc/../gtc/../ext/vector_uint1_precision.hpp \
+ /home/music/openFrameworks/libs/glm/include/glm/gtc/type_ptr.inl \
  /home/music/openFrameworks/libs/openFrameworks/math/ofMatrix3x3.h \
  /home/music/openFrameworks/libs/openFrameworks/math/ofMatrix4x4.h \
  /home/music/openFrameworks/libs/openFrameworks/math/ofQuaternion.h \
@@ -464,6 +426,10 @@ obj/linuxarmv6l/Release/src/main.o: \
  /usr/include/glib-2.0/glib/gpattern.h \
  /usr/include/glib-2.0/glib/gprimes.h /usr/include/glib-2.0/glib/gqsort.h \
  /usr/include/glib-2.0/glib/gqueue.h /usr/include/glib-2.0/glib/grand.h \
+ /usr/include/glib-2.0/glib/grcbox.h \
+ /usr/include/glib-2.0/glib/grefcount.h \
+ /usr/include/glib-2.0/glib/grefstring.h \
+ /usr/include/glib-2.0/glib/gmem.h /usr/include/glib-2.0/glib/gmacros.h \
  /usr/include/glib-2.0/glib/gregex.h \
  /usr/include/glib-2.0/glib/gscanner.h \
  /usr/include/glib-2.0/glib/gsequence.h \
@@ -477,7 +443,7 @@ obj/linuxarmv6l/Release/src/main.o: \
  /usr/include/glib-2.0/glib/gtrashstack.h \
  /usr/include/glib-2.0/glib/gtree.h \
  /usr/include/glib-2.0/glib/gurifuncs.h \
- /usr/include/glib-2.0/glib/gversion.h \
+ /usr/include/glib-2.0/glib/guuid.h /usr/include/glib-2.0/glib/gversion.h \
  /usr/include/glib-2.0/glib/deprecated/gallocator.h \
  /usr/include/glib-2.0/glib/deprecated/gcache.h \
  /usr/include/glib-2.0/glib/deprecated/gcompletion.h \
@@ -506,11 +472,11 @@ obj/linuxarmv6l/Release/src/main.o: \
  /usr/include/glib-2.0/gobject/gvaluearray.h \
  /usr/include/glib-2.0/gobject/gvaluetypes.h \
  /usr/include/glib-2.0/gobject/gobject-autocleanups.h \
+ /usr/include/gstreamer-1.0/gst/gstconfig.h \
  /usr/include/gstreamer-1.0/gst/gstversion.h \
  /usr/include/gstreamer-1.0/gst/gstatomicqueue.h \
  /usr/include/gstreamer-1.0/gst/gstbin.h \
  /usr/include/gstreamer-1.0/gst/gstelement.h \
- /usr/include/gstreamer-1.0/gst/gstconfig.h \
  /usr/include/gstreamer-1.0/gst/gstobject.h \
  /usr/include/gstreamer-1.0/gst/gstcontrolbinding.h \
  /usr/include/gstreamer-1.0/gst/gstcontrolsource.h \
@@ -520,12 +486,12 @@ obj/linuxarmv6l/Release/src/main.o: \
  /usr/include/gstreamer-1.0/gst/gstminiobject.h \
  /usr/include/gstreamer-1.0/gst/gstallocator.h \
  /usr/include/gstreamer-1.0/gst/gstmemory.h \
- /usr/include/gstreamer-1.0/gst/gstmeta.h \
- /usr/include/gstreamer-1.0/gst/gstbufferlist.h \
  /usr/include/gstreamer-1.0/gst/gstcaps.h \
  /usr/include/gstreamer-1.0/gst/gststructure.h \
  /usr/include/gstreamer-1.0/gst/gstdatetime.h \
  /usr/include/gstreamer-1.0/gst/gstcapsfeatures.h \
+ /usr/include/gstreamer-1.0/gst/gstmeta.h \
+ /usr/include/gstreamer-1.0/gst/gstbufferlist.h \
  /usr/include/gstreamer-1.0/gst/gstpadtemplate.h \
  /usr/include/gstreamer-1.0/gst/gstevent.h \
  /usr/include/gstreamer-1.0/gst/gstformat.h \
@@ -538,8 +504,8 @@ obj/linuxarmv6l/Release/src/main.o: \
  /usr/include/gstreamer-1.0/gst/gsttoc.h \
  /usr/include/gstreamer-1.0/gst/gstcontext.h \
  /usr/include/gstreamer-1.0/gst/gstdevice.h \
- /usr/include/gstreamer-1.0/gst/gststreamcollection.h \
  /usr/include/gstreamer-1.0/gst/gststreams.h \
+ /usr/include/gstreamer-1.0/gst/gststreamcollection.h \
  /usr/include/gstreamer-1.0/gst/gsttask.h \
  /usr/include/gstreamer-1.0/gst/gsttaskpool.h \
  /usr/include/gstreamer-1.0/gst/gstbus.h \
@@ -555,6 +521,7 @@ obj/linuxarmv6l/Release/src/main.o: \
  /usr/include/gstreamer-1.0/gst/gstdevicemonitor.h \
  /usr/include/gstreamer-1.0/gst/gstdeviceprovider.h \
  /usr/include/gstreamer-1.0/gst/gstdeviceproviderfactory.h \
+ /usr/include/gstreamer-1.0/gst/gstdynamictypefactory.h \
  /usr/include/gstreamer-1.0/gst/gstelementmetadata.h \
  /usr/include/gstreamer-1.0/gst/gsterror.h \
  /usr/include/gstreamer-1.0/gst/gstghostpad.h \
@@ -566,6 +533,7 @@ obj/linuxarmv6l/Release/src/main.o: \
  /usr/include/gstreamer-1.0/gst/gstpreset.h \
  /usr/include/gstreamer-1.0/gst/gstprotection.h \
  /usr/include/gstreamer-1.0/gst/gstregistry.h \
+ /usr/include/gstreamer-1.0/gst/gstpromise.h \
  /usr/include/gstreamer-1.0/gst/gstsystemclock.h \
  /usr/include/gstreamer-1.0/gst/gsttagsetter.h \
  /usr/include/gstreamer-1.0/gst/gsttocsetter.h \
@@ -578,6 +546,7 @@ obj/linuxarmv6l/Release/src/main.o: \
  /usr/include/gstreamer-1.0/gst/gstparse.h \
  /usr/include/gstreamer-1.0/gst/gstcompat.h \
  /usr/include/gstreamer-1.0/gst/video/video.h \
+ /usr/include/gstreamer-1.0/gst/video/video-prelude.h \
  /usr/include/gstreamer-1.0/gst/video/video-format.h \
  /usr/include/gstreamer-1.0/gst/video/video-enumtypes.h \
  /usr/include/gstreamer-1.0/gst/video/video-tile.h \
@@ -594,6 +563,7 @@ obj/linuxarmv6l/Release/src/main.o: \
  /usr/include/gstreamer-1.0/gst/video/colorbalance.h \
  /usr/include/gstreamer-1.0/gst/video/gstvideodecoder.h \
  /usr/include/gstreamer-1.0/gst/base/gstadapter.h \
+ /usr/include/gstreamer-1.0/gst/base/base-prelude.h \
  /usr/include/gstreamer-1.0/gst/video/gstvideoutils.h \
  /usr/include/gstreamer-1.0/gst/video/gstvideoencoder.h \
  /usr/include/gstreamer-1.0/gst/video/gstvideofilter.h \
@@ -610,6 +580,7 @@ obj/linuxarmv6l/Release/src/main.o: \
  /usr/include/gstreamer-1.0/gst/video/videoorientation.h \
  /usr/include/gstreamer-1.0/gst/video/video-overlay-composition.h \
  /usr/include/gstreamer-1.0/gst/video/videooverlay.h \
+ /usr/include/gstreamer-1.0/gst/video/gstvideoaffinetransformationmeta.h \
  /home/music/openFrameworks/libs/openFrameworks/video/ofVideoPlayer.h \
  /home/music/openFrameworks/libs/openFrameworks/video/ofGstVideoPlayer.h \
  /home/music/openFrameworks/libs/openFrameworks/3d/of3dUtils.h \
@@ -617,9 +588,9 @@ obj/linuxarmv6l/Release/src/main.o: \
  /home/music/openFrameworks/libs/openFrameworks/3d/ofEasyCam.h \
  /home/music/openFrameworks/apps/myApps/eyesy/src/ofApp.h \
  /home/music/openFrameworks/addons/ofxLua/src/ofxLua.h \
- /usr/include/luajit-2.0/lua.hpp /usr/include/luajit-2.0/lua.h \
- /usr/include/luajit-2.0/luaconf.h /usr/include/luajit-2.0/lauxlib.h \
- /usr/include/luajit-2.0/lualib.h /usr/include/luajit-2.0/luajit.h \
+ /usr/include/luajit-2.1/lua.hpp /usr/include/luajit-2.1/lua.h \
+ /usr/include/luajit-2.1/luaconf.h /usr/include/luajit-2.1/lauxlib.h \
+ /usr/include/luajit-2.1/lualib.h /usr/include/luajit-2.1/luajit.h \
  /home/music/openFrameworks/addons/ofxLua/src/ofxLuaFileWriter.h \
  /home/music/openFrameworks/addons/ofxOsc/src/ofxOsc.h \
  /home/music/openFrameworks/addons/ofxOsc/src/ofxOscArg.h \
@@ -1138,201 +1109,99 @@ obj/linuxarmv6l/Release/src/main.o: \
 
 /home/music/openFrameworks/libs/glm/include/glm/detail/func_trigonometric.inl:
 
-/home/music/openFrameworks/libs/glm/include/glm/ext.hpp:
+/home/music/openFrameworks/libs/glm/include/glm/gtc/matrix_transform.hpp:
 
-/home/music/openFrameworks/libs/glm/include/glm/glm.hpp:
+/home/music/openFrameworks/libs/glm/include/glm/gtc/../ext/matrix_projection.hpp:
 
-/home/music/openFrameworks/libs/glm/include/glm/packing.hpp:
+/home/music/openFrameworks/libs/glm/include/glm/gtc/../ext/matrix_projection.inl:
 
-/home/music/openFrameworks/libs/glm/include/glm/detail/func_packing.inl:
+/home/music/openFrameworks/libs/glm/include/glm/gtc/../ext/matrix_clip_space.hpp:
 
-/home/music/openFrameworks/libs/glm/include/glm/detail/type_half.hpp:
+/home/music/openFrameworks/libs/glm/include/glm/gtc/../ext/matrix_clip_space.inl:
 
-/home/music/openFrameworks/libs/glm/include/glm/detail/type_half.inl:
+/home/music/openFrameworks/libs/glm/include/glm/gtc/../ext/matrix_transform.hpp:
 
-/home/music/openFrameworks/libs/glm/include/glm/integer.hpp:
+/home/music/openFrameworks/libs/glm/include/glm/gtc/../ext/matrix_transform.inl:
 
-/home/music/openFrameworks/libs/glm/include/glm/detail/func_integer.inl:
+/home/music/openFrameworks/libs/glm/include/glm/gtc/matrix_transform.inl:
 
-/home/music/openFrameworks/libs/glm/include/glm/./ext/matrix_relational.hpp:
+/home/music/openFrameworks/libs/glm/include/glm/gtc/matrix_inverse.hpp:
 
-/home/music/openFrameworks/libs/glm/include/glm/./ext/matrix_relational.inl:
+/home/music/openFrameworks/libs/glm/include/glm/gtc/../detail/setup.hpp:
 
-/home/music/openFrameworks/libs/glm/include/glm/./ext/../ext/vector_relational.hpp:
+/home/music/openFrameworks/libs/glm/include/glm/gtc/matrix_inverse.inl:
 
-/home/music/openFrameworks/libs/glm/include/glm/./ext/../ext/vector_relational.inl:
+/home/music/openFrameworks/libs/glm/include/glm/gtc/quaternion.hpp:
 
-/home/music/openFrameworks/libs/glm/include/glm/./ext/../ext/../detail/type_float.hpp:
+/home/music/openFrameworks/libs/glm/include/glm/gtc/../ext/vector_relational.hpp:
 
-/home/music/openFrameworks/libs/glm/include/glm/./ext/../ext/../detail/setup.hpp:
+/home/music/openFrameworks/libs/glm/include/glm/gtc/../ext/vector_relational.inl:
 
-/home/music/openFrameworks/libs/glm/include/glm/./ext/quaternion_double.hpp:
+/home/music/openFrameworks/libs/glm/include/glm/gtc/../ext/../detail/type_float.hpp:
 
-/home/music/openFrameworks/libs/glm/include/glm/./ext/../detail/type_quat.hpp:
+/home/music/openFrameworks/libs/glm/include/glm/gtc/../ext/../detail/setup.hpp:
 
-/home/music/openFrameworks/libs/glm/include/glm/./ext/../detail/../ext/quaternion_relational.hpp:
+/home/music/openFrameworks/libs/glm/include/glm/gtc/../ext/quaternion_common.hpp:
 
-/home/music/openFrameworks/libs/glm/include/glm/./ext/../detail/../ext/quaternion_relational.inl:
+/home/music/openFrameworks/libs/glm/include/glm/gtc/../ext/../ext/quaternion_geometric.hpp:
 
-/home/music/openFrameworks/libs/glm/include/glm/./ext/../detail/../gtc/matrix_transform.hpp:
+/home/music/openFrameworks/libs/glm/include/glm/gtc/../ext/../ext/quaternion_geometric.inl:
 
-/home/music/openFrameworks/libs/glm/include/glm/./ext/../detail/../gtc/../ext/matrix_projection.hpp:
+/home/music/openFrameworks/libs/glm/include/glm/gtc/../ext/quaternion_common.inl:
 
-/home/music/openFrameworks/libs/glm/include/glm/./ext/../detail/../gtc/../ext/matrix_projection.inl:
+/home/music/openFrameworks/libs/glm/include/glm/gtc/../ext/quaternion_float.hpp:
 
-/home/music/openFrameworks/libs/glm/include/glm/./ext/../detail/../gtc/../ext/matrix_clip_space.hpp:
+/home/music/openFrameworks/libs/glm/include/glm/gtc/../ext/../detail/type_quat.hpp:
 
-/home/music/openFrameworks/libs/glm/include/glm/./ext/../detail/../gtc/../ext/matrix_clip_space.inl:
+/home/music/openFrameworks/libs/glm/include/glm/gtc/../ext/../detail/../ext/quaternion_relational.hpp:
 
-/home/music/openFrameworks/libs/glm/include/glm/./ext/../detail/../gtc/../ext/matrix_transform.hpp:
+/home/music/openFrameworks/libs/glm/include/glm/gtc/../ext/../detail/../ext/quaternion_relational.inl:
 
-/home/music/openFrameworks/libs/glm/include/glm/./ext/../detail/../gtc/../ext/matrix_transform.inl:
+/home/music/openFrameworks/libs/glm/include/glm/gtc/../ext/../detail/type_quat.inl:
 
-/home/music/openFrameworks/libs/glm/include/glm/./ext/../detail/../gtc/matrix_transform.inl:
+/home/music/openFrameworks/libs/glm/include/glm/gtc/../ext/quaternion_float_precision.hpp:
 
-/home/music/openFrameworks/libs/glm/include/glm/./ext/../detail/type_quat.inl:
+/home/music/openFrameworks/libs/glm/include/glm/gtc/../ext/quaternion_double.hpp:
 
-/home/music/openFrameworks/libs/glm/include/glm/./ext/../detail/../ext/quaternion_geometric.hpp:
+/home/music/openFrameworks/libs/glm/include/glm/gtc/../ext/quaternion_double_precision.hpp:
 
-/home/music/openFrameworks/libs/glm/include/glm/./ext/../detail/../ext/quaternion_geometric.inl:
+/home/music/openFrameworks/libs/glm/include/glm/gtc/../ext/quaternion_trigonometric.hpp:
 
-/home/music/openFrameworks/libs/glm/include/glm/./ext/quaternion_double_precision.hpp:
+/home/music/openFrameworks/libs/glm/include/glm/gtc/../ext/quaternion_trigonometric.inl:
 
-/home/music/openFrameworks/libs/glm/include/glm/./ext/quaternion_float.hpp:
+/home/music/openFrameworks/libs/glm/include/glm/gtc/../ext/quaternion_transform.hpp:
 
-/home/music/openFrameworks/libs/glm/include/glm/./ext/quaternion_float_precision.hpp:
+/home/music/openFrameworks/libs/glm/include/glm/gtc/../ext/quaternion_transform.inl:
 
-/home/music/openFrameworks/libs/glm/include/glm/./ext/scalar_int_sized.hpp:
+/home/music/openFrameworks/libs/glm/include/glm/gtc/quaternion.inl:
 
-/home/music/openFrameworks/libs/glm/include/glm/./ext/scalar_relational.hpp:
+/home/music/openFrameworks/libs/glm/include/glm/gtc/epsilon.hpp:
 
-/home/music/openFrameworks/libs/glm/include/glm/./ext/scalar_relational.inl:
-
-/home/music/openFrameworks/libs/glm/include/glm/./ext/../ext/scalar_uint_sized.hpp:
-
-/home/music/openFrameworks/libs/glm/include/glm/./ext/../ext/../detail/setup.hpp:
-
-/home/music/openFrameworks/libs/glm/include/glm/./ext/vector_bool1.hpp:
-
-/home/music/openFrameworks/libs/glm/include/glm/./ext/vector_bool1_precision.hpp:
-
-/home/music/openFrameworks/libs/glm/include/glm/./ext/vector_double1.hpp:
-
-/home/music/openFrameworks/libs/glm/include/glm/./ext/vector_double1_precision.hpp:
-
-/home/music/openFrameworks/libs/glm/include/glm/./ext/vector_float1.hpp:
-
-/home/music/openFrameworks/libs/glm/include/glm/./ext/vector_float1_precision.hpp:
-
-/home/music/openFrameworks/libs/glm/include/glm/./ext/vector_int1.hpp:
-
-/home/music/openFrameworks/libs/glm/include/glm/./ext/vector_int1_precision.hpp:
-
-/home/music/openFrameworks/libs/glm/include/glm/./ext/vector_uint1.hpp:
-
-/home/music/openFrameworks/libs/glm/include/glm/./ext/vector_uint1_precision.hpp:
-
-/home/music/openFrameworks/libs/glm/include/glm/./gtc/bitfield.hpp:
-
-/home/music/openFrameworks/libs/glm/include/glm/./gtc/../detail/setup.hpp:
-
-/home/music/openFrameworks/libs/glm/include/glm/./gtc/type_precision.hpp:
-
-/home/music/openFrameworks/libs/glm/include/glm/./gtc/../gtc/quaternion.hpp:
-
-/home/music/openFrameworks/libs/glm/include/glm/./gtc/../gtc/../ext/quaternion_common.hpp:
-
-/home/music/openFrameworks/libs/glm/include/glm/./gtc/../gtc/../ext/quaternion_common.inl:
-
-/home/music/openFrameworks/libs/glm/include/glm/./gtc/../gtc/../ext/quaternion_trigonometric.hpp:
-
-/home/music/openFrameworks/libs/glm/include/glm/./gtc/../gtc/../ext/quaternion_trigonometric.inl:
-
-/home/music/openFrameworks/libs/glm/include/glm/./gtc/../gtc/../ext/quaternion_transform.hpp:
-
-/home/music/openFrameworks/libs/glm/include/glm/./gtc/../gtc/../ext/quaternion_transform.inl:
-
-/home/music/openFrameworks/libs/glm/include/glm/./gtc/../gtc/quaternion.inl:
-
-/home/music/openFrameworks/libs/glm/include/glm/./gtc/../gtc/epsilon.hpp:
-
-/home/music/openFrameworks/libs/glm/include/glm/./gtc/../gtc/../detail/setup.hpp:
-
-/home/music/openFrameworks/libs/glm/include/glm/./gtc/../gtc/epsilon.inl:
-
-/home/music/openFrameworks/libs/glm/include/glm/./gtc/../gtc/vec1.hpp:
-
-/home/music/openFrameworks/libs/glm/include/glm/./gtc/type_precision.inl:
-
-/home/music/openFrameworks/libs/glm/include/glm/./gtc/bitfield.inl:
-
-/home/music/openFrameworks/libs/glm/include/glm/./gtc/../simd/integer.h:
-
-/home/music/openFrameworks/libs/glm/include/glm/./gtc/color_space.hpp:
-
-/home/music/openFrameworks/libs/glm/include/glm/./gtc/color_space.inl:
-
-/home/music/openFrameworks/libs/glm/include/glm/./gtc/integer.hpp:
-
-/home/music/openFrameworks/libs/glm/include/glm/./gtc/integer.inl:
-
-/home/music/openFrameworks/libs/glm/include/glm/./gtc/matrix_access.hpp:
-
-/home/music/openFrameworks/libs/glm/include/glm/./gtc/matrix_access.inl:
-
-/home/music/openFrameworks/libs/glm/include/glm/./gtc/matrix_integer.hpp:
-
-/home/music/openFrameworks/libs/glm/include/glm/./gtc/matrix_inverse.hpp:
-
-/home/music/openFrameworks/libs/glm/include/glm/./gtc/matrix_inverse.inl:
-
-/home/music/openFrameworks/libs/glm/include/glm/./gtc/noise.hpp:
-
-/home/music/openFrameworks/libs/glm/include/glm/./gtc/../detail/_noise.hpp:
-
-/home/music/openFrameworks/libs/glm/include/glm/./gtc/noise.inl:
-
-/home/music/openFrameworks/libs/glm/include/glm/./gtc/packing.hpp:
-
-/home/music/openFrameworks/libs/glm/include/glm/./gtc/packing.inl:
-
-/home/music/openFrameworks/libs/glm/include/glm/./gtc/random.hpp:
-
-/home/music/openFrameworks/libs/glm/include/glm/./gtc/random.inl:
-
-/home/music/openFrameworks/libs/glm/include/glm/./gtc/reciprocal.hpp:
-
-/home/music/openFrameworks/libs/glm/include/glm/./gtc/reciprocal.inl:
-
-/home/music/openFrameworks/libs/glm/include/glm/./gtc/round.hpp:
-
-/home/music/openFrameworks/libs/glm/include/glm/./gtc/round.inl:
-
-/home/music/openFrameworks/libs/glm/include/glm/./gtc/../ext/vector_integer.hpp:
-
-/home/music/openFrameworks/libs/glm/include/glm/./gtc/../ext/../detail/setup.hpp:
-
-/home/music/openFrameworks/libs/glm/include/glm/./gtc/../ext/vector_integer.inl:
-
-/home/music/openFrameworks/libs/glm/include/glm/./gtc/../ext/scalar_integer.hpp:
-
-/home/music/openFrameworks/libs/glm/include/glm/./gtc/../ext/scalar_integer.inl:
-
-/home/music/openFrameworks/libs/glm/include/glm/./gtc/type_ptr.hpp:
-
-/home/music/openFrameworks/libs/glm/include/glm/./gtc/type_ptr.inl:
-
-/home/music/openFrameworks/libs/glm/include/glm/./gtc/ulp.hpp:
-
-/home/music/openFrameworks/libs/glm/include/glm/./gtc/ulp.inl:
-
-/home/music/openFrameworks/libs/glm/include/glm/./gtc/../ext/scalar_ulp.hpp:
-
-/home/music/openFrameworks/libs/glm/include/glm/./gtc/../ext/scalar_ulp.inl:
+/home/music/openFrameworks/libs/glm/include/glm/gtc/epsilon.inl:
 
 /home/music/openFrameworks/libs/glm/include/glm/gtx/norm.hpp:
 
 /home/music/openFrameworks/libs/glm/include/glm/gtx/../gtx/quaternion.hpp:
+
+/home/music/openFrameworks/libs/glm/include/glm/gtx/../gtx/../glm.hpp:
+
+/home/music/openFrameworks/libs/glm/include/glm/gtx/../gtx/../detail/_fixes.hpp:
+
+/home/music/openFrameworks/libs/glm/include/glm/gtx/../gtx/../detail/setup.hpp:
+
+/home/music/openFrameworks/libs/glm/include/glm/gtx/../gtx/../packing.hpp:
+
+/home/music/openFrameworks/libs/glm/include/glm/gtx/../gtx/../detail/func_packing.inl:
+
+/home/music/openFrameworks/libs/glm/include/glm/gtx/../gtx/../detail/type_half.hpp:
+
+/home/music/openFrameworks/libs/glm/include/glm/gtx/../gtx/../detail/setup.hpp:
+
+/home/music/openFrameworks/libs/glm/include/glm/gtx/../gtx/../detail/type_half.inl:
+
+/home/music/openFrameworks/libs/glm/include/glm/gtx/../gtx/../integer.hpp:
+
+/home/music/openFrameworks/libs/glm/include/glm/gtx/../gtx/../detail/func_integer.inl:
 
 /home/music/openFrameworks/libs/glm/include/glm/gtx/../gtx/../ext/quaternion_exponential.hpp:
 
@@ -1379,6 +1248,32 @@ obj/linuxarmv6l/Release/src/main.o: \
 /home/music/openFrameworks/libs/glm/include/glm/gtx/scalar_multiplication.hpp:
 
 /home/music/openFrameworks/libs/glm/include/glm/gtx/../detail/setup.hpp:
+
+/home/music/openFrameworks/libs/glm/include/glm/gtc/type_ptr.hpp:
+
+/home/music/openFrameworks/libs/glm/include/glm/gtc/../gtc/vec1.hpp:
+
+/home/music/openFrameworks/libs/glm/include/glm/gtc/../gtc/../ext/vector_bool1.hpp:
+
+/home/music/openFrameworks/libs/glm/include/glm/gtc/../gtc/../ext/vector_bool1_precision.hpp:
+
+/home/music/openFrameworks/libs/glm/include/glm/gtc/../gtc/../ext/vector_float1.hpp:
+
+/home/music/openFrameworks/libs/glm/include/glm/gtc/../gtc/../ext/vector_float1_precision.hpp:
+
+/home/music/openFrameworks/libs/glm/include/glm/gtc/../gtc/../ext/vector_double1.hpp:
+
+/home/music/openFrameworks/libs/glm/include/glm/gtc/../gtc/../ext/vector_double1_precision.hpp:
+
+/home/music/openFrameworks/libs/glm/include/glm/gtc/../gtc/../ext/vector_int1.hpp:
+
+/home/music/openFrameworks/libs/glm/include/glm/gtc/../gtc/../ext/vector_int1_precision.hpp:
+
+/home/music/openFrameworks/libs/glm/include/glm/gtc/../gtc/../ext/vector_uint1.hpp:
+
+/home/music/openFrameworks/libs/glm/include/glm/gtc/../gtc/../ext/vector_uint1_precision.hpp:
+
+/home/music/openFrameworks/libs/glm/include/glm/gtc/type_ptr.inl:
 
 /home/music/openFrameworks/libs/openFrameworks/math/ofMatrix3x3.h:
 
@@ -1604,6 +1499,16 @@ obj/linuxarmv6l/Release/src/main.o: \
 
 /usr/include/glib-2.0/glib/grand.h:
 
+/usr/include/glib-2.0/glib/grcbox.h:
+
+/usr/include/glib-2.0/glib/grefcount.h:
+
+/usr/include/glib-2.0/glib/grefstring.h:
+
+/usr/include/glib-2.0/glib/gmem.h:
+
+/usr/include/glib-2.0/glib/gmacros.h:
+
 /usr/include/glib-2.0/glib/gregex.h:
 
 /usr/include/glib-2.0/glib/gscanner.h:
@@ -1631,6 +1536,8 @@ obj/linuxarmv6l/Release/src/main.o: \
 /usr/include/glib-2.0/glib/gtree.h:
 
 /usr/include/glib-2.0/glib/gurifuncs.h:
+
+/usr/include/glib-2.0/glib/guuid.h:
 
 /usr/include/glib-2.0/glib/gversion.h:
 
@@ -1690,6 +1597,8 @@ obj/linuxarmv6l/Release/src/main.o: \
 
 /usr/include/glib-2.0/gobject/gobject-autocleanups.h:
 
+/usr/include/gstreamer-1.0/gst/gstconfig.h:
+
 /usr/include/gstreamer-1.0/gst/gstversion.h:
 
 /usr/include/gstreamer-1.0/gst/gstatomicqueue.h:
@@ -1697,8 +1606,6 @@ obj/linuxarmv6l/Release/src/main.o: \
 /usr/include/gstreamer-1.0/gst/gstbin.h:
 
 /usr/include/gstreamer-1.0/gst/gstelement.h:
-
-/usr/include/gstreamer-1.0/gst/gstconfig.h:
 
 /usr/include/gstreamer-1.0/gst/gstobject.h:
 
@@ -1718,10 +1625,6 @@ obj/linuxarmv6l/Release/src/main.o: \
 
 /usr/include/gstreamer-1.0/gst/gstmemory.h:
 
-/usr/include/gstreamer-1.0/gst/gstmeta.h:
-
-/usr/include/gstreamer-1.0/gst/gstbufferlist.h:
-
 /usr/include/gstreamer-1.0/gst/gstcaps.h:
 
 /usr/include/gstreamer-1.0/gst/gststructure.h:
@@ -1729,6 +1632,10 @@ obj/linuxarmv6l/Release/src/main.o: \
 /usr/include/gstreamer-1.0/gst/gstdatetime.h:
 
 /usr/include/gstreamer-1.0/gst/gstcapsfeatures.h:
+
+/usr/include/gstreamer-1.0/gst/gstmeta.h:
+
+/usr/include/gstreamer-1.0/gst/gstbufferlist.h:
 
 /usr/include/gstreamer-1.0/gst/gstpadtemplate.h:
 
@@ -1754,9 +1661,9 @@ obj/linuxarmv6l/Release/src/main.o: \
 
 /usr/include/gstreamer-1.0/gst/gstdevice.h:
 
-/usr/include/gstreamer-1.0/gst/gststreamcollection.h:
-
 /usr/include/gstreamer-1.0/gst/gststreams.h:
+
+/usr/include/gstreamer-1.0/gst/gststreamcollection.h:
 
 /usr/include/gstreamer-1.0/gst/gsttask.h:
 
@@ -1788,6 +1695,8 @@ obj/linuxarmv6l/Release/src/main.o: \
 
 /usr/include/gstreamer-1.0/gst/gstdeviceproviderfactory.h:
 
+/usr/include/gstreamer-1.0/gst/gstdynamictypefactory.h:
+
 /usr/include/gstreamer-1.0/gst/gstelementmetadata.h:
 
 /usr/include/gstreamer-1.0/gst/gsterror.h:
@@ -1809,6 +1718,8 @@ obj/linuxarmv6l/Release/src/main.o: \
 /usr/include/gstreamer-1.0/gst/gstprotection.h:
 
 /usr/include/gstreamer-1.0/gst/gstregistry.h:
+
+/usr/include/gstreamer-1.0/gst/gstpromise.h:
 
 /usr/include/gstreamer-1.0/gst/gstsystemclock.h:
 
@@ -1833,6 +1744,8 @@ obj/linuxarmv6l/Release/src/main.o: \
 /usr/include/gstreamer-1.0/gst/gstcompat.h:
 
 /usr/include/gstreamer-1.0/gst/video/video.h:
+
+/usr/include/gstreamer-1.0/gst/video/video-prelude.h:
 
 /usr/include/gstreamer-1.0/gst/video/video-format.h:
 
@@ -1866,6 +1779,8 @@ obj/linuxarmv6l/Release/src/main.o: \
 
 /usr/include/gstreamer-1.0/gst/base/gstadapter.h:
 
+/usr/include/gstreamer-1.0/gst/base/base-prelude.h:
+
 /usr/include/gstreamer-1.0/gst/video/gstvideoutils.h:
 
 /usr/include/gstreamer-1.0/gst/video/gstvideoencoder.h:
@@ -1898,6 +1813,8 @@ obj/linuxarmv6l/Release/src/main.o: \
 
 /usr/include/gstreamer-1.0/gst/video/videooverlay.h:
 
+/usr/include/gstreamer-1.0/gst/video/gstvideoaffinetransformationmeta.h:
+
 /home/music/openFrameworks/libs/openFrameworks/video/ofVideoPlayer.h:
 
 /home/music/openFrameworks/libs/openFrameworks/video/ofGstVideoPlayer.h:
@@ -1912,17 +1829,17 @@ obj/linuxarmv6l/Release/src/main.o: \
 
 /home/music/openFrameworks/addons/ofxLua/src/ofxLua.h:
 
-/usr/include/luajit-2.0/lua.hpp:
+/usr/include/luajit-2.1/lua.hpp:
 
-/usr/include/luajit-2.0/lua.h:
+/usr/include/luajit-2.1/lua.h:
 
-/usr/include/luajit-2.0/luaconf.h:
+/usr/include/luajit-2.1/luaconf.h:
 
-/usr/include/luajit-2.0/lauxlib.h:
+/usr/include/luajit-2.1/lauxlib.h:
 
-/usr/include/luajit-2.0/lualib.h:
+/usr/include/luajit-2.1/lualib.h:
 
-/usr/include/luajit-2.0/luajit.h:
+/usr/include/luajit-2.1/luajit.h:
 
 /home/music/openFrameworks/addons/ofxLua/src/ofxLuaFileWriter.h:
 
