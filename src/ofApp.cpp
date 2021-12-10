@@ -10,7 +10,7 @@
 
 //--------------------------------------------------------------
 void ofApp::setup() {
-    
+   
     // listen on the given port
     cout << "listening for osc messages on port " << PORT << "\n";
     receiver.setup(PORT);    
@@ -81,7 +81,8 @@ void ofApp::setup() {
     ofClear(0,0,0);
 
     osdEnabled = 0;
-    osdFbo.allocate(400, 400, GL_RGBA);
+    osdFbo.allocate(600, 400);
+    dummyAudio = 0;
 }
 
 //--------------------------------------------------------------
@@ -110,7 +111,9 @@ void ofApp::update() {
                 cout << "saved\n";
                 snapCounter++;
             }
+            if (m.getArgAsInt32(0) == 10 && m.getArgAsInt32(1) == 0) dummyAudio = 0;
             if (m.getArgAsInt32(0) == 10 && m.getArgAsInt32(1) > 0) {
+		dummyAudio = 1;
                 cout << "trig" << "\n";
                 lua.setBool("trig", true);
             }
@@ -148,41 +151,51 @@ void ofApp::draw() {
     lua.setNumberVector("inL", left);
     lua.setNumberVector("inR", right);
     
-    //lua.scriptDraw();
+    lua.scriptDraw();
     // clear flags    
     lua.setBool("trig", false);
 
-    ofClear(255);
+    /*ofClear(255);
     ofFill();
     ofSetColor(0);
     ofDrawRectangle(500,500,100,100);
     ofSetColor(255,0,0);
     ofDrawRectangle(600,600,100,100);
     ofNoFill();
-
+    */
+    
     if (osdEnabled) {
+	ofSetColor(255);
 	osdFbo.begin();
-	ofClear(0);
+	ofSetColor(0);
+    	ofFill();
+   	ofDrawRectangle(0,0,600,200);
 	ofSetColor(255);
 	std::stringstream strm;
     	ofDrawBitmapString(scripts[currentScript], 10, 10);
 	strm << "FPS: " << ofGetFrameRate();
 	ofDrawBitmapString(strm.str(), 10, 30);
+    	ofNoFill();
 	osdFbo.end();
-	ofSetColor(255,255,255,255);
+	ofSetColor(255);
 	osdFbo.draw(0,0);
-    }
-    else {
-    
+	
     }
 
 }
 //--------------------------------------------------------------
 void ofApp::audioIn(ofSoundBuffer & input){
-    
-    for (size_t i = 0; i < input.getNumFrames(); i++){
-        left[i]        = input[i*2]*0.5;
-        right[i]    = input[i*2+1]*0.5;
+   
+    if (!dummyAudio){	
+        for (size_t i = 0; i < input.getNumFrames(); i++){
+            left[i]  = input[i*2]*0.5;
+            right[i] = input[i*2+1]*0.5;
+        }
+    } else {
+        for (size_t i = 0; i < input.getNumFrames(); i++){
+            left[i]  = sin((i*TWO_PI)/input.getNumFrames());
+            right[i] = cos((i*TWO_PI)/input.getNumFrames());
+        }
     }
     
     bufferCounter++;
@@ -200,7 +213,7 @@ void ofApp::exit() {
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key) {
-    
+    /*
     switch(key) {
     
         case 'r':
@@ -222,26 +235,27 @@ void ofApp::keyPressed(int key) {
     }
     
     lua.scriptKeyPressed(key);
+    */
 }
 
 //--------------------------------------------------------------
 void ofApp::mouseMoved(int x, int y) {
-    lua.scriptMouseMoved(x, y);
+    //lua.scriptMouseMoved(x, y);
 }
 
 //--------------------------------------------------------------
 void ofApp::mouseDragged(int x, int y, int button) {
-    lua.scriptMouseDragged(x, y, button);
+    //lua.scriptMouseDragged(x, y, button);
 }
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button) {
-    lua.scriptMousePressed(x, y, button);
+   // lua.scriptMousePressed(x, y, button);
 }
 
 //--------------------------------------------------------------
 void ofApp::mouseReleased(int x, int y, int button) {
-    lua.scriptMouseReleased(x, y, button);
+//    lua.scriptMouseReleased(x, y, button);
 }
 
 //--------------------------------------------------------------
@@ -282,3 +296,4 @@ void ofApp::prevScript() {
     }
     reloadScript();
 }
+

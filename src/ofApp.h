@@ -66,4 +66,5 @@ class ofApp : public ofBaseApp, ofxLuaListener {
 
 	int osdEnabled;
 	ofFbo osdFbo;
+	int dummyAudio;
 };
