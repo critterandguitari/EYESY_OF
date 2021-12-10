@@ -77,8 +77,11 @@ void ofApp::setup() {
     // call the script's setup() function
     lua.scriptSetup();
 
-	// clear main screen
-	ofClear(0,0,0);
+    // clear main screen
+    ofClear(0,0,0);
+
+    osdEnabled = 0;
+    osdFbo.allocate(400, 400, GL_RGBA);
 }
 
 //--------------------------------------------------------------
@@ -111,10 +114,16 @@ void ofApp::update() {
                 cout << "trig" << "\n";
                 lua.setBool("trig", true);
             }
-			if (m.getArgAsInt32(0) == 3 && m.getArgAsInt32(1) > 0) {
+	    if (m.getArgAsInt32(0) == 3 && m.getArgAsInt32(1) > 0) {
             	cout << "change persist" << "\n";
             } 
-        }
+       	    if (m.getArgAsInt32(0) == 1 && m.getArgAsInt32(1) > 0) {
+		osdEnabled = osdEnabled ? 0 : 1;
+            	cout << "change OSD: " << osdEnabled << "\n";
+            } 
+
+	
+	}
         if(m.getAddress() == "/knobs") {
             lua.setNumber("knob1", (float)m.getArgAsInt32(0) / 1023);
             lua.setNumber("knob2", (float)m.getArgAsInt32(1) / 1023);
@@ -138,15 +147,36 @@ void ofApp::draw() {
     
     lua.setNumberVector("inL", left);
     lua.setNumberVector("inR", right);
-   
-    lua.scriptDraw();
- 
-    //ofDrawBitmapString(scripts[currentScript], 10, ofGetHeight()-10);
     
+    //lua.scriptDraw();
     // clear flags    
     lua.setBool("trig", false);
-}
 
+    ofClear(255);
+    ofFill();
+    ofSetColor(0);
+    ofDrawRectangle(500,500,100,100);
+    ofSetColor(255,0,0);
+    ofDrawRectangle(600,600,100,100);
+    ofNoFill();
+
+    if (osdEnabled) {
+	osdFbo.begin();
+	ofClear(0);
+	ofSetColor(255);
+	std::stringstream strm;
+    	ofDrawBitmapString(scripts[currentScript], 10, 10);
+	strm << "FPS: " << ofGetFrameRate();
+	ofDrawBitmapString(strm.str(), 10, 30);
+	osdFbo.end();
+	ofSetColor(255,255,255,255);
+	osdFbo.draw(0,0);
+    }
+    else {
+    
+    }
+
+}
 //--------------------------------------------------------------
 void ofApp::audioIn(ofSoundBuffer & input){
     
