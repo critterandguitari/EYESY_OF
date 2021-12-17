@@ -42,7 +42,9 @@ void ofApp::setup() {
     }
 
     settings.setInListener(this);
+    //settings.sampleRate = 22050;
     settings.sampleRate = 11025;
+    //settings.sampleRate = 44100;
     settings.numOutputChannels = 0;
     settings.numInputChannels = 2;
     settings.bufferSize = bufferSize;
@@ -127,14 +129,19 @@ void ofApp::update() {
 
 	
 	}
-        if(m.getAddress() == "/knobs") {
+        if(m.getAddress() == "/knob1") lua.setNumber("knob1", (float)m.getArgAsInt32(0) / 1023);
+        if(m.getAddress() == "/knob2") lua.setNumber("knob2", (float)m.getArgAsInt32(0) / 1023);
+        if(m.getAddress() == "/knob3") lua.setNumber("knob3", (float)m.getArgAsInt32(0) / 1023);
+        if(m.getAddress() == "/knob4") lua.setNumber("knob4", (float)m.getArgAsInt32(0) / 1023);
+        if(m.getAddress() == "/knob5") lua.setNumber("knob5", (float)m.getArgAsInt32(0) / 1023);
+	/*if(m.getAddress() == "/knobs") {
             lua.setNumber("knob1", (float)m.getArgAsInt32(0) / 1023);
             lua.setNumber("knob2", (float)m.getArgAsInt32(1) / 1023);
             lua.setNumber("knob3", (float)m.getArgAsInt32(2) / 1023);
             lua.setNumber("knob4", (float)m.getArgAsInt32(3) / 1023);
             lua.setNumber("knob5", (float)m.getArgAsInt32(4) / 1023);
-        }
-        if(m.getAddress() == "/reload") {
+        }*/
+	if(m.getAddress() == "/reload") {
             cout << "reloading\n";
             reloadScript();
         }
@@ -188,8 +195,8 @@ void ofApp::audioIn(ofSoundBuffer & input){
    
     if (!dummyAudio){	
         for (size_t i = 0; i < input.getNumFrames(); i++){
-            left[i]  = input[i*2]*0.5;
-            right[i] = input[i*2+1]*0.5;
+            left[i]  = input[i*2];
+            right[i] = input[i*2+1];
         }
     } else {
         for (size_t i = 0; i < input.getNumFrames(); i++){
