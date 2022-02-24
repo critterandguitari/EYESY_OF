@@ -82,6 +82,9 @@ void ofApp::setup() {
     // clear main screen
     ofClear(0,0,0);
 
+    // osd setup
+    osdFont.load("CGFont_0.18.otf", 24, true, true, true, 10, 64);
+    osdFont.setLetterSpacing(1);
     osdEnabled = 0;
     osdFbo.allocate(600, 400);
     dummyAudio = 0;
@@ -170,21 +173,74 @@ void ofApp::draw() {
     ofDrawRectangle(600,600,100,100);
     ofNoFill();
     */
-    
+
+    // OSD 
     if (osdEnabled) {
-	ofSetColor(255);
+	
+	// begin the fbo
 	osdFbo.begin();
-	ofSetColor(0);
-    	ofFill();
-   	ofDrawRectangle(0,0,600,200);
-	ofSetColor(255);
-	std::stringstream strm;
-    	ofDrawBitmapString(scripts[currentScript], 10, 10);
-	strm << "FPS: " << ofGetFrameRate();
-	ofDrawBitmapString(strm.str(), 10, 30);
-    	ofNoFill();
+		ofClear(255);
+		// mode name
+		std::stringstream scrpz;
+		scrpz << "Mode: " << scripts[currentScript];
+    		float scrpW = osdFont.stringWidth( scrpz.str() );
+		ofPushMatrix();
+			ofTranslate(0,10);
+			ofSetColor(0);
+			ofFill();
+			ofDrawRectangle(0,0,scrpW+4,26);
+			ofSetColor(255);
+			osdFont.drawString(scrpz.str(), 2, 20);
+		ofPopMatrix();
+		
+		// FPS
+		ofPushMatrix();
+			ofTranslate(0,50);
+			std::stringstream fPs;
+			fPs << "FPS: " << ofGetFrameRate();
+			float fpsW = osdFont.stringWidth( fPs.str() );
+			ofSetColor(0);
+			ofDrawRectangle(0,0,fpsW+4,26);
+			ofSetColor(255);
+			osdFont.drawString(fPs.str(), 2, 20);
+		ofPopMatrix();
+		    		
+		// knobs
+		ofPushMatrix();
+			ofTranslate(0,100);
+			ofSetColor(0);
+			ofDrawRectangle(0,0,500,250);
+			// draw k1
+			ofSetColor(255);
+			ofDrawRectangle(10,10,25,200);
+			ofFill();
+			ofSetColor(0);
+			ofDrawRectangle(11,11,23,(1-lua.getNumber("knob1"))*198 );
+			// draw k2
+			ofSetColor(255);
+			ofDrawRectangle(50,10,25,200);
+			ofFill();
+			ofSetColor(0);
+			ofDrawRectangle(51,11,23,(1-lua.getNumber("knob2"))*198 );
+			// draw k3
+			ofSetColor(255);
+			ofDrawRectangle(90,10,25,200);
+			ofFill();
+			ofSetColor(0);
+			ofDrawRectangle(91,11,23,(1-lua.getNumber("knob3"))*198 );
+			// draw k4
+			ofSetColor(255);
+			ofDrawRectangle(130,10,25,200);
+			ofFill();
+			ofSetColor(0);
+			ofDrawRectangle(131,11,23,(1-lua.getNumber("knob4"))*198 );
+
+		ofPopMatrix();
+	// end the fbo
 	osdFbo.end();
+	// draw it
 	ofSetColor(255);
+	ofTranslate(40,20,10);
 	osdFbo.draw(0,0);
 	
     }
