@@ -85,8 +85,11 @@ void ofApp::setup() {
     // osd setup
     osdFont.load("CGFont_0.18.otf", 24, true, true, true, 10, 64);
     osdFont.setLetterSpacing(1);
+    osdFontK.load("CGFont_0.18.otf", 16, true, true, true, 10, 64);
+    osdFontK.setLetterSpacing(1);
+
     osdEnabled = 0;
-    osdFbo.allocate(600, 400);
+    osdFbo.allocate(900, 1000);
     dummyAudio = 0;
 }
 
@@ -182,7 +185,7 @@ void ofApp::draw() {
 		ofClear(255);
 		// mode name
 		std::stringstream scrpz;
-		scrpz << "Mode: " << scripts[currentScript];
+		scrpz << "Mode: " << lua.getString("modeTitle");
     		float scrpW = osdFont.stringWidth( scrpz.str() );
 		ofPushMatrix();
 			ofTranslate(0,10);
@@ -197,7 +200,7 @@ void ofApp::draw() {
 		ofPushMatrix();
 			ofTranslate(0,50);
 			std::stringstream fPs;
-			fPs << "FPS: " << ofGetFrameRate();
+			fPs << "FPS: " << ofGetFrameRate() ;
 			float fpsW = osdFont.stringWidth( fPs.str() );
 			ofSetColor(0);
 			ofDrawRectangle(0,0,fpsW+4,26);
@@ -207,35 +210,79 @@ void ofApp::draw() {
 		    		
 		// knobs
 		ofPushMatrix();
-			ofTranslate(0,100);
+			// draw background
+			ofFill();
+			ofTranslate(0,100); // 100px down
 			ofSetColor(0);
-			ofDrawRectangle(0,0,500,250);
+			ofDrawRectangle(0,0,775,250);
 			// draw k1
-			ofSetColor(255);
-			ofDrawRectangle(10,10,25,200);
-			ofFill();
-			ofSetColor(0);
-			ofDrawRectangle(11,11,23,(1-lua.getNumber("knob1"))*198 );
+			ofPushMatrix();
+				ofTranslate(25, 25);
+				ofSetColor(255);
+				ofDrawRectangle(0,0,50,200);
+				std::stringstream k1Name;
+				k1Name << lua.getString("titleK1");
+				osdFontK.drawString( k1Name.str(), 0, 220);
+				ofSetColor(0);
+				ofDrawRectangle(1,1,48,(1-lua.getNumber("knob1"))*198 );
+			ofPopMatrix();
 			// draw k2
-			ofSetColor(255);
-			ofDrawRectangle(50,10,25,200);
-			ofFill();
-			ofSetColor(0);
-			ofDrawRectangle(51,11,23,(1-lua.getNumber("knob2"))*198 );
+			ofPushMatrix();
+				ofTranslate(175, 25);
+				ofSetColor(255);
+				ofDrawRectangle(0,0,50,200);
+				std::stringstream k2Name;
+				k2Name << lua.getString("titleK2");
+				osdFontK.drawString( k2Name.str(), 0, 220);
+				ofSetColor(0);
+				ofDrawRectangle(1,1,48,(1-lua.getNumber("knob2"))*198 );
+			ofPopMatrix();
 			// draw k3
-			ofSetColor(255);
-			ofDrawRectangle(90,10,25,200);
-			ofFill();
-			ofSetColor(0);
-			ofDrawRectangle(91,11,23,(1-lua.getNumber("knob3"))*198 );
+			ofPushMatrix();
+				ofTranslate(325, 25);
+				ofSetColor(255);
+				ofDrawRectangle(0,0,50,200);
+				std::stringstream k3Name;
+				k3Name << lua.getString("titleK3");
+				osdFontK.drawString( k3Name.str(), 0, 220);
+				ofSetColor(0);
+				ofDrawRectangle(1,1,48,(1-lua.getNumber("knob3"))*198 );
+			ofPopMatrix();
 			// draw k4
-			ofSetColor(255);
-			ofDrawRectangle(130,10,25,200);
-			ofFill();
-			ofSetColor(0);
-			ofDrawRectangle(131,11,23,(1-lua.getNumber("knob4"))*198 );
-
+			ofPushMatrix();
+				ofTranslate(475, 25);
+				ofSetColor(255);
+				ofDrawRectangle(0,0,50,200);
+				std::stringstream k4Name;
+				k4Name << lua.getString("titleK4");
+				osdFontK.drawString( k4Name.str(), 0, 220);
+				ofSetColor(0);
+				ofDrawRectangle(1,1,48,(1-lua.getNumber("knob4"))*198 );
+			ofPopMatrix();
+			// draw k5
+			ofPushMatrix();
+				ofTranslate(625, 25);
+				ofSetColor(255);
+				ofDrawRectangle(0,0,50,200);
+				std::stringstream k5Name;
+				k5Name << lua.getString("titleK5");
+				osdFontK.drawString( k5Name.str(), 0, 220);
+				ofSetColor(0);
+				ofDrawRectangle(1,1,48,(1-lua.getNumber("knob5"))*198 );
+			ofPopMatrix();
 		ofPopMatrix();
+		
+		// Trigger
+		ofPushMatrix();
+			ofTranslate(0,375);
+			ofSetColor(0);
+			ofDrawRectangle(0,0,250, 50);
+			ofSetColor(255);
+			osdFont.drawString( "Trigger: ", 2, 26 );
+		ofPopMatrix();	
+		
+		// midi
+
 	// end the fbo
 	osdFbo.end();
 	// draw it
