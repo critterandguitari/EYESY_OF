@@ -56,7 +56,8 @@ void ofApp::setup() {
     dir.listDir();
 
     //go through and print out all the paths
-    for(int i = 0; i < dir.size(); i++){
+    int countPaths = static_cast<int>(dir.size());
+    for(int i = 0; i < countPaths; i++){
         ofLogNotice(dir.getPath(i) + "/main.lua");
         scripts.push_back(dir.getPath(i) + "/main.lua");
     }
@@ -81,6 +82,9 @@ void ofApp::setup() {
 
     // clear main screen
     ofClear(0,0,0);
+    
+    // enable depth
+    glEnable(GL_DEPTH_TEST);
 
     // osd setup
     osdFont.load("CGFont_0.18.otf", 24, true, true, true, 10, 64);
@@ -152,69 +156,86 @@ void ofApp::update() {
             reloadScript();
         }
     }
-    
     // call the script's update() function
     lua.scriptUpdate();
 
-}
-
-//--------------------------------------------------------------
-void ofApp::draw() {
-    
-    lua.setNumberVector("inL", left);
-    lua.setNumberVector("inR", right);
-    
-    lua.scriptDraw();
-    // clear flags    
-    lua.setBool("trig", false);
-
-    /*ofClear(255);
-    ofFill();
-    ofSetColor(0);
-    ofDrawRectangle(500,500,100,100);
-    ofSetColor(255,0,0);
-    ofDrawRectangle(600,600,100,100);
-    ofNoFill();
-    */
-
-    // OSD 
+    // OSD fill the fbo 
     if (osdEnabled) {
 	
+	int spaceTrack = 0;
 	// begin the fbo
 	osdFbo.begin();
-		ofClear(255);
+		ofClear(255,255,255,0);
+		
 		// mode name
-		std::stringstream scrpz;
-		scrpz << "Mode: " << lua.getString("modeTitle");
-    		float scrpW = osdFont.stringWidth( scrpz.str() );
 		ofPushMatrix();
-			ofTranslate(0,10);
+			ofTranslate(0,0);
+			std::stringstream scrpz;
+			scrpz << "Mode: " << lua.getString("modeTitle");
+    			float scrpW = osdFont.stringWidth( scrpz.str() );
 			ofSetColor(0);
 			ofFill();
 			ofDrawRectangle(0,0,scrpW+4,26);
+			spaceTrack += 26;
 			ofSetColor(255);
 			osdFont.drawString(scrpz.str(), 2, 20);
 		ofPopMatrix();
 		
 		// FPS
 		ofPushMatrix();
-			ofTranslate(0,50);
+			ofTranslate(0,spaceTrack + 20);
+			spaceTrack += 20;
 			std::stringstream fPs;
-			fPs << "FPS: " << ofGetFrameRate() ;
+			float getFramz = ofGetFrameRate();
+			int getFramzI = static_cast<int>(getFramz);
+			fPs << "FPS: " << getFramzI ;
 			float fpsW = osdFont.stringWidth( fPs.str() );
 			ofSetColor(0);
 			ofDrawRectangle(0,0,fpsW+4,26);
+			spaceTrack += 26;
 			ofSetColor(255);
 			osdFont.drawString(fPs.str(), 2, 20);
+		ofPopMatrix();
+
+		// volume
+		ofPushMatrix();
+			ofTranslate(0,spaceTrack + 20);
+			spaceTrack += 20;
+			ofSetColor(0);
+			ofDrawRectangle(0,0,350,50);
+			spaceTrack += 50;
+			ofSetColor( 255 );
+			osdFont.drawString( "Input Level: ", 2, 25);
+			// draw the rectangles
+			int visVol = lua.getNumber( "visualVolume" );
+			for ( int i=0; i<16; i++) {
+			       	float xPos = (i*12) + 135;
+				ofSetColor( 255 );
+				ofNoFill();
+				ofDrawRectangle(xPos, 5, 10, 40);
+				if (i <= visVol ) {
+					ofFill();
+					if(i<10) {
+						ofSetColor(0,255,0);
+					} else if(i >= 10 and i < 13) {
+						ofSetColor(255,255,0);
+					} else {
+						ofSetColor(255,0,0);
+					}
+					ofDrawRectangle(xPos+1,6,9,39);
+				}
+			}	
 		ofPopMatrix();
 		    		
 		// knobs
 		ofPushMatrix();
 			// draw background
 			ofFill();
-			ofTranslate(0,100); // 100px down
+			ofTranslate(0,spaceTrack + 20);
+			spaceTrack += 20;
 			ofSetColor(0);
 			ofDrawRectangle(0,0,775,250);
+			spaceTrack += 250;
 			// draw k1
 			ofPushMatrix();
 				ofTranslate(25, 25);
@@ -274,24 +295,113 @@ void ofApp::draw() {
 		
 		// Trigger
 		ofPushMatrix();
-			ofTranslate(0,375);
+			ofTranslate(0,spaceTrack + 20);
+			spaceTrack += 20;
 			ofSetColor(0);
-			ofDrawRectangle(0,0,250, 50);
+			ofDrawRectangle(0,0,165,60);
+			spaceTrack += 60;
 			ofSetColor(255);
-			osdFont.drawString( "Trigger: ", 2, 26 );
+			bool triG;
+			bool gO;
+		       	triG = lua.getBool("trig");
+			if(triG) {gO = true;} else { gO = false; }
+ 			osdFont.drawString( "Trigger: ", 2, 25);
+			ofNoFill();
+			ofDrawRectangle( 100, 5, 50, 50);
+			if (gO) {
+				ofSetColor(255,255,0);
+				ofFill();
+				ofDrawRectangle( 101, 6, 49, 49);
+			} else {
+				ofSetColor(255,0,0);
+				ofFill();
+				ofDrawRectangle( 101, 6, 49,49);
+				//lua.setBool("trig", false );
+			}
+			gO = false;
+			
+					
 		ofPopMatrix();	
 		
 		// midi
+		ofPushMatrix();
+			ofTranslate(0, spaceTrack + 20);
+			spaceTrack += 20;
+			ofSetColor(0);
+			ofFill();
+			ofDrawRectangle(0,0,250,100);
+			spaceTrack += 100;
+			ofSetColor(255);
+			osdFont.drawString( "MIDI: ", 2, 25);
+			for ( int i=0; i<9; i++) {
+				// draw horizontal lines
+				int yPos = (i*10) + 10;
+				ofDrawLine(60,yPos,221,yPos);
+			}
+			for (int i=0; i<17; i++) {
+				// draw vertical lines
+				int xPos = (i*10) + 60;
+				ofDrawLine(xPos,10,xPos,90);
+		
+			}
+		ofPopMatrix();
+		
+		// Sequencer 
+		ofPushMatrix();
+			ofTranslate(0,spaceTrack + 20);
+			spaceTrack += 20;
+			std::stringstream seQ;
+			seQ << "Sequence: " << lua.getString("seqStatus");
+			float seqW = osdFont.stringWidth( seQ.str() );
+			ofSetColor(0);
+			ofFill();
+			ofDrawRectangle(0,0,seqW+4,26);
+			spaceTrack += 26;
+			ofSetColor(255);
+			osdFont.drawString( seQ.str(), 2, 20);
+		ofPopMatrix();
+		
+		// Explain the Mode 
+		ofPushMatrix();
+			ofTranslate(0,spaceTrack + 20);
+			spaceTrack += 20;
+			std::stringstream eXplain;
+			eXplain << "Mode Description: " << lua.getString("modeExplain");
+			float eXwith = osdFont.stringWidth( eXplain.str() );
+			ofSetColor(0);
+			ofFill();
+			ofDrawRectangle(0,0,eXwith+4,26);
+			spaceTrack += 26;
+			ofSetColor(255);
+			osdFont.drawString( eXplain.str(),2,20 );
+
+		ofPopMatrix();
 
 	// end the fbo
 	osdFbo.end();
-	// draw it
-	ofSetColor(255);
-	ofTranslate(40,20,10);
-	osdFbo.draw(0,0);
-	
-    }
+    } 
+    
+    
+}
 
+//--------------------------------------------------------------
+void ofApp::draw() {
+    
+    // set the audio buffer
+    lua.setNumberVector("inL", left);
+    lua.setNumberVector("inR", right);
+    
+    // draw the lua mode	
+    ofPushMatrix();
+    	lua.scriptDraw();
+    ofPopMatrix();
+
+    if (osdEnabled) {
+	// draw it
+    	ofSetColor(255);
+    	ofTranslate(40,40,10);
+    	osdFbo.draw(0,0);
+    }
 }
 //--------------------------------------------------------------
 void ofApp::audioIn(ofSoundBuffer & input){
