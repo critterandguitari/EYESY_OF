@@ -241,9 +241,10 @@ void ofApp::update() {
 				ofTranslate(25, 25);
 				ofSetColor(255);
 				ofDrawRectangle(0,0,50,200);
+				osdFontK.drawString( "Knob1",0,-7);
 				std::stringstream k1Name;
 				k1Name << lua.getString("titleK1");
-				osdFontK.drawString( k1Name.str(), 0, 220);
+				osdFontK.drawString( k1Name.str(), 0, 219);
 				ofSetColor(0);
 				ofDrawRectangle(1,1,48,(1-lua.getNumber("knob1"))*198 );
 			ofPopMatrix();
@@ -252,9 +253,10 @@ void ofApp::update() {
 				ofTranslate(175, 25);
 				ofSetColor(255);
 				ofDrawRectangle(0,0,50,200);
+				osdFontK.drawString( "Knob2",0,-7);
 				std::stringstream k2Name;
 				k2Name << lua.getString("titleK2");
-				osdFontK.drawString( k2Name.str(), 0, 220);
+				osdFontK.drawString( k2Name.str(), 0, 219);
 				ofSetColor(0);
 				ofDrawRectangle(1,1,48,(1-lua.getNumber("knob2"))*198 );
 			ofPopMatrix();
@@ -263,9 +265,10 @@ void ofApp::update() {
 				ofTranslate(325, 25);
 				ofSetColor(255);
 				ofDrawRectangle(0,0,50,200);
+				osdFontK.drawString( "Knob3",0,-7);
 				std::stringstream k3Name;
 				k3Name << lua.getString("titleK3");
-				osdFontK.drawString( k3Name.str(), 0, 220);
+				osdFontK.drawString( k3Name.str(), 0, 219);
 				ofSetColor(0);
 				ofDrawRectangle(1,1,48,(1-lua.getNumber("knob3"))*198 );
 			ofPopMatrix();
@@ -274,9 +277,10 @@ void ofApp::update() {
 				ofTranslate(475, 25);
 				ofSetColor(255);
 				ofDrawRectangle(0,0,50,200);
+				osdFontK.drawString( "Knob4",0,-7);
 				std::stringstream k4Name;
 				k4Name << lua.getString("titleK4");
-				osdFontK.drawString( k4Name.str(), 0, 220);
+				osdFontK.drawString( k4Name.str(), 0, 219);
 				ofSetColor(0);
 				ofDrawRectangle(1,1,48,(1-lua.getNumber("knob4"))*198 );
 			ofPopMatrix();
@@ -285,9 +289,10 @@ void ofApp::update() {
 				ofTranslate(625, 25);
 				ofSetColor(255);
 				ofDrawRectangle(0,0,50,200);
+				osdFontK.drawString( "Knob5",0,-7);
 				std::stringstream k5Name;
 				k5Name << lua.getString("titleK5");
-				osdFontK.drawString( k5Name.str(), 0, 220);
+				osdFontK.drawString( k5Name.str(), 0, 219);
 				ofSetColor(0);
 				ofDrawRectangle(1,1,48,(1-lua.getNumber("knob5"))*198 );
 			ofPopMatrix();
@@ -373,7 +378,7 @@ void ofApp::update() {
 			ofDrawRectangle(0,0,eXwith+4,26);
 			spaceTrack += 26;
 			ofSetColor(255);
-			osdFont.drawString( eXplain.str(),2,20 );
+			osdFont.drawString( eXplain.str(), 2, 20 );
 
 		ofPopMatrix();
 
