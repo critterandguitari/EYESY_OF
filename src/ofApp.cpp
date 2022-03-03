@@ -83,9 +83,6 @@ void ofApp::setup() {
     // clear main screen
     ofClear(0,0,0);
     
-    // enable depth
-    glEnable(GL_DEPTH_TEST);
-
     // osd setup
     osdFont.load("CGFont_0.18.otf", 24, true, true, true, 10, 64);
     osdFont.setLetterSpacing(1);
@@ -136,26 +133,27 @@ void ofApp::update() {
 		osdEnabled = osdEnabled ? 0 : 1;
             	cout << "change OSD: " << osdEnabled << "\n";
             } 
-
-	
 	}
+
+	// knobs
         if(m.getAddress() == "/knob1") lua.setNumber("knob1", (float)m.getArgAsInt32(0) / 1023);
         if(m.getAddress() == "/knob2") lua.setNumber("knob2", (float)m.getArgAsInt32(0) / 1023);
         if(m.getAddress() == "/knob3") lua.setNumber("knob3", (float)m.getArgAsInt32(0) / 1023);
         if(m.getAddress() == "/knob4") lua.setNumber("knob4", (float)m.getArgAsInt32(0) / 1023);
         if(m.getAddress() == "/knob5") lua.setNumber("knob5", (float)m.getArgAsInt32(0) / 1023);
-	/*if(m.getAddress() == "/knobs") {
-            lua.setNumber("knob1", (float)m.getArgAsInt32(0) / 1023);
-            lua.setNumber("knob2", (float)m.getArgAsInt32(1) / 1023);
-            lua.setNumber("knob3", (float)m.getArgAsInt32(2) / 1023);
-            lua.setNumber("knob4", (float)m.getArgAsInt32(3) / 1023);
-            lua.setNumber("knob5", (float)m.getArgAsInt32(4) / 1023);
-        }*/
+	
+	// midi ?
+	// cout << "is this working at all?!" << "\n";
+	if(m.getAddress() == "/midinote") {
+		cout << "poop\n";
+	}
+		
 	if(m.getAddress() == "/reload") {
             cout << "reloading\n";
             reloadScript();
         }
     }
+
     // call the script's update() function
     lua.scriptUpdate();
 
@@ -397,9 +395,14 @@ void ofApp::draw() {
     lua.setNumberVector("inR", right);
     
     // draw the lua mode	
+    // enable depth
+    ofEnableDepthTest();
+
     ofPushMatrix();
     	lua.scriptDraw();
     ofPopMatrix();
+    // disable depth
+    ofDisableDepthTest();
 
     if (osdEnabled) {
 	// draw it
