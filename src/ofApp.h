@@ -64,9 +64,19 @@ class ofApp : public ofBaseApp, ofxLuaListener {
         string              snapString;
         ofImage             img;
 
-	int osdEnabled;
+	int 	osdEnabled;
+	int 	midiTable[128];
+	
+		
+	vector<int> osdMidi{0,0};
 	ofFbo osdFbo;
 	ofTrueTypeFont osdFont;
 	ofTrueTypeFont osdFontK;
 	int dummyAudio;
+	int seqStatus;
+	float globalGain = 1;
+	int globalTrigInput;
+	int globalMidiChannel;
+	bool shIft = false;
+
 };

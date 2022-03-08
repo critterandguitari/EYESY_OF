@@ -91,7 +91,7 @@ void ofApp::setup() {
     osdFontK.setLetterSpacing(1);
 
     osdEnabled = 0;
-    osdFbo.allocate(1500, 1000);
+    osdFbo.allocate(900, 2000);
     dummyAudio = 0;
     
 }
@@ -161,7 +161,7 @@ void ofApp::update() {
 			lua.setNumber("knob2", (float)m.getArgAsInt32(0) / 1023);
 		} else {
 			// set the trigger source
-			globalTrigInput = floor( ((float)m.getArgAsInt32(0) / 1023) * 6.0);		
+			globalTrigInput = floor( ((float)m.getArgAsInt32(0) / 1023) * 5.0);		
 		}
 	}
 	if(m.getAddress() == "/knob3") {
@@ -169,7 +169,7 @@ void ofApp::update() {
 			lua.setNumber("knob3", (float)m.getArgAsInt32(0) / 1023);
 		} else {
 			// set the Midi channel
-			globalMidiChannel = floor( ((float)m.getArgAsInt32(0) / 1023) * 16.0) + 1;		
+			globalMidiChannel = floor( ((float)m.getArgAsInt32(0) / 1023) * 15.0) + 1;		
 		}
 	}	
         if(m.getAddress() == "/knob2" && shIft == false) {
@@ -451,22 +451,23 @@ void ofApp::update() {
 		
 		// draw the shift options if osd and shift is on
 		if (shIft == true) {
+			spaceTrack = 0;
 			ofPushMatrix();
 				// gain knob1
 				ofTranslate(800,0);
 				std::stringstream gAin;
-				gAin << "Gain: " << ceil(globalGain*100) << "%";
+				gAin << "Gain: " << floor(globalGain*100) << "%";
     				float gW = osdFont.stringWidth( gAin.str() );
 				ofSetColor(0);
 				ofFill();
 				ofDrawRectangle(0,0,gW+4,26);
+				spaceTrack += 26;
 				ofSetColor(255);
 				osdFont.drawString(gAin.str(), 2, 20);
-			
-			
-				// trigger input
-				ofTranslate(0,46);
 				
+				// trigger input
+				ofTranslate(0,spaceTrack+20);
+				spaceTrack += 20;
 				std::stringstream trigPut;
 				if (globalTrigInput == 0) trigPut << "Trigger Input: Audio";
 				if (globalTrigInput == 1) trigPut << "Trigger Input: Midi Clock Quarter Note";
@@ -478,13 +479,13 @@ void ofApp::update() {
 				ofSetColor(0);
 				ofFill();
 				ofDrawRectangle(0,0,trigW+4,26);
-				
+				spaceTrack += 26;
 				ofSetColor(255);
 				osdFont.drawString( trigPut.str(),2,20);
 
 				// Midi channel select
-				ofTranslate(0,46);
-				
+				ofTranslate(0,spaceTrack+20);
+				spaceTrack += 20;
 				std::stringstream mIdChan;
 				mIdChan << "Midi Channel: " << globalMidiChannel;
 				float mIdW = osdFont.stringWidth( mIdChan.str() );
