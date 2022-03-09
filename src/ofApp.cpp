@@ -13,7 +13,8 @@ void ofApp::setup() {
    
     // listen on the given port
     cout << "listening for osc messages on port " << PORT << "\n";
-    receiver.setup(PORT);    
+    receiver.setup(PORT);  
+      
     
     ofSetVerticalSync(true);
     ofSetFrameRate(60);
@@ -93,7 +94,7 @@ void ofApp::setup() {
     osdEnabled = 0;
     osdFbo.allocate(1500, 1000);
     dummyAudio = 0;
-    
+        
 }
 
 //--------------------------------------------------------------
@@ -149,37 +150,73 @@ void ofApp::update() {
 	
 	// knobs
         if(m.getAddress() == "/knob1") {
+		float kb1 = (float)m.getArgAsInt32(0) / 1023;
 		if (shIft == false) {
-			lua.setNumber("knob1", (float)m.getArgAsInt32(0) / 1023);
+			// unfreezee if close to last value
+			if( k1Open == false ) {
+				if( (k1History >= k1Detent && kb1 <= k1Detent) or (k1History <= k1Detent && kb1 >= k1Detent) ) {
+					k1Open = true;
+				}
+			}
+			if( k1Open == true ) {	
+				lua.setNumber("knob1", kb1);
+				k1Detent = kb1;
+			}	
+			
 		} else {
 			// set the gain
-			globalGain = ((float)m.getArgAsInt32(0) / 1023) * 3.0 ;
+			globalGain = kb1 * 3.0 ;
+			k1Open = false;
+			k1History = kb1;
 		}
+		
 	}
 	if(m.getAddress() == "/knob2") {
+		float kb2 = (float)m.getArgAsInt32(0) / 1023;
 		if (shIft == false) {
-			lua.setNumber("knob2", (float)m.getArgAsInt32(0) / 1023);
+			// unfreezee if close to last value
+			if( k2Open == false ) {
+				if( (k2History >= k2Detent && kb2 <= k2Detent) or (k2History <= k2Detent && kb2 >= k2Detent)) {
+				k2Open = true;
+				}
+			}
+			if( k2Open == true ) {	
+				lua.setNumber("knob2", kb2);
+				k2Detent = kb2;
+			}	
+			
 		} else {
-			// set the trigger source
-			globalTrigInput = floor( ((float)m.getArgAsInt32(0) / 1023) * 6.0);		
+			// set the trigger input
+			globalTrigInput = ceil(kb2 * 5.0) ;
+			k2Open = false;
+			k2History = kb2;
 		}
+		
 	}
 	if(m.getAddress() == "/knob3") {
+		float kb3 = (float)m.getArgAsInt32(0) / 1023;
 		if (shIft == false) {
-			lua.setNumber("knob3", (float)m.getArgAsInt32(0) / 1023);
+			// unfreezee if close to last value
+			if( k3Open == false ) {
+				if( (k3History >= k3Detent && kb3 <= k3Detent) or (k3History <= k3Detent && kb3 >= k3Detent)) {
+					k3Open = true;
+				}
+			}
+			
+			if( k3Open == true ) {	
+				lua.setNumber("knob3", kb3);
+				k3Detent = kb3;
+			}
+			
 		} else {
-			// set the Midi channel
-			globalMidiChannel = floor( ((float)m.getArgAsInt32(0) / 1023) * 16.0) + 1;		
+			// set the midi channel
+			globalMidiChannel = ceil(kb3 * 15.0) + 1 ;
+			k3Open = false;
+			k3History = kb3;
 		}
-	}	
-        if(m.getAddress() == "/knob2" && shIft == false) {
-	       	lua.setNumber("knob2", (float)m.getArgAsInt32(0) / 1023);
-	} else {
 		
 	}	
-	if(m.getAddress() == "/knob3" && shIft == false) {
-		lua.setNumber("knob3", (float)m.getArgAsInt32(0) / 1023);
-	}
+       
 	if(m.getAddress() == "/knob4") lua.setNumber("knob4", (float)m.getArgAsInt32(0) / 1023);
         if(m.getAddress() == "/knob5") lua.setNumber("knob5", (float)m.getArgAsInt32(0) / 1023);
 	
@@ -190,6 +227,23 @@ void ofApp::update() {
 		lua.setNumber("midiNote", osdMidi[0] );
 		lua.setNumber("midiVel", osdMidi[1] );	
 		midiTable[osdMidi[0]] = osdMidi[1];
+	}
+	if(m.getAddress() == "/midiclock") {
+		
+		lua.setBool("midiClock", true);
+	}
+	if(m.getAddress() == "midicc") {
+		if(m.getArgAsInt32(0) == 21) lua.setNumber("knob1", (float)m.getArgAsInt32(1) / 1023);
+		if(m.getArgAsInt32(0) == 22) lua.setNumber("knob2", (float)m.getArgAsInt32(1) / 1023);
+		if(m.getArgAsInt32(0) == 23) lua.setNumber("knob3", (float)m.getArgAsInt32(1) / 1023);	
+		if(m.getArgAsInt32(0) == 24) lua.setNumber("knob4", (float)m.getArgAsInt32(1) / 1023);
+		if(m.getArgAsInt32(0) == 25) lua.setNumber("knob5", (float)m.getArgAsInt32(1) / 1023);
+	}
+ 	// if audio trig is selected	
+	if(m.getAddress() == "/trig") {
+		if( m.getArgAsInt32(0) == globalTrigInput) {
+			lua.setBool("trig", true);
+		}
 	}
 		
 	if(m.getAddress() == "/reload") {
@@ -205,8 +259,12 @@ void ofApp::update() {
 	    peAk = peakAbs;
 	    }
     } 
-
-	
+    // audio trig if selected
+    if(globalTrigInput == 0) {
+    	if( peAk >= 0.75 ){
+		lua.setBool("trig", true);	
+	}
+    }	
     // call the script's update() function
     lua.scriptUpdate();
 
@@ -529,6 +587,9 @@ void ofApp::draw() {
     	osdFbo.draw(0,0);
     }
     lua.setBool("trig", false);
+
+    lua.setBool("midiClock", false);
+
 }
 //--------------------------------------------------------------
 void ofApp::audioIn(ofSoundBuffer & input){
@@ -537,6 +598,7 @@ void ofApp::audioIn(ofSoundBuffer & input){
         for (size_t i = 0; i < input.getNumFrames(); i++){
             left[i]  = input[i*2] * globalGain;
             right[i] = input[i*2+1] * globalGain;
+	    
         }
     } else {
         for (size_t i = 0; i < input.getNumFrames(); i++){

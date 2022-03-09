@@ -46,6 +46,7 @@ class ofApp : public ofBaseApp, ofxLuaListener {
         // osc control
         ofxOscReceiver receiver;
 
+	
         // audio stuff
         void audioIn(ofSoundBuffer & input);
     
@@ -77,6 +78,19 @@ class ofApp : public ofBaseApp, ofxLuaListener {
 	float globalGain = 1;
 	int globalTrigInput;
 	int globalMidiChannel;
+	bool globalMidiClock;
 	bool shIft = false;
+	
+	// knob detent stuff
+	float k1Detent = 0;
+	float k1History = 0;
+    	float k1Open = true;
+    	float k2Detent = 0;
+	float k2History = 0;
+    	bool k2Open = true;
+    	float k3Detent = 0;
+	float k3History = 0;
+    	bool k3Open = true;
+
 
 };
