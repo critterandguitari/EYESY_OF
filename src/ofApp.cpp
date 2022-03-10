@@ -145,7 +145,7 @@ void ofApp::update() {
 
 	if(m.getAddress() == "/seq") {
 		seqStatus = m.getArgAsInt32(0); 
-	       	cout << seqStatus << "\n";	
+		
 	}
 	
 	// knobs
@@ -476,10 +476,10 @@ void ofApp::update() {
 			ofTranslate(0,spaceTrack + 20);
 			spaceTrack += 20;
 			std::stringstream seQ;
-			if( seqStatus == 1) seQ << "Sequence: " << "ready to record";
-			if( seqStatus == 2) seQ << "Sequence: " <<  "recording";
-			if( seqStatus == 3) seQ << "Sequence: " <<  "playing";
-			if( seqStatus  == 0) seQ << "Sequence: " <<  "stopped";
+			if( seqStatus == 1) seQ << "Sequencer: " << "Ready To Record";
+			if( seqStatus == 2) seQ << "Sequencer: " << "Recording";
+			if( seqStatus == 3) seQ << "Sequencer: " << "Playing";
+			if( seqStatus == 0) seQ << "Sequencer: " << "Stopped";
 
 			
 			float seqW = osdFont.stringWidth( seQ.str() );
