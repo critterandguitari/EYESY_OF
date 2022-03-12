@@ -70,11 +70,15 @@ class ofApp : public ofBaseApp, ofxLuaListener {
 	
 		
 	vector<int> osdMidi{0,0};
+	
+	// osd stuff
 	ofFbo osdFbo;
 	ofTrueTypeFont osdFont;
 	ofTrueTypeFont osdFontK;
 	int dummyAudio;
 	int seqStatus;
+	float osdW;
+	float osdH;
 	float globalGain = 1;
 	int globalTrigInput;
 	int globalMidiChannel;

@@ -85,14 +85,16 @@ void ofApp::setup() {
     ofClear(0,0,0);
     
     // osd setup
+    osdW = ofGetScreenWidth();
+    osdH = ofGetScreenHeight();
     
-    osdFont.load("CGFont_0.18.otf", 24, true, true, true, 10, 64);
+    osdFont.load("CGFont_0.18.otf", osdH/45, true, true, true, 10, 64);
     osdFont.setLetterSpacing(1);
-    osdFontK.load("CGFont_0.18.otf", 16, true, true, true, 10, 64);
+    osdFontK.load("CGFont_0.18.otf", osdH/68, true, true, true, 10, 64);
     osdFontK.setLetterSpacing(1);
 
     osdEnabled = 0;
-    osdFbo.allocate(1500, 1000);
+    osdFbo.allocate(osdW*0.8, osdH);
     dummyAudio = 0;
         
 }
@@ -142,10 +144,8 @@ void ofApp::update() {
 		}
 	}
 
-
 	if(m.getAddress() == "/seq") {
 		seqStatus = m.getArgAsInt32(0); 
-		
 	}
 	
 	// knobs
@@ -268,10 +268,11 @@ void ofApp::update() {
     // call the script's update() function
     lua.scriptUpdate();
 
-    // OSD fill the fbo 
+    //// OSD fill the fbo 
     if (osdEnabled) {
 	
-	int spaceTrack = 0;
+	float spaceTrack = 0;
+	float fontHeight = floor( (osdH/45)+4);
 	// begin the fbo
 	osdFbo.begin();
 		ofClear(255,255,255,0);
@@ -284,44 +285,125 @@ void ofApp::update() {
     			float scrpW = osdFont.stringWidth( scrpz.str() );
 			ofSetColor(0);
 			ofFill();
-			ofDrawRectangle(0,0,scrpW+4,26);
-			spaceTrack += 26;
+			
+			ofDrawRectangle(0,0,scrpW+4,fontHeight);
+			spaceTrack += fontHeight;
 			ofSetColor(255);
-			osdFont.drawString(scrpz.str(), 2, 20);
+			osdFont.drawString(scrpz.str(), 2, fontHeight-4 );
+		ofPopMatrix();
+
+		// Explain the Mode 
+		ofPushMatrix();
+			ofTranslate(0,spaceTrack + (fontHeight/2));
+			spaceTrack += fontHeight/2;
+			std::stringstream eXplain;
+			eXplain << "Mode Description: " << lua.getString("modeExplain");
+			float eXwith = osdFont.stringWidth( eXplain.str() );
+			ofSetColor(0);
+			ofFill();
+			ofDrawRectangle(0,0,eXwith+4,fontHeight);
+			spaceTrack += fontHeight;
+			ofSetColor(255);
+			osdFont.drawString( eXplain.str(), 2, fontHeight-4);
+
 		ofPopMatrix();
 		
-		// FPS
+		// knobs
 		ofPushMatrix();
-			ofTranslate(0,spaceTrack + 20);
-			spaceTrack += 20;
-			std::stringstream fPs;
-			float getFramz = ofGetFrameRate();
-			int getFramzI = static_cast<int>(getFramz);
-			fPs << "FPS: " << getFramzI ;
-			float fpsW = osdFont.stringWidth( fPs.str() );
+			// draw background
+			float knobW = floor(osdW/38);
+			float knobH = floor(osdH/5.4);
+			float knobTextH = floor(osdH/68);
+			ofFill();
+			ofTranslate(0,spaceTrack + (fontHeight/2));
+			spaceTrack += fontHeight/2;
 			ofSetColor(0);
-			ofDrawRectangle(0,0,fpsW+4,26);
-			spaceTrack += 26;
-			ofSetColor(255);
-			osdFont.drawString(fPs.str(), 2, 20);
+			ofDrawRectangle(0,0,knobW*15,knobH+(knobTextH*3));
+			spaceTrack += knobH+(knobTextH*3);
+			
+			// draw k1
+			ofPushMatrix();
+				ofTranslate(knobW/2, knobW/2);
+				ofSetColor(255);
+				ofDrawRectangle(0,0,knobW,knobH);
+				osdFontK.drawString( "Knob1",0,-(knobTextH/2));
+				std::stringstream k1Name;
+				k1Name << lua.getString("titleK1");
+				osdFontK.drawString( k1Name.str(), 0, knobH+(knobTextH) );
+				ofSetColor(0);
+				ofDrawRectangle(1,1,knobW-2,floor((1-lua.getNumber("knob1"))*(knobH-2)) );
+			ofPopMatrix();
+			// draw k2
+			ofPushMatrix();
+				ofTranslate(knobW*3+(knobW/2), knobW/2);
+				ofSetColor(255);
+				ofDrawRectangle(0,0,knobW,knobH);
+				osdFontK.drawString( "Knob2",0,-(knobTextH/2) );
+				std::stringstream k2Name;
+				k2Name << lua.getString("titleK2");
+				osdFontK.drawString( k2Name.str(), 0, knobH + knobTextH);
+				ofSetColor(0);
+				ofDrawRectangle(1,1,knobW-2,floor((1-lua.getNumber("knob2"))*(knobH-2)) );
+			ofPopMatrix();
+			// draw k3
+			ofPushMatrix();
+				ofTranslate(knobW*6+(knobW/2), knobW/2);
+				ofSetColor(255);
+				ofDrawRectangle(0,0,knobW,knobH);
+				osdFontK.drawString( "Knob3",0,-(knobTextH/2));
+				std::stringstream k3Name;
+				k3Name << lua.getString("titleK3");
+				osdFontK.drawString( k3Name.str(), 0, knobH + knobTextH);
+				ofSetColor(0);
+				ofDrawRectangle(1,1,knobW-2,floor((1-lua.getNumber("knob3"))*(knobH-2)) );
+			ofPopMatrix();
+			// draw k4
+			ofPushMatrix();
+				ofTranslate(knobW*9+(knobW/2), knobW/2);
+				ofSetColor(255);
+				ofDrawRectangle(0,0,knobW,knobH);
+				osdFontK.drawString( "Knob4",0,-(knobTextH/2));
+				std::stringstream k4Name;
+				k4Name << lua.getString("titleK4");
+				osdFontK.drawString( k4Name.str(), 0, knobH+knobTextH);
+				ofSetColor(0);
+				ofDrawRectangle(1,1,knobW-2,floor((1-lua.getNumber("knob4"))*(knobH-2)) );
+			ofPopMatrix();
+			// draw k5
+			ofPushMatrix();
+				ofTranslate(knobW*12+(knobW/2), knobW/2);
+				ofSetColor(255);
+				ofDrawRectangle(0,0,knobW,knobH);
+				osdFontK.drawString( "Knob5",0,-(knobTextH/2) );
+				std::stringstream k5Name;
+				k5Name << lua.getString("titleK5");
+				osdFontK.drawString( k5Name.str(), 0, knobH+knobTextH);
+				ofSetColor(0);
+				ofDrawRectangle(1,1,knobW-2,floor((1-lua.getNumber("knob5"))*(knobH-2)) );
+			ofPopMatrix();
 		ofPopMatrix();
 
 		// volume
 		ofPushMatrix();
-			ofTranslate(0,spaceTrack + 20);
-			spaceTrack += 20;
-			ofSetColor(0);
-			ofDrawRectangle(0,0,350,50);
-			spaceTrack += 50;
-			ofSetColor( 255 );
-			osdFont.drawString( "Input Level: ", 2, 25);
-			// draw the rectangles
+			ofTranslate(0,spaceTrack + (fontHeight/2));
+			spaceTrack += fontHeight/2;
+			std::stringstream inputStr;
+			inputStr <<  "Input Level: ";
+			float volChunk = floor(osdW/160);
 			float visVol = peAk * 16.0;
+			float volStrWidth = osdFont.stringWidth( inputStr.str() );
+			
+			ofSetColor(0);
+			ofDrawRectangle(0,0,volStrWidth+(volChunk*18), (osdW/48)+8 );
+			spaceTrack += (osdW/48)+8;
+			ofSetColor( 255 );
+			osdFont.drawString( inputStr.str(), 2, fontHeight-4);
+			// draw the rectangles
 			for ( int i=0; i<16; i++) {
-			       	float xPos = (i*12) + 135;
+			       	float xPos = (i*volChunk) + (volStrWidth+volChunk);
 				ofSetColor( 255 );
 				ofNoFill();
-				ofDrawRectangle(xPos, 5, 10, 40);
+				ofDrawRectangle(xPos, 4, osdW/192, osdW/48);
 				if ((i+1) <= visVol ) {
 					ofFill();
 					if(i<10) {
@@ -331,105 +413,35 @@ void ofApp::update() {
 					} else {
 						ofSetColor(255,0,0);
 					}
-					ofDrawRectangle(xPos+1,6,9,39);
+					ofDrawRectangle(xPos+1,5,(osdW/192)-1,(osdW/48)-1);
 				}
 			}	
-		ofPopMatrix();
-		    		
-		// knobs
-		ofPushMatrix();
-			// draw background
-			ofFill();
-			ofTranslate(0,spaceTrack + 20);
-			spaceTrack += 20;
-			ofSetColor(0);
-			ofDrawRectangle(0,0,775,250);
-			spaceTrack += 250;
-			// draw k1
-			ofPushMatrix();
-				ofTranslate(25, 25);
-				ofSetColor(255);
-				ofDrawRectangle(0,0,50,200);
-				osdFontK.drawString( "Knob1",0,-7);
-				std::stringstream k1Name;
-				k1Name << lua.getString("titleK1");
-				osdFontK.drawString( k1Name.str(), 0, 219);
-				ofSetColor(0);
-				ofDrawRectangle(1,1,48,(1-lua.getNumber("knob1"))*198 );
-			ofPopMatrix();
-			// draw k2
-			ofPushMatrix();
-				ofTranslate(175, 25);
-				ofSetColor(255);
-				ofDrawRectangle(0,0,50,200);
-				osdFontK.drawString( "Knob2",0,-7);
-				std::stringstream k2Name;
-				k2Name << lua.getString("titleK2");
-				osdFontK.drawString( k2Name.str(), 0, 219);
-				ofSetColor(0);
-				ofDrawRectangle(1,1,48,(1-lua.getNumber("knob2"))*198 );
-			ofPopMatrix();
-			// draw k3
-			ofPushMatrix();
-				ofTranslate(325, 25);
-				ofSetColor(255);
-				ofDrawRectangle(0,0,50,200);
-				osdFontK.drawString( "Knob3",0,-7);
-				std::stringstream k3Name;
-				k3Name << lua.getString("titleK3");
-				osdFontK.drawString( k3Name.str(), 0, 219);
-				ofSetColor(0);
-				ofDrawRectangle(1,1,48,(1-lua.getNumber("knob3"))*198 );
-			ofPopMatrix();
-			// draw k4
-			ofPushMatrix();
-				ofTranslate(475, 25);
-				ofSetColor(255);
-				ofDrawRectangle(0,0,50,200);
-				osdFontK.drawString( "Knob4",0,-7);
-				std::stringstream k4Name;
-				k4Name << lua.getString("titleK4");
-				osdFontK.drawString( k4Name.str(), 0, 219);
-				ofSetColor(0);
-				ofDrawRectangle(1,1,48,(1-lua.getNumber("knob4"))*198 );
-			ofPopMatrix();
-			// draw k5
-			ofPushMatrix();
-				ofTranslate(625, 25);
-				ofSetColor(255);
-				ofDrawRectangle(0,0,50,200);
-				osdFontK.drawString( "Knob5",0,-7);
-				std::stringstream k5Name;
-				k5Name << lua.getString("titleK5");
-				osdFontK.drawString( k5Name.str(), 0, 219);
-				ofSetColor(0);
-				ofDrawRectangle(1,1,48,(1-lua.getNumber("knob5"))*198 );
-			ofPopMatrix();
 		ofPopMatrix();
 		
 		// Trigger
 		ofPushMatrix();
-			ofTranslate(0,spaceTrack + 20);
-			spaceTrack += 20;
+			ofTranslate(0,spaceTrack + (fontHeight/2) );
+			spaceTrack += fontHeight/2;
 			ofSetColor(0);
-			ofDrawRectangle(0,0,165,60);
-			spaceTrack += 60;
+			ofFill();
+			ofDrawRectangle(0,0,knobH*0.85,knobW+8);
+			spaceTrack += knobW+8;
 			ofSetColor(255);
 			bool triG;
 			bool gO;
 		       	triG = lua.getBool("trig");
 			if(triG) {gO = true;} else { gO = false; }
- 			osdFont.drawString( "Trigger: ", 2, 25);
+ 			osdFont.drawString( "Trigger: ", 2, fontHeight-4);
 			ofNoFill();
-			ofDrawRectangle( 100, 5, 50, 50);
+			ofDrawRectangle( knobH/2, 4, knobW, knobW);
 			if (gO) {
 				ofSetColor(255,255,0);
 				ofFill();
-				ofDrawRectangle( 101, 6, 49, 49);
+				ofDrawRectangle( (knobH/2)+1, 5, knobW-1, knobW-1);
 			} else {
 				ofSetColor(255,0,0);
 				ofFill();
-				ofDrawRectangle( 101, 6, 49,49);
+				ofDrawRectangle( (knobH/2)+1,5, knobW-1, knobW-1);
 				
 			}
 			gO = false;
@@ -439,32 +451,37 @@ void ofApp::update() {
 		
 		// midi
 		ofPushMatrix();
-			ofTranslate(0, spaceTrack + 20);
-			spaceTrack += 20;
+			float chunk = floor(osdH/108);
+			ofTranslate(0, spaceTrack + (fontHeight/2));
+			spaceTrack += fontHeight/2;
 			ofSetColor(0);
 			ofFill();
-			ofDrawRectangle(0,0,250,100);
-			spaceTrack += 100;
+			ofDrawRectangle(0,0,knobH+knobW,knobW*2);
+			spaceTrack += knobW*2;
 			ofSetColor(255);
-			osdFont.drawString( "MIDI: ", 2, 25);
+			std::stringstream midStr;
+			midStr << "MIDI: ";
+			float midiW = osdFont.stringWidth( midStr.str() );
+
+			osdFont.drawString( midStr.str(), 2, fontHeight-4);
 			for ( int i=0; i<9; i++) {
 				// draw horizontal lines
-				int yPos = (i*10) + 10;
-				ofDrawLine(60,yPos,221,yPos);
+				int yPos = (i*chunk) + (knobW/4);
+				ofDrawLine(midiW+2,yPos,(midiW+2)+(chunk*16),yPos);
 			}
 			for (int i=0; i<17; i++) {
 				// draw vertical lines
-				int xPos = (i*10) + 60;
-				ofDrawLine(xPos,10,xPos,90);
+				int xPos = (i*chunk) + (midiW+2);
+				ofDrawLine(xPos,chunk,xPos,(knobW*2)-chunk);
 		
 			}
 			for(int i=0; i<128; i++) {
 				if (midiTable[i] != 0) {
-					float xPos = ((i % 16) * 10)+60;
-					float yPos = (floor( i / 16 ) * 10) + 10; 
+					float xPos = ((i % 16) * chunk)+(knobW+chunk);
+					float yPos = (floor( i / 16 ) * chunk) + chunk; 
 					ofSetColor(0,255,255);
 					ofFill();
-					ofDrawRectangle(xPos,yPos, 10, 10);
+					ofDrawRectangle(xPos,yPos, chunk, chunk);
 				}
 			}
 		
@@ -473,8 +490,8 @@ void ofApp::update() {
 		
 		// Sequencer 
 		ofPushMatrix();
-			ofTranslate(0,spaceTrack + 20);
-			spaceTrack += 20;
+			ofTranslate(0,spaceTrack + (fontHeight/2));
+			spaceTrack += fontHeight/2;
 			std::stringstream seQ;
 			if( seqStatus == 1) seQ << "Sequencer: " << "Ready To Record";
 			if( seqStatus == 2) seQ << "Sequencer: " << "Recording";
@@ -485,45 +502,92 @@ void ofApp::update() {
 			float seqW = osdFont.stringWidth( seQ.str() );
 			ofSetColor(0);
 			ofFill();
-			ofDrawRectangle(0,0,seqW+4,26);
-			spaceTrack += 26;
+			ofDrawRectangle(0,0,seqW+4,fontHeight);
+			spaceTrack += fontHeight;
 			ofSetColor(255);
-			osdFont.drawString( seQ.str(), 2, 20);
+			osdFont.drawString( seQ.str(), 2, fontHeight-4);
 		ofPopMatrix();
-		
-		// Explain the Mode 
-		ofPushMatrix();
-			ofTranslate(0,spaceTrack + 20);
-			spaceTrack += 20;
-			std::stringstream eXplain;
-			eXplain << "Mode Description: " << lua.getString("modeExplain");
-			float eXwith = osdFont.stringWidth( eXplain.str() );
-			ofSetColor(0);
-			ofFill();
-			ofDrawRectangle(0,0,eXwith+4,26);
-			spaceTrack += 26;
-			ofSetColor(255);
-			osdFont.drawString( eXplain.str(), 2, 20 );
 
+		//WIFI
+		ofPushMatrix();
+			ofTranslate(0,spaceTrack + (fontHeight/2));
+			spaceTrack += fontHeight/2;
+			std::stringstream wifI;
+			wifI << "WIFI: " << "THE WIFI NAME";
+			ofFill();
+			ofSetColor(0);
+			float wifiW = osdFont.stringWidth( wifI.str() );
+			ofDrawRectangle(0,0,wifiW+4, fontHeight);
+			spaceTrack += fontHeight;
+			ofSetColor(255);
+			osdFont.drawString(wifI.str(), 2, fontHeight-4);
 		ofPopMatrix();
+
+		//I.P 
+		ofPushMatrix();
+			ofTranslate(0,spaceTrack + (fontHeight/2));
+			spaceTrack += fontHeight/2;
+			std::stringstream ipAd;
+			ipAd << "I.P. Address: " << "192.01.10.111";
+			ofFill();
+			ofSetColor(0);
+			float ipW = osdFont.stringWidth( ipAd.str() );
+			ofDrawRectangle(0,0,ipW+4, fontHeight);
+			spaceTrack += fontHeight;
+			ofSetColor(255);
+			osdFont.drawString(ipAd.str(), 2, fontHeight-4);
+		ofPopMatrix();
+
+		//OS Version
+		ofPushMatrix();
+			ofTranslate(0,spaceTrack + (fontHeight/2));
+			spaceTrack += fontHeight/2;
+			std::stringstream osStr;
+			osStr << "OS Version: " << "2.4";
+			ofFill();
+			ofSetColor(0);
+			float osW = osdFont.stringWidth( osStr.str() );
+			ofDrawRectangle(0,0,osW+4, fontHeight);
+			spaceTrack += fontHeight;
+			ofSetColor(255);
+			osdFont.drawString(osStr.str(), 2, fontHeight-4);
+		ofPopMatrix();
+			
+		
+		// FPS
+		ofPushMatrix();
+			ofTranslate(0,spaceTrack + (fontHeight/2));
+			spaceTrack += (fontHeight/2);
+			std::stringstream fPs;
+			float getFramz = ofGetFrameRate();
+			int getFramzI = static_cast<int>(getFramz);
+			fPs << "FPS: " << getFramzI ;
+			float fpsW = osdFont.stringWidth( fPs.str() );
+			ofSetColor(0);
+			ofDrawRectangle(0,0,fpsW+4,fontHeight);
+			spaceTrack += fontHeight;
+			ofSetColor(255);
+			osdFont.drawString(fPs.str(), 2, fontHeight-4);
+		ofPopMatrix();	
+		
 		
 		// draw the shift options if osd and shift is on
 		if (shIft == true) {
 			ofPushMatrix();
 				// gain knob1
-				ofTranslate(800,0);
+				ofTranslate(osdW/2,0);
 				std::stringstream gAin;
 				gAin << "Gain: " << ceil(globalGain*100) << "%";
     				float gW = osdFont.stringWidth( gAin.str() );
 				ofSetColor(0);
 				ofFill();
-				ofDrawRectangle(0,0,gW+4,26);
+				ofDrawRectangle(0,0,gW+4,fontHeight);
 				ofSetColor(255);
-				osdFont.drawString(gAin.str(), 2, 20);
+				osdFont.drawString(gAin.str(), 2, fontHeight-4);
 			
 			
 				// trigger input
-				ofTranslate(0,46);
+				ofTranslate(0,fontHeight*2);
 				
 				std::stringstream trigPut;
 				if (globalTrigInput == 0) trigPut << "Trigger Input: Audio";
@@ -535,22 +599,22 @@ void ofApp::update() {
 				float trigW = osdFont.stringWidth( trigPut.str() );
 				ofSetColor(0);
 				ofFill();
-				ofDrawRectangle(0,0,trigW+4,26);
+				ofDrawRectangle(0,0,trigW+4,fontHeight);
 				
 				ofSetColor(255);
-				osdFont.drawString( trigPut.str(),2,20);
+				osdFont.drawString( trigPut.str(),2,fontHeight-4);
 
 				// Midi channel select
-				ofTranslate(0,46);
+				ofTranslate(0,fontHeight*2);
 				
 				std::stringstream mIdChan;
 				mIdChan << "Midi Channel: " << globalMidiChannel;
 				float mIdW = osdFont.stringWidth( mIdChan.str() );
 				ofSetColor(0);
 				ofFill();
-				ofDrawRectangle(0,0,mIdW+4,26);
+				ofDrawRectangle(0,0,mIdW+4,fontHeight);
 				ofSetColor(255);
-				osdFont.drawString( mIdChan.str(),2,20);
+				osdFont.drawString( mIdChan.str(),2,fontHeight-4);
 
 			ofPopMatrix();
 
