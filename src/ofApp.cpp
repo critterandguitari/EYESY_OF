@@ -251,7 +251,7 @@ void ofApp::update() {
             reloadScript();
         }
     }
-    // calculate peak for audio in display
+    // calculate peak for audio in displa
     float peAk = 0;
     for (int i = 0; i < 256; i++){
 	float peakAbs = abs( left[i] );
@@ -272,7 +272,7 @@ void ofApp::update() {
     if (osdEnabled) {
 	
 	float spaceTrack = 0;
-	float fontHeight = osdFont.stringHeight( "Lpl" ) + 4;
+	float fontHeight = floor( osdFont.stringHeight( "Lpl" ) + 4) ;
 	
 	// begin the fbo
 	osdFbo.begin();
@@ -290,7 +290,7 @@ void ofApp::update() {
 			ofDrawRectangle(0,0,scrpW+4,fontHeight);
 			spaceTrack += fontHeight;
 			ofSetColor(255);
-			osdFont.drawString(scrpz.str(), 2, fontHeight+(fontHeight/4) );
+			osdFont.drawString(scrpz.str(), 2, fontHeight-4 );
 		ofPopMatrix();
 
 		// Explain the Mode 
@@ -305,7 +305,7 @@ void ofApp::update() {
 			ofDrawRectangle(0,0,eXwith+4,fontHeight);
 			spaceTrack += fontHeight;
 			ofSetColor(255);
-			osdFont.drawString( eXplain.str(), 2, fontH+2);
+			osdFont.drawString( eXplain.str(), 2, fontHeight-4);
 
 		ofPopMatrix();
 		
@@ -313,13 +313,13 @@ void ofApp::update() {
 		ofPushMatrix();
 			// draw background
 			float knobW = floor(osdW/38);
-			float knobH = floor(osdH/5.4);
+			float knobH = ceil(osdH/5.4);
 			float knobTextH = floor(osdH/68);
 			ofFill();
 			ofTranslate(0,spaceTrack + (fontHeight/2));
 			spaceTrack += fontHeight/2;
 			ofSetColor(0);
-			ofDrawRectangle(0,0,knobW*15,knobH+(knobTextH*3));
+			ofDrawRectangle(0,0,knobW*16,knobH+(knobTextH*3));
 			spaceTrack += knobH+(knobTextH*3);
 			
 			// draw k1
@@ -395,16 +395,16 @@ void ofApp::update() {
 			float volStrWidth = osdFont.stringWidth( inputStr.str() );
 			
 			ofSetColor(0);
-			ofDrawRectangle(0,0,volStrWidth+(volChunk*18), (osdW/48)+8 );
+			ofDrawRectangle(0,0,volStrWidth+(volChunk*18), (osdW/48)+(volChunk*2) );
 			spaceTrack += (osdW/48)+8;
 			ofSetColor( 255 );
-			osdFont.drawString( inputStr.str(), 2, fontH+2);
+			osdFont.drawString( inputStr.str(), 2, fontHeight+2);
 			// draw the rectangles
 			for ( int i=0; i<16; i++) {
 			       	float xPos = (i*volChunk) + (volStrWidth+volChunk);
 				ofSetColor( 255 );
 				ofNoFill();
-				ofDrawRectangle(xPos, 4, osdW/192, osdW/48);
+				ofDrawRectangle(xPos, volChunk/2, osdW/192, floor(osdW/48) );
 				if ((i+1) <= visVol ) {
 					ofFill();
 					if(i<10) {
@@ -414,7 +414,7 @@ void ofApp::update() {
 					} else {
 						ofSetColor(255,0,0);
 					}
-					ofDrawRectangle(xPos+1,5,(osdW/192)-1,(osdW/48)-1);
+					ofDrawRectangle(xPos+1,volChunk/2,floor(osdW/192),floor(osdW/48));
 				}
 			}	
 		ofPopMatrix();
@@ -432,17 +432,17 @@ void ofApp::update() {
 			bool gO;
 		       	triG = lua.getBool("trig");
 			if(triG) {gO = true;} else { gO = false; }
- 			osdFont.drawString( "Trigger: ", 2, fontH+2);
+ 			osdFont.drawString( "Trigger: ", 2, fontHeight+2);
 			ofNoFill();
 			ofDrawRectangle( knobH/2, 4, knobW, knobW);
 			if (gO) {
 				ofSetColor(255,255,0);
 				ofFill();
-				ofDrawRectangle( (knobH/2)+1, 5, knobW-1, knobW-1);
+				ofDrawRectangle( (knobH/2), 5, knobW-1, knobW-1);
 			} else {
 				ofSetColor(255,0,0);
 				ofFill();
-				ofDrawRectangle( (knobH/2)+1,5, knobW-1, knobW-1);
+				ofDrawRectangle( (knobH/2),5, knobW-1, knobW-1);
 				
 			}
 			gO = false;
@@ -455,33 +455,36 @@ void ofApp::update() {
 			float chunk = ceil(osdH/108);
 			ofTranslate(0, spaceTrack + (fontHeight/2));
 			spaceTrack += fontHeight/2;
-			ofSetColor(0);
-			ofFill();
-			ofDrawRectangle(0,0,knobH+knobW,knobW*2);
-			spaceTrack += knobW*2;
-			ofSetColor(255);
+			
 			std::stringstream midStr;
 			midStr << "MIDI: ";
 			float midiW = osdFont.stringWidth( midStr.str() );
 			
+			ofSetColor(0);
+			ofFill();
+			ofDrawRectangle(0,0,(midiW+(chunk*17)),(chunk*9));
+			spaceTrack += (chunk*9);
+			ofSetColor(255);
+			
+			
 
-			osdFont.drawString( midStr.str(), 2, fontH+2);
+			osdFont.drawString( midStr.str(), 2, fontHeight+2);
 			for ( int i=0; i<9; i++) {
 				// draw horizontal lines
-				int yPos = (i*chunk) + (knobW/6);
+				int yPos = (i*chunk) + ceil(chunk/2);
 				ofDrawLine(midiW+2,yPos,(midiW+2)+(chunk*16),yPos);
 			}
 			for (int i=0; i<17; i++) {
 				// draw vertical lines
 				int xPos = (i*chunk) + (midiW+2);
-				ofDrawLine(xPos,knobW/6,xPos,(knobW/6)+(chunk*8));
+				ofDrawLine(xPos,knobW/6,xPos,(chunk/2)+(chunk*8));
 				
 		
 			}
 			for(int i=0; i<128; i++) {
 				if (midiTable[i] != 0) {
 					float xPos = ((i % 16) * chunk)+(midiW+2);
-					float yPos = (floor( i / 16 ) * chunk) + (knobW/6); 
+					float yPos = (floor( i / 16 ) * chunk) + ceil(chunk/2); 
 					ofSetColor(0,255,255);
 					ofFill();
 					ofDrawRectangle(xPos,yPos, chunk, chunk);
