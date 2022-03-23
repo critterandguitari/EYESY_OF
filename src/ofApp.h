@@ -77,6 +77,7 @@ class ofApp : public ofBaseApp, ofxLuaListener {
 	ofTrueTypeFont osdFontK;
 	int dummyAudio;
 	int seqStatus;
+	int osdCount;
 	float osdW;
 	float osdH;
 	float globalGain = 1;

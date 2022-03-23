@@ -7,6 +7,22 @@
  *
  */
 #include "ofApp.h"
+#include <sys/types.h>
+#include <ifaddrs.h>
+
+//--------------------------------------------------------------
+string parseIP() {
+	string str = ofSystem( "ifconfig" );
+	int place = str.find("wlan0",0);
+	string str2 = str.substr(place+5, 200);
+	int place2 = str2.find("inet", 0);
+	return str2.substr(place2+5,13);
+}
+//--------------------------------------------------------------
+std::string getWifiName() {
+	return ofSystem( "iwgetid -r");
+}
+
 
 //--------------------------------------------------------------
 void ofApp::setup() {
@@ -269,8 +285,9 @@ void ofApp::update() {
     lua.scriptUpdate();
 
     //// OSD fill the fbo 
+    
     if (osdEnabled) {
-	
+		
 	float spaceTrack = 0;
 	float fontHeight = floor( osdFont.stringHeight( "Lpl" ) + 4) ;
 	
@@ -395,16 +412,16 @@ void ofApp::update() {
 			float volStrWidth = osdFont.stringWidth( inputStr.str() );
 			
 			ofSetColor(0);
-			ofDrawRectangle(0,0,volStrWidth+(volChunk*18), (osdW/48)+(volChunk*2) );
-			spaceTrack += (osdW/48)+8;
+			ofDrawRectangle(0,0,volStrWidth+(volChunk*20), volChunk*6 );
+			spaceTrack += volChunk*6;
 			ofSetColor( 255 );
 			osdFont.drawString( inputStr.str(), 2, fontHeight+2);
 			// draw the rectangles
 			for ( int i=0; i<16; i++) {
-			       	float xPos = (i*volChunk) + (volStrWidth+volChunk);
+			       	float xPos = (i*volChunk)+(volChunk);
 				ofSetColor( 255 );
 				ofNoFill();
-				ofDrawRectangle(xPos, volChunk/2, osdW/192, floor(osdW/48) );
+				ofDrawRectangle(xPos+(volStrWidth+(volChunk/2)), volChunk, volChunk, volChunk*4 );
 				if ((i+1) <= visVol ) {
 					ofFill();
 					if(i<10) {
@@ -414,7 +431,7 @@ void ofApp::update() {
 					} else {
 						ofSetColor(255,0,0);
 					}
-					ofDrawRectangle(xPos+1,volChunk/2,floor(osdW/192),floor(osdW/48));
+					ofDrawRectangle((xPos+(volStrWidth+(volChunk/2)))+1, volChunk+1, volChunk-1,(volChunk*4)-1 );
 				}
 			}	
 		ofPopMatrix();
@@ -438,11 +455,11 @@ void ofApp::update() {
 			if (gO) {
 				ofSetColor(255,255,0);
 				ofFill();
-				ofDrawRectangle( (knobH/2), 5, knobW-1, knobW-1);
+				ofDrawRectangle( (knobH/2)+1, 5, knobW-1, knobW-1);
 			} else {
 				ofSetColor(255,0,0);
 				ofFill();
-				ofDrawRectangle( (knobH/2),5, knobW-1, knobW-1);
+				ofDrawRectangle( (knobH/2)+1,5, knobW-1, knobW-1);
 				
 			}
 			gO = false;
@@ -462,25 +479,26 @@ void ofApp::update() {
 			
 			ofSetColor(0);
 			ofFill();
-			ofDrawRectangle(0,0,(midiW+(chunk*17)),(chunk*9));
+			ofDrawRectangle(0,0,(midiW+(chunk*20)),(chunk*9));
 			spaceTrack += (chunk*9);
 			ofSetColor(255);
 			
 			
 
 			osdFont.drawString( midStr.str(), 2, fontHeight+2);
+			osdFontK.drawString( "0", midiW, ceil(chunk*1.5) );
+			osdFontK.drawString( "127", (midiW+(chunk*17))+2 ,(chunk/2)+(chunk*8) );
 			for ( int i=0; i<9; i++) {
 				// draw horizontal lines
 				int yPos = (i*chunk) + ceil(chunk/2);
-				ofDrawLine(midiW+2,yPos,(midiW+2)+(chunk*16),yPos);
+				ofDrawLine(midiW+chunk,yPos,chunk*23,yPos);
 			}
 			for (int i=0; i<17; i++) {
 				// draw vertical lines
-				int xPos = (i*chunk) + (midiW+2);
-				ofDrawLine(xPos,knobW/6,xPos,(chunk/2)+(chunk*8));
-				
-		
+				int xPos = (i*chunk) + (midiW+chunk);
+				ofDrawLine(xPos,ceil(chunk/2),xPos,(chunk/2)+(chunk*8));
 			}
+			
 			for(int i=0; i<128; i++) {
 				if (midiTable[i] != 0) {
 					float xPos = ((i % 16) * chunk)+(midiW+2);
@@ -519,7 +537,7 @@ void ofApp::update() {
 			ofTranslate(0,spaceTrack + (fontHeight/2));
 			spaceTrack += fontHeight/2;
 			std::stringstream wifI;
-			wifI << "WIFI: " << "THE WIFI NAME";
+			wifI << "WIFI: " << getWifiName();
 			ofFill();
 			ofSetColor(0);
 			float wifiW = osdFont.stringWidth( wifI.str() );
@@ -529,12 +547,13 @@ void ofApp::update() {
 			osdFont.drawString(wifI.str(), 2, fontHeight-4);
 		ofPopMatrix();
 
-		//I.P 
+		//I.P. 
 		ofPushMatrix();
 			ofTranslate(0,spaceTrack + (fontHeight/2));
 			spaceTrack += fontHeight/2;
+			
 			std::stringstream ipAd;
-			ipAd << "I.P. Address: " << "192.01.10.111";
+			ipAd << "I.P. Address: " << parseIP();
 			ofFill();
 			ofSetColor(0);
 			float ipW = osdFont.stringWidth( ipAd.str() );
@@ -661,6 +680,7 @@ void ofApp::draw() {
     lua.setBool("midiClock", false);
 
 }
+
 //--------------------------------------------------------------
 void ofApp::audioIn(ofSoundBuffer & input){
    
@@ -741,6 +761,7 @@ void ofApp::mouseReleased(int x, int y, int button) {
 void ofApp::errorReceived(std::string& msg) {
     ofLogNotice() << "got a script error: " << msg;
 }
+
 
 //--------------------------------------------------------------
 void ofApp::reloadScript() {
