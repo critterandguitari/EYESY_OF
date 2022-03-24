@@ -418,10 +418,10 @@ void ofApp::update() {
 			osdFont.drawString( inputStr.str(), 2, fontHeight+2);
 			// draw the rectangles
 			for ( int i=0; i<16; i++) {
-			       	float xPos = (i*volChunk)+(volChunk);
+			       	float xPos = (i*volChunk)+volChunk;
 				ofSetColor( 255 );
 				ofNoFill();
-				ofDrawRectangle(xPos+(volStrWidth+(volChunk/2)), volChunk, volChunk, volChunk*4 );
+				ofDrawRectangle(xPos+volStrWidth, volChunk, volChunk, volChunk*4 );
 				if ((i+1) <= visVol ) {
 					ofFill();
 					if(i<10) {
@@ -431,7 +431,7 @@ void ofApp::update() {
 					} else {
 						ofSetColor(255,0,0);
 					}
-					ofDrawRectangle((xPos+(volStrWidth+(volChunk/2)))+1, volChunk+1, volChunk-1,(volChunk*4)-1 );
+					ofDrawRectangle(xPos+(volStrWidth+1), volChunk+1, volChunk-1,(volChunk*4)-1 );
 				}
 			}	
 		ofPopMatrix();
@@ -442,8 +442,8 @@ void ofApp::update() {
 			spaceTrack += fontHeight/2;
 			ofSetColor(0);
 			ofFill();
-			ofDrawRectangle(0,0,knobH*0.85,knobW+8);
-			spaceTrack += knobW+8;
+			ofDrawRectangle(0,0,knobW*4,knobW+(volChunk*2));
+			spaceTrack += knobW+(volChunk*2);
 			ofSetColor(255);
 			bool triG;
 			bool gO;
@@ -451,15 +451,15 @@ void ofApp::update() {
 			if(triG) {gO = true;} else { gO = false; }
  			osdFont.drawString( "Trigger: ", 2, fontHeight+2);
 			ofNoFill();
-			ofDrawRectangle( knobH/2, 4, knobW, knobW);
+			ofDrawRectangle( knobW*2,volChunk , knobW, knobW);
 			if (gO) {
 				ofSetColor(255,255,0);
 				ofFill();
-				ofDrawRectangle( (knobH/2)+1, 5, knobW-1, knobW-1);
+				ofDrawRectangle( (knobW*2)+1, volChunk+1, knobW-1, knobW-1);
 			} else {
 				ofSetColor(255,0,0);
 				ofFill();
-				ofDrawRectangle( (knobH/2)+1,5, knobW-1, knobW-1);
+				ofDrawRectangle( (knobW*2)+1, volChunk+1, knobW-1, knobW-1);
 				
 			}
 			gO = false;
@@ -496,12 +496,12 @@ void ofApp::update() {
 			for (int i=0; i<17; i++) {
 				// draw vertical lines
 				int xPos = (i*chunk) + (midiW+chunk);
-				ofDrawLine(xPos,ceil(chunk/2),xPos,(chunk/2)+(chunk*8));
+				ofDrawLine(xPos,ceil(chunk/2),xPos,ceil(chunk/2)+(chunk*8));
 			}
 			
 			for(int i=0; i<128; i++) {
 				if (midiTable[i] != 0) {
-					float xPos = ((i % 16) * chunk)+(midiW+2);
+					float xPos = ((i % 16) * chunk)+(midiW+chunk);
 					float yPos = (floor( i / 16 ) * chunk) + ceil(chunk/2); 
 					ofSetColor(0,255,255);
 					ofFill();
