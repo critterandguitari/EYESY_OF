@@ -38,6 +38,8 @@ class ofApp : public ofBaseApp, ofxLuaListener {
         void reloadScript();
         void nextScript();
         void prevScript();
+	void recallScript(int num);
+	void sendCurrentScript(int cur);
     
         ofxLua lua;
         vector<string> scripts;
@@ -45,6 +47,7 @@ class ofApp : public ofBaseApp, ofxLuaListener {
 
         // osc control
         ofxOscReceiver receiver;
+	ofxOscSender sender;
 
 	
         // audio stuff
@@ -65,8 +68,9 @@ class ofApp : public ofBaseApp, ofxLuaListener {
         string              snapString;
         ofImage             img;
 
-	int 	osdEnabled;
+	bool 	osdEnabled;
 	int 	midiTable[128];
+	int totalScenes;
 	
 		
 	vector<int> osdMidi{0,0};
@@ -83,19 +87,19 @@ class ofApp : public ofBaseApp, ofxLuaListener {
 	float globalGain = 1;
 	int globalTrigInput;
 	int globalMidiChannel;
+	int globalScene;
+        bool globalTrig;
+	bool globalLink;	
 	bool globalMidiClock;
 	bool shIft = false;
 	
-	// knob detent stuff
-	float k1Detent = 0;
-	float k1History = 0;
-    	float k1Open = true;
-    	float k2Detent = 0;
-	float k2History = 0;
-    	bool k2Open = true;
-    	float k3Detent = 0;
-	float k3History = 0;
-    	bool k3Open = true;
-
-
+	// knob stuff
+	float k1Local;
+	float k1ShiftLocal;
+	float k2Local;
+	float k2ShiftLocal;	
+	float k3Local;
+	float k3ShiftLocal;
+	float k4Local;
+	float k5Local;
 };

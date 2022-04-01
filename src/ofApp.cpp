@@ -18,11 +18,11 @@ string parseIP() {
 	int place2 = str2.find("inet", 0);
 	return str2.substr(place2+5,13);
 }
+
 //--------------------------------------------------------------
 std::string getWifiName() {
 	return ofSystem( "iwgetid -r");
 }
-
 
 //--------------------------------------------------------------
 void ofApp::setup() {
@@ -30,7 +30,7 @@ void ofApp::setup() {
     // listen on the given port
     cout << "listening for osc messages on port " << PORT << "\n";
     receiver.setup(PORT);  
-      
+    sender.setup("localhost", PORT+1);  
     
     ofSetVerticalSync(true);
     ofSetFrameRate(60);
@@ -44,6 +44,7 @@ void ofApp::setup() {
     soundStream.printDeviceList();
     
     int bufferSize = 256;
+   
 
     left.assign(bufferSize, 0.0);
     right.assign(bufferSize, 0.0);
@@ -100,16 +101,19 @@ void ofApp::setup() {
     // clear main screen
     ofClear(0,0,0);
     
+    globalScene = 0;
+    
+
     // osd setup
     osdW = ofGetScreenWidth();
     osdH = ofGetScreenHeight();
-    
+    osdEnabled = false;
     osdFont.load("CGFont_0.18.otf", osdH/45, true, true, true, 10, 64);
     osdFont.setLetterSpacing(1);
     osdFontK.load("CGFont_0.18.otf", osdH/68, true, true, true, 10, 64);
     osdFontK.setLetterSpacing(1);
 
-    osdEnabled = 0;
+     
     osdFbo.allocate(osdW*0.8, osdH);
     dummyAudio = 0;
         
@@ -117,21 +121,25 @@ void ofApp::setup() {
 
 //--------------------------------------------------------------
 void ofApp::update() {
-
+    globalTrig = false;
+ 
     // check for waiting messages
     while(receiver.hasWaitingMessages()){
         // get the next message
         ofxOscMessage m;
         receiver.getNextMessage(m);
+	
         //cout << "new message on port " << PORT << m.getAddress() << "\n";
         if(m.getAddress() == "/key") {   
             if (m.getArgAsInt32(0) == 4 && m.getArgAsInt32(1) > 0) {
                 cout << "back" << "\n";
                 prevScript();
+		sendCurrentScript(currentScript);
             }
             if (m.getArgAsInt32(0) == 5 && m.getArgAsInt32(1) > 0) {
                 cout << "fwd" << "\n";
                 nextScript();
+		sendCurrentScript(currentScript);
             }
             if (m.getArgAsInt32(0) == 9 && m.getArgAsInt32(1) > 0) {
                 img.grabScreen(0,0,ofGetWidth(),ofGetHeight());
@@ -141,19 +149,24 @@ void ofApp::update() {
                 cout << "saved\n";
                 snapCounter++;
             }
-            if (m.getArgAsInt32(0) == 10 && m.getArgAsInt32(1) == 0) dummyAudio = 0;
+	    if (m.getArgAsInt32(0) == 10 && m.getArgAsInt32(1) == 0) dummyAudio = 0;
             if (m.getArgAsInt32(0) == 10 && m.getArgAsInt32(1) > 0) {
 		dummyAudio = 1;
                 cout << "trig" << "\n";
-                lua.setBool("trig", true);
+                globalTrig = true;
+		//lua.setBool("trig", true);
             }
-       	    if (m.getArgAsInt32(0) == 1 && m.getArgAsInt32(1) > 0) {
-		osdEnabled = osdEnabled ? 0 : 1;
+       	    if (m.getArgAsInt32(0) == 1) {
+		if (m.getArgAsInt32(1) > 0) {
+			osdEnabled = true;
+		} else {
+			osdEnabled = false;
+		}
             	cout << "change OSD: " << osdEnabled << "\n";
             } 
 	}
-	if(m.getAddress() == "/shift" ) {
-		if( m.getArgAsInt32(0) > 0 ) { 
+	if(m.getArgAsInt32(0) == 15) {
+		if( m.getArgAsInt32(1) > 0 ) { 
 			shIft = true;
 		} else {
 			shIft = false;
@@ -163,80 +176,38 @@ void ofApp::update() {
 	if(m.getAddress() == "/seq") {
 		seqStatus = m.getArgAsInt32(0); 
 	}
+	// scene recall
+	if(m.getAddress() == "/sceneRecall") {
+		globalScene = m.getArgAsInt32(0); 
+		recallScript( m.getArgAsInt32(1));	
+	}
 	
 	// knobs
         if(m.getAddress() == "/knob1") {
-		float kb1 = (float)m.getArgAsInt32(0) / 1023;
-		if (shIft == false) {
-			// unfreezee if close to last value
-			if( k1Open == false ) {
-				if( (k1History >= k1Detent && kb1 <= k1Detent) or (k1History <= k1Detent && kb1 >= k1Detent) ) {
-					k1Open = true;
-				}
-			}
-			if( k1Open == true ) {	
-				lua.setNumber("knob1", kb1);
-				k1Detent = kb1;
-			}	
-			
-		} else {
-			// set the gain
-			globalGain = kb1 * 3.0 ;
-			k1Open = false;
-			k1History = kb1;
-		}
-		
+		k1Local = (float)m.getArgAsInt32(0) / 1023;
+ 		lua.setNumber("knob1", k1Local);
 	}
 	if(m.getAddress() == "/knob2") {
-		float kb2 = (float)m.getArgAsInt32(0) / 1023;
-		if (shIft == false) {
-			// unfreezee if close to last value
-			if( k2Open == false ) {
-				if( (k2History >= k2Detent && kb2 <= k2Detent) or (k2History <= k2Detent && kb2 >= k2Detent)) {
-				k2Open = true;
-				}
-			}
-			if( k2Open == true ) {	
-				lua.setNumber("knob2", kb2);
-				k2Detent = kb2;
-			}	
-			
-		} else {
-			// set the trigger input
-			globalTrigInput = ceil(kb2 * 5.0) ;
-			k2Open = false;
-			k2History = kb2;
-		}
-		
+		k2Local = (float)m.getArgAsInt32(0) / 1023;
+		lua.setNumber("knob2", k2Local);
 	}
 	if(m.getAddress() == "/knob3") {
-		float kb3 = (float)m.getArgAsInt32(0) / 1023;
-		if (shIft == false) {
-			// unfreezee if close to last value
-			if( k3Open == false ) {
-				if( (k3History >= k3Detent && kb3 <= k3Detent) or (k3History <= k3Detent && kb3 >= k3Detent)) {
-					k3Open = true;
-				}
-			}
-			
-			if( k3Open == true ) {	
-				lua.setNumber("knob3", kb3);
-				k3Detent = kb3;
-			}
-			
-		} else {
-			// set the midi channel
-			globalMidiChannel = ceil(kb3 * 15.0) + 1 ;
-			k3Open = false;
-			k3History = kb3;
-		}
-		
+		k3Local = (float)m.getArgAsInt32(0) / 1023;
+		lua.setNumber("knob3", k3Local);
+	}
+	if(m.getAddress() == "/knob4") {
+		k4Local = (float)m.getArgAsInt32(0) / 1023;
+		lua.setNumber("knob4", k4Local);
 	}	
-       
-	if(m.getAddress() == "/knob4") lua.setNumber("knob4", (float)m.getArgAsInt32(0) / 1023);
-        if(m.getAddress() == "/knob5") lua.setNumber("knob5", (float)m.getArgAsInt32(0) / 1023);
-	
+	if(m.getAddress() == "/knob5") {
+		k5Local = (float)m.getArgAsInt32(0) / 1023;
+		lua.setNumber("knob5", k5Local);
+	}
+
 	// midi 
+	if(m.getAddress() == "/updateSceneCount") {
+		totalScenes = m.getArgAsInt32(0);
+	}
 	if(m.getAddress() == "/midinote") {
 		osdMidi[0] = m.getArgAsInt32(0);
 		osdMidi[1] = m.getArgAsInt32(1); 	
@@ -255,19 +226,43 @@ void ofApp::update() {
 		if(m.getArgAsInt32(0) == 24) lua.setNumber("knob4", (float)m.getArgAsInt32(1) / 1023);
 		if(m.getArgAsInt32(0) == 25) lua.setNumber("knob5", (float)m.getArgAsInt32(1) / 1023);
 	}
- 	// if audio trig is selected	
+ 	
+	if(m.getAddress() == "/printTrig") {
+		globalTrigInput = ceil( ((float)m.getArgAsInt32(0)/1023) * 5 );
+		//cout << "trigInput: " << globalTrigInput << "\n";
+	}
+
+	// if audio trig is selected	
 	if(m.getAddress() == "/trig") {
-		if( m.getArgAsInt32(0) == globalTrigInput) {
-			lua.setBool("trig", true);
+		if( m.getArgAsInt32(0) > 0 && globalTrigInput > 0 ) {
+			globalTrig = true;
+		} else {
+			globalTrig = false;
 		}
 	}
-		
+	// detect link
+	if(m.getAddress() == "/linkpresent" ) {
+		if(m.getArgAsInt32(0) > 0) {
+			globalLink = true;
+		} else {
+			globalLink = false;
+		}
+	} 
+
+	if(m.getAddress() == "/gain") {
+		globalGain = ((float)m.getArgAsInt32(0) / 1023) * 3;
+		//cout << "gain: " << globalGain << "\n";
+	}	
+	if(m.getAddress() == "/midiChannel") {
+		globalMidiChannel = ceil( ((float)m.getArgAsInt32(0)/1023) * 15 )+1;
+		//cout << "midiChan: " << globalMidiChannel << "\n";
+	}	
 	if(m.getAddress() == "/reload") {
-            cout << "reloading\n";
-            reloadScript();
+            	cout << "reloading\n";
+            	reloadScript();
         }
     }
-    // calculate peak for audio in displa
+    // calculate peak for audio in display
     float peAk = 0;
     for (int i = 0; i < 256; i++){
 	float peakAbs = abs( left[i] );
@@ -278,15 +273,23 @@ void ofApp::update() {
     // audio trig if selected
     if(globalTrigInput == 0) {
     	if( peAk >= 0.75 ){
-		lua.setBool("trig", true);	
+		globalTrig = true;
+		//lua.setBool("trig", true);	
 	}
     }	
+    // trigger
+    if( globalTrig == true) {
+    	lua.setBool("trig", true);
+    } else {
+	lua.setBool("trig", false);
+    }
+
     // call the script's update() function
     lua.scriptUpdate();
 
     //// OSD fill the fbo 
     
-    if (osdEnabled) {
+    if (osdEnabled == true) {
 		
 	float spaceTrack = 0;
 	float fontHeight = floor( osdFont.stringHeight( "Lpl" ) + 4) ;
@@ -349,7 +352,7 @@ void ofApp::update() {
 				k1Name << lua.getString("titleK1");
 				osdFontK.drawString( k1Name.str(), 0, knobH+(knobTextH) );
 				ofSetColor(0);
-				ofDrawRectangle(1,1,knobW-2,floor((1-lua.getNumber("knob1"))*(knobH-2)) );
+				ofDrawRectangle(1,1,knobW-2,floor((1-k1Local)*(knobH-2)) );
 			ofPopMatrix();
 			// draw k2
 			ofPushMatrix();
@@ -361,7 +364,7 @@ void ofApp::update() {
 				k2Name << lua.getString("titleK2");
 				osdFontK.drawString( k2Name.str(), 0, knobH + knobTextH);
 				ofSetColor(0);
-				ofDrawRectangle(1,1,knobW-2,floor((1-lua.getNumber("knob2"))*(knobH-2)) );
+				ofDrawRectangle(1,1,knobW-2,floor((1-k2Local)*(knobH-2)) );
 			ofPopMatrix();
 			// draw k3
 			ofPushMatrix();
@@ -373,7 +376,7 @@ void ofApp::update() {
 				k3Name << lua.getString("titleK3");
 				osdFontK.drawString( k3Name.str(), 0, knobH + knobTextH);
 				ofSetColor(0);
-				ofDrawRectangle(1,1,knobW-2,floor((1-lua.getNumber("knob3"))*(knobH-2)) );
+				ofDrawRectangle(1,1,knobW-2,floor((1-k3Local)*(knobH-2)) );
 			ofPopMatrix();
 			// draw k4
 			ofPushMatrix();
@@ -385,7 +388,7 @@ void ofApp::update() {
 				k4Name << lua.getString("titleK4");
 				osdFontK.drawString( k4Name.str(), 0, knobH+knobTextH);
 				ofSetColor(0);
-				ofDrawRectangle(1,1,knobW-2,floor((1-lua.getNumber("knob4"))*(knobH-2)) );
+				ofDrawRectangle(1,1,knobW-2,floor((1-k4Local)*(knobH-2)) );
 			ofPopMatrix();
 			// draw k5
 			ofPushMatrix();
@@ -397,7 +400,7 @@ void ofApp::update() {
 				k5Name << lua.getString("titleK5");
 				osdFontK.drawString( k5Name.str(), 0, knobH+knobTextH);
 				ofSetColor(0);
-				ofDrawRectangle(1,1,knobW-2,floor((1-lua.getNumber("knob5"))*(knobH-2)) );
+				ofDrawRectangle(1,1,knobW-2,floor((1-k5Local)*(knobH-2)) );
 			ofPopMatrix();
 		ofPopMatrix();
 
@@ -445,14 +448,12 @@ void ofApp::update() {
 			ofDrawRectangle(0,0,knobW*4,knobW+(volChunk*2));
 			spaceTrack += knobW+(volChunk*2);
 			ofSetColor(255);
-			bool triG;
 			bool gO;
-		       	triG = lua.getBool("trig");
-			if(triG) {gO = true;} else { gO = false; }
+		       	if(globalTrig == true) {gO = true;} else { gO = false; }
  			osdFont.drawString( "Trigger: ", 2, fontHeight+2);
 			ofNoFill();
 			ofDrawRectangle( knobW*2,volChunk , knobW, knobW);
-			if (gO) {
+			if (gO == true) {
 				ofSetColor(255,255,0);
 				ofFill();
 				ofDrawRectangle( (knobW*2)+1, volChunk+1, knobW-1, knobW-1);
@@ -595,6 +596,24 @@ void ofApp::update() {
 			osdFont.drawString(fPs.str(), 2, fontHeight-4);
 		ofPopMatrix();	
 		
+		// Scene Stuff
+		ofPushMatrix();
+			ofTranslate(0, spaceTrack + (fontHeight/2));
+			spaceTrack += (fontHeight/2);
+			std::stringstream scenE;
+			if(globalScene == 0) {
+				scenE << "Scene: " << "None" << " of " << totalScenes;
+			} else {
+
+				scenE << "Scene: " << globalScene << " of " << totalScenes;
+			}
+			float sceneW = osdFont.stringWidth( scenE.str() );
+			ofSetColor(0);
+			ofDrawRectangle(0,0,sceneW+4, fontHeight);
+			spaceTrack += fontHeight;
+			ofSetColor(255);
+			osdFont.drawString(scenE.str(), 2, fontHeight-4);
+		ofPopMatrix();	
 		
 		// draw the shift options if osd and shift is on
 		if (shIft == true) {
@@ -677,7 +696,7 @@ void ofApp::draw() {
     }
     lua.setBool("trig", false);
 
-    lua.setBool("midiClock", false);
+    //lua.setBool("midiClock", false);
 
 }
 
@@ -796,4 +815,18 @@ void ofApp::prevScript() {
     }
     reloadScript();
 }
+
+void ofApp::recallScript(int num) {
+	currentScript = num;
+	reloadScript();
+}
+
+void ofApp::sendCurrentScript(int cur) {
+	// compose the message
+	ofxOscMessage mess;
+	mess.setAddress("/currentScript");
+	mess.addIntArg( cur );
+	sender.sendMessage(mess);
+}
+	
 
