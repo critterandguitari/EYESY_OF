@@ -246,11 +246,11 @@ void ofApp::update() {
 	
  	
 	if(m.getAddress() == "/printTrig") {
-		globalTrigInput = ceil( ((float)m.getArgAsInt32(0)/1023) * 5 );
-		//cout << "trigInput: " << globalTrigInput << "\n";
+		float wow = ((float)m.getArgAsInt32(0)/1023) * 5; 
+		globalTrigInput = floor( wow + 0.49999);
 	}
 
-	// if audio trig is selected	
+	// trigger
 	if(m.getAddress() == "/trig") {
 		if( m.getArgAsInt32(0) > 0 && globalTrigInput > 0 ) {
 			globalTrig = true;
@@ -269,11 +269,10 @@ void ofApp::update() {
 
 	if(m.getAddress() == "/gain") {
 		globalGain = ((float)m.getArgAsInt32(0) / 1023) * 3;
-		//cout << "gain: " << globalGain << "\n";
 	}	
 	if(m.getAddress() == "/midiChannel") {
-		globalMidiChannel = ceil( ((float)m.getArgAsInt32(0)/1023) * 15 )+1;
-		//cout << "midiChan: " << globalMidiChannel << "\n";
+		float wow = ((float)m.getArgAsInt32(0)/1023) * 15;
+		globalMidiChannel = floor(wow + 0.49999) + 1;
 	}	
 	if(m.getAddress() == "/reload") {
             	cout << "reloading\n";
@@ -292,10 +291,9 @@ void ofApp::update() {
     if(globalTrigInput == 0) {
     	if( peAk >= 0.75 ){
 		globalTrig = true;
-		//lua.setBool("trig", true);	
 	}
     }	
-    // trigger
+    // trigger speaks to lua
     if( globalTrig == true) {
     	lua.setBool("trig", true);
     } else {
