@@ -96,10 +96,15 @@ class ofApp : public ofBaseApp, ofxLuaListener {
 	// knob stuff
 	float k1Local;
 	float k1ShiftLocal;
+	bool k1Red;
 	float k2Local;
-	float k2ShiftLocal;	
+	float k2ShiftLocal;
+	bool k2Red;	
 	float k3Local;
 	float k3ShiftLocal;
+	bool k3Red;
 	float k4Local;
+	bool k4Red;
 	float k5Local;
+	bool k5Red;
 };
