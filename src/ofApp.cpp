@@ -25,12 +25,20 @@ std::string getWifiName() {
 }
 
 //--------------------------------------------------------------
+string latestPNGs() {
+	return ofSystem( "ls -Art | tail -n 4" );
+	
+}
+
+
+//--------------------------------------------------------------
 void ofApp::setup() {
-   
+    // declare the OS version
+    osVersion = "oFLua 1.0"; 
     // listen on the given port
     cout << "listening for osc messages on port " << PORT << "\n";
     receiver.setup(PORT);  
-    sender.setup("localhost", PORT+1);  
+    //sender.setup("localhost", PORT+1);  
     
     ofSetVerticalSync(true);
     ofSetFrameRate(60);
@@ -103,6 +111,8 @@ void ofApp::setup() {
     
     globalScene = 0;
     
+    string grabPath = "/sdcard/Grabs/";
+    ofDirectory grabDir(grabPath);
 
     // osd setup
     osdW = ofGetScreenWidth();
@@ -115,13 +125,19 @@ void ofApp::setup() {
 
     osdFbo.allocate(osdW*0.8, osdH);
     dummyAudio = 0;
+    // initiate snap counter
+    grabDir.listDir();
+    // get the highest number of grab
+    snapCounter = grabDir.size();
+    updateScreenGrabs( snapCounter );
+    string wow = latestPNGs();
         
 }
 
 //--------------------------------------------------------------
 void ofApp::update() {
     globalTrig = false;
- 
+    
     // check for waiting messages
     while(receiver.hasWaitingMessages()){
         // get the next message
@@ -146,29 +162,23 @@ void ofApp::update() {
                 img.save("/sdcard/Grabs/" + fileName);
                 cout << "saved\n";
                 snapCounter++;
+		updateScreenGrabs( snapCounter );
+		
             }
 	    if (m.getArgAsInt32(0) == 10 && m.getArgAsInt32(1) == 0) dummyAudio = 0;
             if (m.getArgAsInt32(0) == 10 && m.getArgAsInt32(1) > 0) {
 		dummyAudio = 1;
                 cout << "trig" << "\n";
                 globalTrig = true;
-		//lua.setBool("trig", true);
+		
             }
        	    if (m.getArgAsInt32(0) == 1) {
-		if (m.getArgAsInt32(1) > 0) {
-			osdEnabled = true;
-		} else {
-			osdEnabled = false;
-		}
-            	cout << "change OSD: " << osdEnabled << "\n";
+		osdEnabled = ( m.getArgAsInt32(1) > 0 ) ? true : false; 
+		cout << "change OSD: " << osdEnabled << "\n";
             } 
 	}
 	if(m.getArgAsInt32(0) == 15) {
-		if( m.getArgAsInt32(1) > 0 ) { 
-			shIft = true;
-		} else {
-			shIft = false;
-		}
+		shIft = ( m.getArgAsInt32(1) > 0 ) ? true : false;
 	}
 
 	if(m.getAddress() == "/seq") {
@@ -302,7 +312,7 @@ void ofApp::update() {
 
     // call the script's update() function
     lua.scriptUpdate();
-
+    
     //// OSD fill the fbo 
     if (osdEnabled == true) {
 		
@@ -443,8 +453,6 @@ void ofApp::update() {
 			for ( int i=0; i<16; i++) {
 			       	float xPos = (i*volChunk)+volChunk;
 				ofSetColor( 255 );
-				ofNoFill();
-				ofDrawRectangle(xPos+volStrWidth, volChunk, volChunk, volChunk*4 );
 				if ((i+1) <= visVol ) {
 					ofFill();
 					if(i<10) {
@@ -454,8 +462,11 @@ void ofApp::update() {
 					} else {
 						ofSetColor(255,0,0);
 					}
-					ofDrawRectangle(xPos+(volStrWidth+1), volChunk+1, volChunk-1,(volChunk*4)-1 );
+					ofDrawRectangle(xPos+(volStrWidth), volChunk, volChunk,(volChunk*4) );
 				}
+				ofNoFill();
+				ofSetColor(255);
+				ofDrawRectangle(xPos+volStrWidth, volChunk, volChunk, volChunk*4 );
 			}	
 		ofPopMatrix();
 		
@@ -512,12 +523,12 @@ void ofApp::update() {
 			for ( int i=0; i<9; i++) {
 				// draw horizontal lines
 				int yPos = (i*chunk) + ceil(chunk/2);
-				ofDrawLine(midiW+chunk,yPos,chunk*23,yPos);
+				ofDrawLine(midiW+chunk,yPos,ceil(chunk*23),yPos);
 			}
 			for (int i=0; i<17; i++) {
 				// draw vertical lines
 				int xPos = (i*chunk) + (midiW+chunk);
-				ofDrawLine(xPos,ceil(chunk/2),xPos,ceil(chunk/2)+(chunk*8));
+				ofDrawLine(xPos,ceil(chunk/2),xPos,ceil(chunk/2)+ceil(chunk*8));
 			}
 			
 			for(int i=0; i<128; i++) {
@@ -568,13 +579,13 @@ void ofApp::update() {
 			osdFont.drawString(wifI.str(), 2, fontHeight-4);
 		ofPopMatrix();
 
-		//I.P. 
+		//IP
 		ofPushMatrix();
 			ofTranslate(0,spaceTrack + (fontHeight/2));
 			spaceTrack += fontHeight/2;
 			
 			std::stringstream ipAd;
-			ipAd << "I.P. Address: " << parseIP();
+			ipAd << "IP Address: " << parseIP();
 			ofFill();
 			ofSetColor(0);
 			float ipW = osdFont.stringWidth( ipAd.str() );
@@ -589,7 +600,7 @@ void ofApp::update() {
 			ofTranslate(0,spaceTrack + (fontHeight/2));
 			spaceTrack += fontHeight/2;
 			std::stringstream osStr;
-			osStr << "OS Version: " << "2.4";
+			osStr << "OS Version: " << osVersion;
 			ofFill();
 			ofSetColor(0);
 			float osW = osdFont.stringWidth( osStr.str() );
@@ -633,7 +644,40 @@ void ofApp::update() {
 			spaceTrack += fontHeight;
 			ofSetColor(255);
 			osdFont.drawString(scenE.str(), 2, fontHeight-4);
-		ofPopMatrix();	
+		ofPopMatrix();
+		
+		// Screen Grabs
+		ofPushMatrix();
+			ofTranslate(0, spaceTrack + (fontHeight/2));
+			spaceTrack += (fontHeight/2);
+			std::stringstream graBz;
+			graBz << "Total Screen Grabs: " << snapCounter;	
+			float grabW = osdFont.stringWidth( graBz.str() );
+			ofSetColor(0);
+			ofDrawRectangle(0,0,grabW+4, fontHeight);
+			spaceTrack += fontHeight;
+			ofSetColor(255);
+			osdFont.drawString(graBz.str(), 2, fontHeight-4);
+		ofPopMatrix();
+
+		// draw the last 5 screen grabs
+		ofPushMatrix();
+			float grabHeit = ceil(osdH/10);
+			ofTranslate( ceil(osdW/2), ceil(osdH/3) );
+			grab1.resize( ceil(osdW/10), grabHeit);
+			grab1.draw(0,0);
+			ofTranslate( 0, grabHeit + (grabHeit/3) );
+			grab2.resize( ceil(osdW/10), ceil(osdH/10) );
+			grab2.draw(0,0);
+			ofTranslate( 0, grabHeit + (grabHeit/3) );
+			grab3.resize( ceil(osdW/10), ceil(osdH/10) );
+			grab3.draw(0,0);
+			ofTranslate( 0, grabHeit + (grabHeit/3) );
+			grab4.resize( ceil(osdW/10), ceil(osdH/10) );
+			grab4.draw(0,0);	
+			
+		ofPopMatrix();
+			
 		
 		// draw the shift options if osd and shift is on
 		if (shIft == true) {
@@ -672,7 +716,7 @@ void ofApp::update() {
 				ofTranslate(0,fontHeight*2);
 				
 				std::stringstream mIdChan;
-				mIdChan << "Midi Channel: " << globalMidiChannel;
+				mIdChan << "MIDI Channel: " << globalMidiChannel;
 				float mIdW = osdFont.stringWidth( mIdChan.str() );
 				ofSetColor(0);
 				ofFill();
@@ -693,7 +737,6 @@ void ofApp::update() {
 
 //--------------------------------------------------------------
 void ofApp::draw() {
-    
     // set the audio buffer
     lua.setNumberVector("inL", left);
     lua.setNumberVector("inR", right);
@@ -710,14 +753,12 @@ void ofApp::draw() {
 
     if (osdEnabled) {
 	// draw it
+	float marg = ceil( osdW/12 );
     	ofSetColor(255);
-    	ofTranslate(40,40,10);
+    	ofTranslate( marg, ceil(marg/2), 10);
     	osdFbo.draw(0,0);
     }
     lua.setBool("trig", false);
-
-    //lua.setBool("midiClock", false);
-
 }
 
 //--------------------------------------------------------------
@@ -847,6 +888,14 @@ void ofApp::sendCurrentScript(int cur) {
 	mess.setAddress("/currentScript");
 	mess.addIntArg( cur );
 	sender.sendMessage(mess);
+}
+
+void ofApp::updateScreenGrabs(int snap) {
+	grab1.load("/sdcard/Grabs/snapshot_"+ofToString((10000+snap)-1)+".png");
+    	grab2.load("/sdcard/Grabs/snapshot_"+ofToString((10000+snap)-2)+".png");
+    	grab3.load("/sdcard/Grabs/snpashot_"+ofToString((10000+snap)-3)+".png");
+    	grab4.load("/sdcard/Grabs/snapshot_"+ofToString((10000+snap)-4)+".png");
+	
 }
 	
 
