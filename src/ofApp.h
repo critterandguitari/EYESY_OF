@@ -40,7 +40,7 @@ class ofApp : public ofBaseApp, ofxLuaListener {
         void prevScript();
 	void recallScript(int num);
 	void sendCurrentScript(int cur);
-	void updateScreenGrabs(int snap);
+	void updateScreenGrabs();
     
         ofxLua lua;
         vector<string> scripts;
@@ -78,6 +78,8 @@ class ofApp : public ofBaseApp, ofxLuaListener {
 	int 	midiTable[128];
 	int 	totalScenes;
 	string 	osVersion;
+	ofxOscMessage mess;
+	size_t sizeScripts;
 	
 		
 	vector<int> osdMidi{0,0};

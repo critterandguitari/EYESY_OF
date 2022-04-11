@@ -38,7 +38,7 @@ void ofApp::setup() {
     // listen on the given port
     cout << "listening for osc messages on port " << PORT << "\n";
     receiver.setup(PORT);  
-    //sender.setup("localhost", PORT+1);  
+    sender.setup("localhost", PORT+1);  
     
     ofSetVerticalSync(true);
     ofSetFrameRate(60);
@@ -111,8 +111,7 @@ void ofApp::setup() {
     
     globalScene = 0;
     
-    string grabPath = "/sdcard/Grabs/";
-    ofDirectory grabDir(grabPath);
+    
 
     // osd setup
     osdW = ofGetScreenWidth();
@@ -125,12 +124,9 @@ void ofApp::setup() {
 
     osdFbo.allocate(osdW*0.8, osdH);
     dummyAudio = 0;
-    // initiate snap counter
-    grabDir.listDir();
-    // get the highest number of grab
-    snapCounter = grabDir.size();
-    updateScreenGrabs( snapCounter );
-    string wow = latestPNGs();
+    updateScreenGrabs();
+    sizeScripts = scripts.size();
+    
         
 }
 
@@ -145,24 +141,15 @@ void ofApp::update() {
         receiver.getNextMessage(m);
 	// get various key messages
         if(m.getAddress() == "/key") {   
-            if (m.getArgAsInt32(0) == 4 && m.getArgAsInt32(1) > 0) {
-                cout << "back" << "\n";
-                prevScript();
-		sendCurrentScript(currentScript);
-            }
-            if (m.getArgAsInt32(0) == 5 && m.getArgAsInt32(1) > 0) {
-                cout << "fwd" << "\n";
-                nextScript();
-		sendCurrentScript(currentScript);
-            }
+            
+            
             if (m.getArgAsInt32(0) == 9 && m.getArgAsInt32(1) > 0) {
                 img.grabScreen(0,0,ofGetWidth(),ofGetHeight());
                 string fileName = "snapshot_"+ofToString(10000+snapCounter)+".png";
                 cout << "saving " + fileName + "...";
                 img.save("/sdcard/Grabs/" + fileName);
                 cout << "saved\n";
-                snapCounter++;
-		updateScreenGrabs( snapCounter );
+                updateScreenGrabs();
 		
             }
 	    if (m.getArgAsInt32(0) == 10 && m.getArgAsInt32(1) == 0) dummyAudio = 0;
@@ -184,11 +171,22 @@ void ofApp::update() {
 	if(m.getAddress() == "/seq") {
 		seqStatus = m.getArgAsInt32(0); 
 	}
+	
 	// scene recall
 	if(m.getAddress() == "/sceneRecall") {
 		globalScene = m.getArgAsInt32(0); 
 		recallScript( m.getArgAsInt32(1) );
 		sendCurrentScript( currentScript );		
+	}
+	if (m.getAddress() == "/modeDown" && m.getArgAsInt32(0) > 0) {
+                cout << "back" << "\n";
+                prevScript();
+		sendCurrentScript( currentScript );
+        }
+        if (m.getAddress() == "/modeUp" && m.getArgAsInt32(0) > 0) {
+                cout << "fwd" << "\n";
+                nextScript();
+		sendCurrentScript( currentScript );
 	}
 	
 	// knobs
@@ -262,11 +260,9 @@ void ofApp::update() {
 
 	// trigger
 	if(m.getAddress() == "/trig") {
-		if( m.getArgAsInt32(0) > 0 && globalTrigInput > 0 ) {
+		if( m.getArgAsInt32(0) > 0 && globalTrigInput > 0) {
 			globalTrig = true;
-		} else {
-			globalTrig = false;
-		}
+		} 
 	}
 	// detect link
 	if(m.getAddress() == "/linkpresent" ) {
@@ -479,22 +475,19 @@ void ofApp::update() {
 			ofDrawRectangle(0,0,knobW*4,knobW+(volChunk*2));
 			spaceTrack += knobW+(volChunk*2);
 			ofSetColor(255);
-			bool gO;
-		       	if(globalTrig == true) {gO = true;} else { gO = false; }
+			
  			osdFont.drawString( "Trigger: ", 2, fontHeight+2);
-			ofNoFill();
-			ofDrawRectangle( knobW*2,volChunk , knobW, knobW);
-			if (gO == true) {
+			
+			if (globalTrig == true) {
 				ofSetColor(255,255,0);
 				ofFill();
-				ofDrawRectangle( (knobW*2)+1, volChunk+1, knobW-1, knobW-1);
-			} else {
-				ofSetColor(255,0,0);
-				ofFill();
-				ofDrawRectangle( (knobW*2)+1, volChunk+1, knobW-1, knobW-1);
-				
+				ofDrawRectangle( knobW*2, volChunk, knobW, knobW);
 			}
-			gO = false;
+			// draw white border
+			ofNoFill();
+			ofSetColor(255);
+			ofDrawRectangle( knobW*2,volChunk , knobW, knobW);
+			
 			
 					
 		ofPopMatrix();	
@@ -748,6 +741,7 @@ void ofApp::draw() {
     ofPushMatrix();
     	lua.scriptDraw();
     ofPopMatrix();
+    
     // disable depth
     ofDisableDepthTest();
 
@@ -861,7 +855,7 @@ void ofApp::reloadScript() {
 
 void ofApp::nextScript() {
     currentScript++;
-    if(currentScript > scripts.size()-1) {
+    if(currentScript > sizeScripts-1) {
         currentScript = 0;
     }
     reloadScript();
@@ -869,7 +863,7 @@ void ofApp::nextScript() {
 
 void ofApp::prevScript() {
     if(currentScript == 0) {
-        currentScript = scripts.size()-1;
+        currentScript = sizeScripts-1;
     }
     else {
         currentScript--;
@@ -884,18 +878,27 @@ void ofApp::recallScript(int num) {
 
 void ofApp::sendCurrentScript(int cur) {
 	// compose the message
-	ofxOscMessage mess;
+	
 	mess.setAddress("/currentScript");
 	mess.addIntArg( cur );
 	sender.sendMessage(mess);
 }
 
-void ofApp::updateScreenGrabs(int snap) {
-	grab1.load("/sdcard/Grabs/snapshot_"+ofToString((10000+snap)-1)+".png");
-    	grab2.load("/sdcard/Grabs/snapshot_"+ofToString((10000+snap)-2)+".png");
-    	grab3.load("/sdcard/Grabs/snpashot_"+ofToString((10000+snap)-3)+".png");
-    	grab4.load("/sdcard/Grabs/snapshot_"+ofToString((10000+snap)-4)+".png");
+void ofApp::updateScreenGrabs() {
+	string grabPath = "/sdcard/Grabs/";
+    	ofDirectory grabDir(grabPath);
+	
+	// initiate snap counter
+    	grabDir.listDir(); 			// list them
+    	grabDir.sort();				// sort them by name
+    	int grabAmt = grabDir.size();		// get total amount
+	snapCounter = grabAmt;			// update the Counter
+
+   	cout << grabDir.getPath(grabAmt-1) << "\n"; 
+    	grab1.load( grabDir.getPath(grabAmt-1) );
+	grab2.load( grabDir.getPath(grabAmt-2) );
+	grab3.load( grabDir.getPath(grabAmt-3) );
+	grab4.load( grabDir.getPath(grabAmt-4) );
 	
 }
 	
-
