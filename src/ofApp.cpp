@@ -38,7 +38,7 @@ void ofApp::setup() {
     // listen on the given port
     cout << "listening for osc messages on port " << PORT << "\n";
     receiver.setup(PORT);  
-    sender.setup("localhost", PORT+1);  
+    sender.setup("localhost", 4001);  
     
     ofSetVerticalSync(true);
     ofSetFrameRate(60);
@@ -132,7 +132,7 @@ void ofApp::setup() {
 
 //--------------------------------------------------------------
 void ofApp::update() {
-    globalTrig = false;
+    //globalTrig = false;
     
     // check for waiting messages
     while(receiver.hasWaitingMessages()){
@@ -181,13 +181,18 @@ void ofApp::update() {
 	if (m.getAddress() == "/modeDown" && m.getArgAsInt32(0) > 0) {
                 cout << "back" << "\n";
                 prevScript();
+		// update the script(mode) number to the PD
 		sendCurrentScript( currentScript );
         }
         if (m.getAddress() == "/modeUp" && m.getArgAsInt32(0) > 0) {
                 cout << "fwd" << "\n";
                 nextScript();
+		// update the script(mode) number to the PD
 		sendCurrentScript( currentScript );
 	}
+	if (m.getAddress() == "/wowDoes") {
+                cout << "checkIt" << m.getArgAsInt32(0) << "\n";
+        }
 	
 	// knobs
         if(m.getAddress() == "/knob1") {
@@ -252,8 +257,7 @@ void ofApp::update() {
 		lua.setBool("midiClock", true);
 	}
 	
- 	
-	if(m.getAddress() == "/printTrig") {
+ 	if(m.getAddress() == "/printTrig") {
 		float wow = ((float)m.getArgAsInt32(0)/1023) * 5; 
 		globalTrigInput = floor( wow + 0.49999);
 	}
@@ -878,10 +882,9 @@ void ofApp::recallScript(int num) {
 
 void ofApp::sendCurrentScript(int cur) {
 	// compose the message
-	
 	mess.setAddress("/currentScript");
 	mess.addIntArg( cur );
-	sender.sendMessage(mess);
+	sender.sendMessage( mess );
 }
 
 void ofApp::updateScreenGrabs() {

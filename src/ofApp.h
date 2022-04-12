@@ -117,4 +117,4 @@ class ofApp : public ofBaseApp, ofxLuaListener {
 	
 	float k5Local;
 	bool k5Red;
-};
+}
