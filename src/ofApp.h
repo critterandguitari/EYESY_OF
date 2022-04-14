@@ -42,18 +42,18 @@ class ofApp : public ofBaseApp, ofxLuaListener {
 	void sendCurrentScript(int cur);
 	void updateScreenGrabs();
     
-        ofxLua lua;
-        vector<string> scripts;
-        size_t currentScript;
+        ofxLua 		lua;
+        vector<string> 	scripts;
+        size_t 		currentScript;
 
         // osc control
-        ofxOscReceiver receiver;
-	ofxOscSender sender;
+        ofxOscReceiver 	receiver;
+	ofxOscSender 	sender;
 	
-	ofImage grab1;
-	ofImage grab2;
-	ofImage grab3;
-	ofImage grab4;
+	ofImage 	grab1;
+	ofImage 	grab2;
+	ofImage 	grab3;
+	ofImage 	grab4;
 
 	
         // audio stuff
@@ -62,59 +62,60 @@ class ofApp : public ofBaseApp, ofxLuaListener {
         vector <lua_Number> left;
         vector <lua_Number> right;
 
-        int     bufferCounter;
-        int     drawCounter;
+        int     	bufferCounter;
+        int     	drawCounter;
     
-        float smoothedVol;
-        float scaledVol;
+        float 		smoothedVol;
+        float 		scaledVol;
         
-        ofSoundStream soundStream;
+        ofSoundStream 	soundStream;
 
-        int                 snapCounter;
-        string              snapString;
-        ofImage             img;
+        int        	snapCounter;
+        string          snapString;
+        ofImage         img;
 
-	bool 	osdEnabled;
-	int 	midiTable[128];
-	int 	totalScenes;
-	string 	osVersion;
-	ofxOscMessage mess;
-	size_t sizeScripts;
+	bool 		osdEnabled;
+	int 		midiTable[128];
+	int 		totalScenes;
+	string 		osVersion;
+	ofxOscMessage 	mess;
+	size_t 		sizeScripts;
 	
 		
-	vector<int> osdMidi{0,0};
+	vector<int> 	osdMidi{0,0};
 	
 	// osd stuff
-	ofFbo osdFbo;
-	ofTrueTypeFont osdFont;
-	ofTrueTypeFont osdFontK;
-	int dummyAudio;
-	int seqStatus;
-	int osdCount;
-	float osdW;
-	float osdH;
-	float globalGain = 1;
-	int globalTrigInput;
-	int globalMidiChannel;
-	int globalScene;
-        bool globalTrig;
-	bool globalLink;	
-	bool globalMidiClock;
-	bool shIft = false;
+	ofFbo 		osdFbo;
+	ofTrueTypeFont 	osdFont;
+	ofTrueTypeFont 	osdFontK;
+	int 		dummyAudio;
+	int 		seqStatus;
+	int 		osdCount;
+	float 		osdW;
+	float 		osdH;
+	float 		globalGain = 1;
+	int 		globalTrigInput;
+	int 		globalMidiChannel;
+	int 		globalScene;
+        bool 		globalTrig;
+	bool 		globalLink;	
+	bool 		globalMidiClock;
+	bool 		shIft = false;
 	
 	// knob stuff
-	float k1Local;
-	bool k1Red;
+	float 		k1Local;
+	bool 		k1Red;
 	
-	float k2Local;
-	bool k2Red;	
+	float 		k2Local;
+	bool 		k2Red;	
 	
-	float k3Local;
-	bool k3Red;
+	float 		k3Local;
+	bool 		k3Red;
 	
-	float k4Local;
-	bool k4Red;
+	float 		k4Local;
+	bool 		k4Red;
 	
-	float k5Local;
-	bool k5Red;
-}
+	float 		k5Local;
+	bool 		k5Red;
+
+};

@@ -5,10 +5,12 @@
  * For information on usage and redistribution, and for a DISCLAIMER OF ALL
  * WARRANTIES, see the file, "LICENSE.txt," in this distribution.
  *
- */
+*/
+
 #include "ofApp.h"
-#include <sys/types.h>
-#include <ifaddrs.h>
+#include <stddef.h>
+#include <stdint.h>
+
 
 //--------------------------------------------------------------
 string parseIP() {
@@ -24,11 +26,7 @@ std::string getWifiName() {
 	return ofSystem( "iwgetid -r");
 }
 
-//--------------------------------------------------------------
-string latestPNGs() {
-	return ofSystem( "ls -Art | tail -n 4" );
-	
-}
+
 
 
 //--------------------------------------------------------------
@@ -38,7 +36,7 @@ void ofApp::setup() {
     // listen on the given port
     cout << "listening for osc messages on port " << PORT << "\n";
     receiver.setup(PORT);  
-    sender.setup("localhost", 4001);  
+    sender.setup("localhost", PORT+1);  
     
     ofSetVerticalSync(true);
     ofSetFrameRate(60);
@@ -109,14 +107,12 @@ void ofApp::setup() {
     // clear main screen
     ofClear(0,0,0);
     
-    globalScene = 0;
+    //globalScene = 0;
     
-    
-
     // osd setup
     osdW = ofGetScreenWidth();
     osdH = ofGetScreenHeight();
-    osdEnabled = false;
+    //osdEnabled = false;
     osdFont.load("CGFont_0.18.otf", osdH/45, true, true, true, 10, 64);
     osdFont.setLetterSpacing(1);
     osdFontK.load("CGFont_0.18.otf", osdH/68, true, true, true, 10, 64);
@@ -132,42 +128,44 @@ void ofApp::setup() {
 
 //--------------------------------------------------------------
 void ofApp::update() {
-    //globalTrig = false;
+    globalTrig = false;
     
     // check for waiting messages
     while(receiver.hasWaitingMessages()){
         // get the next message
         ofxOscMessage m;
         receiver.getNextMessage(m);
+	
 	// get various key messages
         if(m.getAddress() == "/key") {   
-            
-            
-            if (m.getArgAsInt32(0) == 9 && m.getArgAsInt32(1) > 0) {
-                img.grabScreen(0,0,ofGetWidth(),ofGetHeight());
-                string fileName = "snapshot_"+ofToString(10000+snapCounter)+".png";
-                cout << "saving " + fileName + "...";
-                img.save("/sdcard/Grabs/" + fileName);
-                cout << "saved\n";
-                updateScreenGrabs();
-		
-            }
-	    if (m.getArgAsInt32(0) == 10 && m.getArgAsInt32(1) == 0) dummyAudio = 0;
-            if (m.getArgAsInt32(0) == 10 && m.getArgAsInt32(1) > 0) {
-		dummyAudio = 1;
-                cout << "trig" << "\n";
-                globalTrig = true;
-		
-            }
-       	    if (m.getArgAsInt32(0) == 1) {
-		osdEnabled = ( m.getArgAsInt32(1) > 0 ) ? true : false; 
-		cout << "change OSD: " << osdEnabled << "\n";
-            } 
-	}
-	if(m.getArgAsInt32(0) == 15) {
-		shIft = ( m.getArgAsInt32(1) > 0 ) ? true : false;
-	}
+            	// grab screen
+            	if (m.getArgAsInt32(0) == 9 && m.getArgAsInt32(1) > 0) {
+            	    	img.grabScreen(0,0,ofGetWidth(),ofGetHeight());
+            	    	string fileName = "snapshot_"+ofToString(10000+snapCounter)+".png";
+            	    	cout << "saving " + fileName + "...";
+            	    	img.save("/sdcard/Grabs/" + fileName);
+            	    	cout << "saved\n";
+                	updateScreenGrabs();
+	    	}
+	    	// trigger button
+	   	if (m.getArgAsInt32(0) == 10 && m.getArgAsInt32(1) == 0) dummyAudio = 0;
+            	if (m.getArgAsInt32(0) == 10 && m.getArgAsInt32(1) > 0) {
+			dummyAudio = 1;
+                	cout << "trig" << "\n";
+                	globalTrig = true;
+            	}
+	    	// osd toggle button
+       	    	if (m.getArgAsInt32(0) == 1) {
+			osdEnabled = ( m.getArgAsInt32(1) > 0 ) ? true : false; 
+			cout << "change OSD: " << osdEnabled << "\n";
+            	}	 
+	    	// shift button
+	    	if(m.getArgAsInt32(0) == 15) {
+			shIft = ( m.getArgAsInt32(1) > 0 ) ? true : false;
+	    	}
+	}	
 
+	// dedicated named osc buttons
 	if(m.getAddress() == "/seq") {
 		seqStatus = m.getArgAsInt32(0); 
 	}
@@ -178,23 +176,28 @@ void ofApp::update() {
 		recallScript( m.getArgAsInt32(1) );
 		sendCurrentScript( currentScript );		
 	}
+	// mode change button down
 	if (m.getAddress() == "/modeDown" && m.getArgAsInt32(0) > 0) {
-                cout << "back" << "\n";
                 prevScript();
+		cout << "back: " << currentScript << "\n";
+               		
 		// update the script(mode) number to the PD
 		sendCurrentScript( currentScript );
         }
+	// mode change button up
         if (m.getAddress() == "/modeUp" && m.getArgAsInt32(0) > 0) {
-                cout << "fwd" << "\n";
                 nextScript();
+		cout << "fwd: " << currentScript << "\n";
 		// update the script(mode) number to the PD
 		sendCurrentScript( currentScript );
 	}
+	// some jeremy print stuff
 	if (m.getAddress() == "/wowDoes") {
-                cout << "checkIt" << m.getArgAsInt32(0) << "\n";
+                cout << "number of mode: " << currentScript << "\n";
+		cout << "checkIt " << m.getArgAsInt32(0) << "\n";
         }
 	
-	// knobs
+	////// the knobs
         if(m.getAddress() == "/knob1") {
 		k1Local = (float)m.getArgAsInt32(0) / 1023;
  		lua.setNumber("knob1", k1Local);
@@ -240,12 +243,11 @@ void ofApp::update() {
 			k5Red = false;
 		}
 	}
-
-	 
+	// total scene count 	 
 	if(m.getAddress() == "/updateSceneCount") {
 		totalScenes = m.getArgAsInt32(0);
 	}
-	// midi
+	// midi note inputs
 	if(m.getAddress() == "/midinote") {
 		osdMidi[0] = m.getArgAsInt32(0);
 		osdMidi[1] = m.getArgAsInt32(1); 	
@@ -253,21 +255,20 @@ void ofApp::update() {
 		lua.setNumber("midiVel", osdMidi[1] );	
 		midiTable[osdMidi[0]] = osdMidi[1];
 	}
-	if(m.getAddress() == "/midiclock") {
-		lua.setBool("midiClock", true);
-	}
 	
+	// trigger input modes
  	if(m.getAddress() == "/printTrig") {
 		float wow = ((float)m.getArgAsInt32(0)/1023) * 5; 
 		globalTrigInput = floor( wow + 0.49999);
 	}
 
-	// trigger
+	// trigger from pure data
 	if(m.getAddress() == "/trig") {
 		if( m.getArgAsInt32(0) > 0 && globalTrigInput > 0) {
 			globalTrig = true;
 		} 
 	}
+	
 	// detect link
 	if(m.getAddress() == "/linkpresent" ) {
 		if(m.getArgAsInt32(0) > 0) {
@@ -276,19 +277,22 @@ void ofApp::update() {
 			globalLink = false;
 		}
 	} 
-
+	// gain level from the pure data
 	if(m.getAddress() == "/gain") {
 		globalGain = ((float)m.getArgAsInt32(0) / 1023) * 3;
 	}	
+	// midi channel from pure data
 	if(m.getAddress() == "/midiChannel") {
 		float wow = ((float)m.getArgAsInt32(0)/1023) * 15;
 		globalMidiChannel = floor(wow + 0.49999) + 1;
 	}	
+	// reload function
 	if(m.getAddress() == "/reload") {
             	cout << "reloading\n";
             	reloadScript();
         }
-    }
+    } // end of receiving messages from pure data
+
     // calculate peak for audio in display
     float peAk = 0;
     for (int i = 0; i < 256; i++) {
@@ -537,8 +541,6 @@ void ofApp::update() {
 					ofDrawRectangle(xPos,yPos, chunk, chunk);
 				}
 			}
-		
-			
 		ofPopMatrix();
 		
 		// Sequencer 
@@ -724,12 +726,9 @@ void ofApp::update() {
 			ofPopMatrix();
 
 		}
-
 	// end the fbo
 	osdFbo.end();
     } 
-    
-    
 }
 
 //--------------------------------------------------------------
@@ -775,7 +774,7 @@ void ofApp::audioIn(ofSoundBuffer & input){
         }
     }
     
-    bufferCounter++;
+    //bufferCounter++;
     
 }
 
@@ -856,7 +855,7 @@ void ofApp::reloadScript() {
     lua.doScript(scripts[currentScript], true);
     lua.scriptSetup();
 }
-
+// up script
 void ofApp::nextScript() {
     currentScript++;
     if(currentScript > sizeScripts-1) {
@@ -864,7 +863,7 @@ void ofApp::nextScript() {
     }
     reloadScript();
 }
-
+// down script
 void ofApp::prevScript() {
     if(currentScript == 0) {
         currentScript = sizeScripts-1;
@@ -874,19 +873,20 @@ void ofApp::prevScript() {
     }
     reloadScript();
 }
-
+// recall for the scene
 void ofApp::recallScript(int num) {
 	currentScript = num;
 	reloadScript();
 }
-
-void ofApp::sendCurrentScript(int cur) {
+// send the current mode for scene saving in pure data
+void ofApp::sendCurrentScript( int cur ) {
 	// compose the message
-	mess.setAddress("/currentScript");
+	mess.setAddress( "/currentScript" );
 	mess.addIntArg( cur );
 	sender.sendMessage( mess );
+	mess.clear();
 }
-
+// update the screen grabs
 void ofApp::updateScreenGrabs() {
 	string grabPath = "/sdcard/Grabs/";
     	ofDirectory grabDir(grabPath);
