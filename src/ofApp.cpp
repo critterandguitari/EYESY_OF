@@ -78,9 +78,10 @@ void ofApp::setup() {
     string path = "/sdcard/Modes/oFLua"; 
     ofDirectory dir(path);
     dir.listDir();
+    dir.sort();
 
     //go through and print out all the paths
-    int countPaths = static_cast<int>(dir.size());
+    int countPaths = static_cast<int>( dir.size() );
     for(int i = 0; i < countPaths; i++){
         ofLogNotice(dir.getPath(i) + "/main.lua");
         scripts.push_back(dir.getPath(i) + "/main.lua");
@@ -179,23 +180,17 @@ void ofApp::update() {
 	// mode change button down
 	if (m.getAddress() == "/modeDown" && m.getArgAsInt32(0) > 0) {
                 prevScript();
-		cout << "back: " << currentScript << "\n";
-               		
-		// update the script(mode) number to the PD
+		cout << "back" << "\n";
+               	// update the script(mode) number to the PD
 		sendCurrentScript( currentScript );
         }
 	// mode change button up
         if (m.getAddress() == "/modeUp" && m.getArgAsInt32(0) > 0) {
                 nextScript();
-		cout << "fwd: " << currentScript << "\n";
+		cout << "fwd" << "\n";
 		// update the script(mode) number to the PD
 		sendCurrentScript( currentScript );
 	}
-	// some jeremy print stuff
-	if (m.getAddress() == "/wowDoes") {
-                cout << "number of mode: " << currentScript << "\n";
-		cout << "checkIt " << m.getArgAsInt32(0) << "\n";
-        }
 	
 	////// the knobs
         if(m.getAddress() == "/knob1") {
