@@ -41,6 +41,7 @@ class ofApp : public ofBaseApp, ofxLuaListener {
 	void recallScript(int num);
 	void sendCurrentScript(int cur);
 	void updateScreenGrabs();
+	void drawTheOsd();
     
         ofxLua 		lua;
         vector<string> 	scripts;
@@ -66,6 +67,8 @@ class ofApp : public ofBaseApp, ofxLuaListener {
         int     	drawCounter;
     
         float 		smoothedVol;
+	int 		fontHeight;
+	int 		marg;
         float 		scaledVol;
         
         ofSoundStream 	soundStream;
@@ -86,6 +89,7 @@ class ofApp : public ofBaseApp, ofxLuaListener {
 	
 	// osd stuff
 	ofFbo 		osdFbo;
+	ofFbo		smallFbo;
 	ofTrueTypeFont 	osdFont;
 	ofTrueTypeFont 	osdFontK;
 	int 		dummyAudio;
@@ -97,25 +101,25 @@ class ofApp : public ofBaseApp, ofxLuaListener {
 	int 		globalTrigInput;
 	int 		globalMidiChannel;
 	int 		globalScene;
-        bool 		globalTrig;
+        //bool 		globalTrig;
 	bool 		globalLink;	
 	bool 		globalMidiClock;
 	bool 		shIft = false;
 	
 	// knob stuff
 	float 		k1Local;
-	bool 		k1Red;
+	bool 		k1Red = false;
 	
 	float 		k2Local;
-	bool 		k2Red;	
+	bool 		k2Red = false;	
 	
 	float 		k3Local;
-	bool 		k3Red;
+	bool 		k3Red = false;
 	
 	float 		k4Local;
-	bool 		k4Red;
+	bool 		k4Red = false;
 	
 	float 		k5Local;
-	bool 		k5Red;
+	bool 		k5Red = false;
 
 };
