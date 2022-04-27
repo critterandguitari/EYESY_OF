@@ -11,33 +11,19 @@
 #include <stddef.h>
 #include <stdint.h>
 
-
-//--------------------------------------------------------------
-string parseIP() {
-	string str = ofSystem( "ifconfig" );
-	int place = str.find("wlan0",0);
-	string str2 = str.substr(place+5, 200);
-	int place2 = str2.find("inet", 0);
-	return str2.substr(place2+5,13);
-}
-
-//--------------------------------------------------------------
-std::string getWifiName() {
-	return ofSystem( "iwgetid -r");
-}
-
-
-
+// variables
 float peAk = 0;
 float scaleOsd = 1;
 bool grabImgChange = true;
 int osdCounter = 0;
+int cpuCount = 4800;
+int cpuMaxLoop = 5000;
 bool globalTrig = false;
 string modeTitle;
 string modeDescrip;
 string theWifiName;
 string theIP;
-int cpuCount = 0;
+
 
 //--------------------------------------------------------------
 void ofApp::setup() {
@@ -135,19 +121,31 @@ void ofApp::setup() {
     modeTitle = lua.getString("modeTitle");
     modeDescrip = lua.getString("modeExplain");
 
-    theWifiName = getWifiName();
-    theIP = parseIP();
+    thread.startThread();
+      
 }
 
 //--------------------------------------------------------------
 void ofApp::update() {
-    if( cpuCount >= 5000) {
-	theWifiName = getWifiName();
-    	theIP = parseIP();
+    
+    
+    theIP = thread.ip;
+    theWifiName = thread.wifi;
+    
+    
+    /*
+    if( cpuCount > cpuMaxLoop) {
+	thread.lock();
+    		theIP = thread.ip;
+		theWifiName = thread.wifi;
+    	thread.unlock();
+	cout << "its the lOOP!" << "\n";
 	cpuCount = 0;
-    } else {
+    } else { 
 	cpuCount++;
     }
+    */
+
     // check for waiting messages
     while(receiver.hasWaitingMessages()){
         // get the next message
@@ -327,6 +325,8 @@ void ofApp::update() {
     if(globalTrigInput == 0) {
     	if( peAk >= 0.75 ){
 		globalTrig = true;
+	} else {
+		globalTrig = false;
 	}
     }
         
@@ -360,8 +360,8 @@ void ofApp::draw() {
     // disable depth
     ofDisableDepthTest();
     
-    //ofSetColor(255);
-    //ofDrawBitmapString( ofGetFrameRate(), 300, 300);
+    ofSetColor(255);
+    ofDrawBitmapString( ofGetFrameRate(), 300, 300);
 
     if (osdEnabled == true) {
 	// draw it
@@ -394,6 +394,7 @@ void ofApp::audioIn(ofSoundBuffer & input){
 void ofApp::exit() {
     // call the script's exit() function
     lua.scriptExit();
+    thread.stopThread();
     
     // clear the lua state
     lua.clear();
@@ -522,7 +523,7 @@ void ofApp::updateScreenGrabs() {
 	
 }
 
-// experimental osd draw function 
+// osd draw function 
 void ofApp::drawTheOsd()  {
 		int fontHeight = floor( osdFont.stringHeight( "Lpl" ) + 4) ;	
 		int spaceTrack = floor( fontHeight/2 );
@@ -558,7 +559,6 @@ void ofApp::drawTheOsd()  {
 			int knobW = floor(osdW/38);
 			int knobH = ceil(osdH/5.4);
 			int knobTextH = floor(osdH/68);
-			
 			ofFill();
 			ofTranslate(0, fontHeight + spaceTrack);
 			ofSetColor(0);
@@ -670,7 +670,6 @@ void ofApp::drawTheOsd()  {
 			ofSetColor(0);
 			ofFill();
 			ofDrawRectangle(0,0,knobW*4,knobW+(volChunk*2));
-			
 			ofSetColor(255);
 			osdFont.drawString( "Trigger: ", 2, fontHeight+2);
 			
@@ -678,6 +677,7 @@ void ofApp::drawTheOsd()  {
 				ofSetColor(255,255,0);
 				ofFill();
 				ofDrawRectangle( knobW*2, volChunk, knobW, knobW);
+			} else {
 			}
 			// draw white border
 			ofNoFill();
@@ -696,7 +696,6 @@ void ofApp::drawTheOsd()  {
 			ofSetColor(0);
 			ofFill();
 			ofDrawRectangle(0,0,(midiW+(chunk*20)),(chunk*9));
-			
 			ofSetColor(255);
 			osdFont.drawString( midStr.str(), 2, fontHeight+2);
 			osdFontK.drawString( "0", midiW, ceil(chunk*1.5) );
@@ -741,16 +740,13 @@ void ofApp::drawTheOsd()  {
 
 
 		//WIFI
-		
 			ofTranslate(0,spaceTrack+fontHeight);
-			
 			std::stringstream wifI;
 			wifI << "WIFI: " << theWifiName;
 			ofFill();
 			ofSetColor(0);
 			int wifiW = osdFont.stringWidth( wifI.str() );
 			ofDrawRectangle(0,0,wifiW+4, fontHeight);
-			
 			ofSetColor(255);
 			osdFont.drawString(wifI.str(), 2, fontHeight-4);
 		
@@ -758,8 +754,6 @@ void ofApp::drawTheOsd()  {
 		//IP
 		
 			ofTranslate(0,spaceTrack+fontHeight);
-			
-			
 			std::stringstream ipAd;
 			ipAd << "IP Address: " << theIP;
 			ofFill();
@@ -898,6 +892,4 @@ void ofApp::drawTheOsd()  {
 			ofPopMatrix();
 
 		}
-		
-
 }// end the function

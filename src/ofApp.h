@@ -14,11 +14,50 @@
 
 #define PORT 4000
 
+
+class osdThread : public ofThread {
+        int count = 0;	
+	public:
+		string wifi;
+		string ip;	
+
+	void threadedFunction() {
+		while(isThreadRunning() ) {
+			if( count > 1000 ) {
+				//start
+				count = 0;
+		
+				// lock so other thread doesnt accesss
+				lock();
+					// get IP address
+					string str = ofSystem( "ifconfig" );
+					int place = str.find("wlan0",0);
+					string str2 = str.substr(place+5, 200);
+					int place2 = str2.find("inet", 0);
+					ip =  str2.substr(place2+5,13);
+				
+					// get wifi
+					wifi = ofSystem( "iwgetid -r");
+
+				unlock();
+			} else {
+				count++;
+			}
+		}	
+		
+	}	
+		
+};
+
+
+
 class ofApp : public ofBaseApp, ofxLuaListener {
 
     public:
+	
+	osdThread thread;
 
-        // main
+	// main
         void setup();
         void update();
         void draw();
@@ -123,3 +162,5 @@ class ofApp : public ofBaseApp, ofxLuaListener {
 	bool 		k5Red = false;
 
 };
+
+
