@@ -13,11 +13,10 @@
 
 // variables
 float peAk = 0;
-float scaleOsd = 1;
 bool grabImgChange = true;
-//int osdCounter = 0;
-//int cpuCount = 4800;
-//int cpuMaxLoop = 5000;
+int osdCounter = 0;
+int cpuCount = 4800;
+int cpuMaxLoop = 5000;
 bool globalTrig = false;
 int osdXSpace = ceil( ofGetWidth() / 10 );
 int osdYSpace = ceil( ofGetHeight() / 24 );
@@ -55,7 +54,7 @@ void ofApp::setup() {
     //right.assign(bufferSize, 0.0);
     
     ofSoundStreamSettings 	settings;
-    
+
     // device by name
     auto devices = soundStream.getMatchingDevices("default");
     if(!devices.empty()){
@@ -97,17 +96,19 @@ void ofApp::setup() {
     // true = change working directory to the script's parent dir
     // so lua will find scripts with relative paths via require
     // note: changing dir does *not* affect the OF data path
-    lua.doScript(scripts[currentScript], true);
+    lua.doScript( scripts[ currentScript ], true );
     
     // call the script's setup() function
     lua.scriptSetup();
 
-    // clear main screen
-    //ofClear(0,0,0);
+   / clear main screen
+    ofClear(0,0,0);
+
+    ofSetBackgroundColor(255);
     
     // osd setup
-    osdW = ofGetScreenWidth()/scaleOsd;
-    osdH = ofGetScreenHeight()/scaleOsd;
+    osdW = ofGetScreenWidth();
+    osdH = ofGetScreenHeight();
     
     osdFont.load("CGFont_0.18.otf", ceil(osdH/8), true, false, false, 1, 12);
     osdFont.setLetterSpacing(1);
@@ -121,17 +122,21 @@ void ofApp::setup() {
     modeTitle = lua.getString("modeTitle");
     modeDescrip = lua.getString("modeExplain");
 
-    thread.startThread();
+    //thread.startThread();
       
 }
 
 //--------------------------------------------------------------
 void ofApp::update() {
     
-    
-    theIP = thread.ip;
-    theWifiName = thread.wifi;
-    
+    theIP = "haha"; //thread.ip;
+    theWifiName = "haha"; //thread.wifi;
+    /*
+    if( ofGetElapsedTimeMillis() > 5000 ) {
+	    fetchIpWifi = true;
+	    ofResetElapsedTimeCounter();
+    } 
+    */
 
     // check for waiting messages
     while(receiver.hasWaitingMessages()){
@@ -331,12 +336,6 @@ void ofApp::update() {
 
 //--------------------------------------------------------------
 void ofApp::draw() {
-    
-    if( ofGetElapsedTimeMillis() > 5000 ) {
-	    fetchIpWifi = true;
-	    ofResetElapsedTimeCounter();
-    }
-
     // set the audio buffer
     lua.setNumberVector("inL", left);
     //lua.setNumberVector("inR", right);
@@ -354,13 +353,15 @@ void ofApp::draw() {
     
     //ofSetColor(255);
     //ofDrawBitmapString( ofGetFrameRate(), 300, 300);
-
-    if (osdEnabled == true) {
-	// move to the margins
-	ofTranslate( osdXSpace, osdYSpace );
-	// draw the osd over current lua mode
-	drawTheOsd();
-   }
+    
+    ofPushMatrix();
+    	if (osdEnabled == true) {
+		// move to the margins
+		ofTranslate( osdXSpace, osdYSpace );
+		// draw the osd over current lua mode
+		drawTheOsd();
+    	}
+    ofPopMatrix();
     
 }
 
@@ -386,7 +387,7 @@ void ofApp::audioIn(ofSoundBuffer & input){
 void ofApp::exit() {
     // call the script's exit() function
     lua.scriptExit();
-    thread.stopThread();
+    //thread.stopThread();
     
     // clear the lua state
     lua.clear();

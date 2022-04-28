@@ -15,8 +15,9 @@
 #define PORT 4000
 
 
+/*
 class osdThread : public ofThread {
-        bool fetchIpWifi;	
+        	
 	public:
 		string wifi;
 		string ip;	
@@ -48,14 +49,12 @@ class osdThread : public ofThread {
 	}	
 		
 };
-
-
-
+*/
 class ofApp : public ofBaseApp, ofxLuaListener {
 
     public:
 	
-	osdThread thread;
+	//osdThread thread;
 
 	// main
         void setup();
