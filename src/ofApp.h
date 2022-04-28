@@ -16,17 +16,17 @@
 
 
 class osdThread : public ofThread {
-        int count = 0;	
+        bool fetchIpWifi;	
 	public:
 		string wifi;
 		string ip;	
 
 	void threadedFunction() {
-		while(isThreadRunning() ) {
-			if( count > 1000 ) {
-				//start
-				count = 0;
-		
+		while( isThreadRunning() ) {
+			
+			//start
+			
+			if( fetchIpWifi == true) {	
 				// lock so other thread doesnt accesss
 				lock();
 					// get IP address
@@ -41,7 +41,7 @@ class osdThread : public ofThread {
 
 				unlock();
 			} else {
-				count++;
+				sleep(5000);
 			}
 		}	
 		
@@ -85,6 +85,7 @@ class ofApp : public ofBaseApp, ofxLuaListener {
         ofxLua 		lua;
         vector<string> 	scripts;
         size_t 		currentScript;
+	bool 		fetchIpWifi;
 
         // osc control
         ofxOscReceiver 	receiver;

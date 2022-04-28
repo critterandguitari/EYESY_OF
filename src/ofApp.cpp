@@ -15,10 +15,12 @@
 float peAk = 0;
 float scaleOsd = 1;
 bool grabImgChange = true;
-int osdCounter = 0;
-int cpuCount = 4800;
-int cpuMaxLoop = 5000;
+//int osdCounter = 0;
+//int cpuCount = 4800;
+//int cpuMaxLoop = 5000;
 bool globalTrig = false;
+int osdXSpace = ceil( ofGetWidth() / 10 );
+int osdYSpace = ceil( ofGetHeight() / 24 );
 string modeTitle;
 string modeDescrip;
 string theWifiName;
@@ -52,8 +54,6 @@ void ofApp::setup() {
     left.assign(bufferSize, 0.0);
     //right.assign(bufferSize, 0.0);
     
-    //bufferCounter    = 0;
-
     ofSoundStreamSettings 	settings;
     
     // device by name
@@ -103,7 +103,7 @@ void ofApp::setup() {
     lua.scriptSetup();
 
     // clear main screen
-    ofClear(0,0,0);
+    //ofClear(0,0,0);
     
     // osd setup
     osdW = ofGetScreenWidth()/scaleOsd;
@@ -132,19 +132,6 @@ void ofApp::update() {
     theIP = thread.ip;
     theWifiName = thread.wifi;
     
-    
-    /*
-    if( cpuCount > cpuMaxLoop) {
-	thread.lock();
-    		theIP = thread.ip;
-		theWifiName = thread.wifi;
-    	thread.unlock();
-	cout << "its the lOOP!" << "\n";
-	cpuCount = 0;
-    } else { 
-	cpuCount++;
-    }
-    */
 
     // check for waiting messages
     while(receiver.hasWaitingMessages()){
@@ -345,6 +332,11 @@ void ofApp::update() {
 //--------------------------------------------------------------
 void ofApp::draw() {
     
+    if( ofGetElapsedTimeMillis() > 5000 ) {
+	    fetchIpWifi = true;
+	    ofResetElapsedTimeCounter();
+    }
+
     // set the audio buffer
     lua.setNumberVector("inL", left);
     //lua.setNumberVector("inR", right);
@@ -360,13 +352,13 @@ void ofApp::draw() {
     // disable depth
     ofDisableDepthTest();
     
-    ofSetColor(255);
-    ofDrawBitmapString( ofGetFrameRate(), 300, 300);
+    //ofSetColor(255);
+    //ofDrawBitmapString( ofGetFrameRate(), 300, 300);
 
     if (osdEnabled == true) {
-	// draw it
-	int space = ceil( ofGetWidth() / 10 );
-	ofTranslate( space, ceil( ofGetHeight() / 24 ) );
+	// move to the margins
+	ofTranslate( osdXSpace, osdYSpace );
+	// draw the osd over current lua mode
 	drawTheOsd();
    }
     
@@ -451,7 +443,6 @@ void ofApp::mouseReleased(int x, int y, int button) {
 void ofApp::errorReceived(std::string& msg) {
     ofLogNotice() << "got a script error: " << msg;
 }
-
 
 //--------------------------------------------------------------
 void ofApp::reloadScript() {
@@ -564,7 +555,6 @@ void ofApp::drawTheOsd()  {
 			ofSetColor(0);
 			ofDrawRectangle(0,0,knobW*16,knobH+(knobTextH*3));
 			
-			
 			// draw k1
 			ofPushMatrix();
 				ofTranslate(knobW/2, knobW/2);
@@ -662,10 +652,7 @@ void ofApp::drawTheOsd()  {
 				ofSetColor(255);
 				ofDrawRectangle(xPos+volStrWidth, volChunk, volChunk, volChunk*4 );
 			}
-			
-				
 		// Trigger
-		
 			ofTranslate(0,spaceTrack + (volChunk*6) );
 			ofSetColor(0);
 			ofFill();
@@ -687,12 +674,9 @@ void ofApp::drawTheOsd()  {
 		// midi
 			int chunk = ceil(osdH/108);
 			ofTranslate(0, spaceTrack + (knobW+(volChunk*2)) );
-			
-			
 			std::stringstream midStr;
 			midStr << "MIDI: ";
 			int midiW = osdFont.stringWidth( midStr.str() );
-			
 			ofSetColor(0);
 			ofFill();
 			ofDrawRectangle(0,0,(midiW+(chunk*20)),(chunk*9));
@@ -722,7 +706,6 @@ void ofApp::drawTheOsd()  {
 		
 		
 		// Sequencer 
-		
 			ofTranslate(0, spaceTrack + (chunk*9) );
 			std::stringstream seQ;
 			
@@ -737,8 +720,7 @@ void ofApp::drawTheOsd()  {
 			ofDrawRectangle(0,0,seqW+4,fontHeight);
 			ofSetColor(255);
 			osdFont.drawString( seQ.str(), 2, fontHeight-4);
-
-
+		
 		//WIFI
 			ofTranslate(0,spaceTrack+fontHeight);
 			std::stringstream wifI;
@@ -749,10 +731,7 @@ void ofApp::drawTheOsd()  {
 			ofDrawRectangle(0,0,wifiW+4, fontHeight);
 			ofSetColor(255);
 			osdFont.drawString(wifI.str(), 2, fontHeight-4);
-		
-
 		//IP
-		
 			ofTranslate(0,spaceTrack+fontHeight);
 			std::stringstream ipAd;
 			ipAd << "IP Address: " << theIP;
@@ -763,34 +742,26 @@ void ofApp::drawTheOsd()  {
 			
 			ofSetColor(255);
 			osdFont.drawString(ipAd.str(), 2, fontHeight-4);
-		
-
 		//OS Version
-		
-			ofTranslate(0,spaceTrack + fontHeight );
 			
+			ofTranslate(0,spaceTrack + fontHeight );
 			std::stringstream osStr;
 			osStr << "OS Version: " << osVersion;
 			ofFill();
 			ofSetColor(0);
 			int osW = osdFont.stringWidth( osStr.str() );
 			ofDrawRectangle(0,0,osW+4, fontHeight);
-			
 			ofSetColor(255);
 			osdFont.drawString(osStr.str(), 2, fontHeight-4);
-	
-			
 		
 		// FPS
 			ofTranslate(0,spaceTrack+fontHeight);
 			std::stringstream fPs;
 			int getFramz = int( ofGetFrameRate() );
-			
 			fPs << "FPS: " << getFramz ;
 			int fpsW = ceil( osdFont.stringWidth( fPs.str() ));
 			ofSetColor(0);
 			ofDrawRectangle(0,0,fpsW+4,fontHeight);
-			
 			ofSetColor(255);
 			osdFont.drawString(fPs.str(), 2, fontHeight-4);
 		
@@ -811,7 +782,6 @@ void ofApp::drawTheOsd()  {
 		
 		
 		// Screen Grabs
-		
 			ofTranslate(0, spaceTrack+fontHeight);
 			std::stringstream graBz;
 			graBz << "Total Screen Grabs: " << snapCounter;	
@@ -823,7 +793,6 @@ void ofApp::drawTheOsd()  {
 		ofPopMatrix();
 
 		// draw the last 5 screen grabs
-		
 		ofPushMatrix();
 			int grabHeit = ceil(osdH/10);
 			ofTranslate( ceil(osdW/2), ceil(osdH/3) );
@@ -839,11 +808,8 @@ void ofApp::drawTheOsd()  {
 			ofTranslate( 0, grabHeit + (grabHeit/3) );
 			grab4.resize( ceil(osdW/10), ceil(osdH/10) );
 			grab4.draw(0,0);
-				
-			
 		ofPopMatrix();
 			
-		
 		// draw the shift options if osd and shift is on
 		if (shIft == true) {
 			ofPushMatrix();
