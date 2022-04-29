@@ -18,6 +18,7 @@ bool grabImgChange = true;
 int osdCounter = 0;
 int cpuCount = 4800;
 int cpuMaxLoop = 5000;
+int countPaths;
 bool globalTrig = false;
 string modeTitle;
 string modeDescrip;
@@ -78,7 +79,7 @@ void ofApp::setup() {
     dir.sort();
 
     //go through and print out all the paths
-    int countPaths = static_cast<int>( dir.size() );
+    countPaths = static_cast<int>( dir.size() );
     for(int i = 0; i < countPaths; i++){
         // print the list of modes to the eyesy terminal
 	ofLogNotice(dir.getPath(i) + "/main.lua");
@@ -189,9 +190,12 @@ void ofApp::update() {
 	}
 	
 	// scene recall
+	if(m.getAddress() == "/sceneRecallString") {
+		recallScript( m.getArgAsString(0) );
+		cout << "recalled string: " << m.getArgAsString(0) << "\n";
+	}	
 	if(m.getAddress() == "/sceneRecall") {
 		globalScene = m.getArgAsInt32(0); 
-		recallScript( m.getArgAsString(1) );
 		sendCurrentScript( scripts[currentScript] );
 		modeTitle = lua.getString("modeTitle");
 		modeDescrip = lua.getString("modeExplain");		
@@ -487,11 +491,16 @@ void ofApp::prevScript() {
 
 // recall for the scene
 void ofApp::recallScript(string num) {
-	// search scripts for matching string might be a heavy process on the cp
-	int index = 0;
-	int translate;
+	
+	// search scripts for matching string might be a heavy process on the cpu
+	int wow = 0;
+	for (int i=0; i<countPaths; i++) {
+		if( scripts[i] == num ) {
+			wow = i;
+		}
+	}
 		
-	currentScript = translate;
+	currentScript = wow;
 	reloadScript();
 }
 
