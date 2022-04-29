@@ -16,8 +16,7 @@ float peAk = 0;
 float scaleOsd = 1;
 bool grabImgChange = true;
 int osdCounter = 0;
-int cpuCount = 4800;
-int cpuMaxLoop = 5000;
+uint64_t cpuMaxLoop = 3000;
 int countPaths;
 bool globalTrig = false;
 string modeTitle;
@@ -131,18 +130,15 @@ void ofApp::setup() {
 //--------------------------------------------------------------
 void ofApp::update() {
     
-    if( cpuCount > cpuMaxLoop) {
+    if( ofGetElapsedTimeMillis() > cpuMaxLoop) {
 	thread.lock();
     		theIP = thread.ip;
 		theWifiName = thread.wifi;
     	thread.unlock();
-	cout << "its the lOOP!" << "\n";
-	cpuCount = 0;
-    } else { 
-	cpuCount++;
+	//cout << "its the lOOP!" << "\n";
+	ofResetElapsedTimeCounter();
     }
     
-
     // check for waiting messages
     while(receiver.hasWaitingMessages()){
         // get the next message
@@ -360,8 +356,8 @@ void ofApp::draw() {
     // disable depth
     ofDisableDepthTest();
     
-    ofSetColor(255);
-    ofDrawBitmapString( ofGetFrameRate(), 300, 300);
+    //ofSetColor(255);
+    //ofDrawBitmapString( ofGetFrameRate(), 300, 300);
 
     if (osdEnabled == true) {
 	// draw it

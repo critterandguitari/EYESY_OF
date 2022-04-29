@@ -35,7 +35,7 @@ class osdThread : public ofThread {
 				wifi = ofSystem( "iwgetid -r");
 
 			unlock();
-			sleep(1000);
+			sleep(3000);
 		}	
 	}	
 };
