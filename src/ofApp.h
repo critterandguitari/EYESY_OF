@@ -68,8 +68,8 @@ class ofApp : public ofBaseApp, ofxLuaListener {
         void reloadScript();
         void nextScript();
         void prevScript();
-	void recallScript(int num);
-	void sendCurrentScript(int cur);
+	void recallScript(string num);
+	void sendCurrentScript(string name);
 	void updateScreenGrabs();
 	void drawTheOsd();
     

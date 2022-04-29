@@ -80,7 +80,9 @@ void ofApp::setup() {
     //go through and print out all the paths
     int countPaths = static_cast<int>( dir.size() );
     for(int i = 0; i < countPaths; i++){
-        ofLogNotice(dir.getPath(i) + "/main.lua");
+        // print the list of modes to the eyesy terminal
+	ofLogNotice(dir.getPath(i) + "/main.lua");
+	// fill a c++ array named scripts with the paths
         scripts.push_back(dir.getPath(i) + "/main.lua");
     }
         
@@ -189,8 +191,8 @@ void ofApp::update() {
 	// scene recall
 	if(m.getAddress() == "/sceneRecall") {
 		globalScene = m.getArgAsInt32(0); 
-		recallScript( m.getArgAsInt32(1) );
-		sendCurrentScript( currentScript );
+		recallScript( m.getArgAsString(1) );
+		sendCurrentScript( scripts[currentScript] );
 		modeTitle = lua.getString("modeTitle");
 		modeDescrip = lua.getString("modeExplain");		
 	}
@@ -199,7 +201,7 @@ void ofApp::update() {
                 prevScript();
 		cout << "back" << "\n";
                	// update the script(mode) number to the PD
-		sendCurrentScript( currentScript );
+		sendCurrentScript( scripts[currentScript] );
 		modeTitle = lua.getString("modeTitle");
 		modeDescrip = lua.getString("modeExplain");
         }
@@ -208,7 +210,7 @@ void ofApp::update() {
                 nextScript();
 		cout << "fwd" << "\n";
 		// update the script(mode) number to the PD
-		sendCurrentScript( currentScript );
+		sendCurrentScript( scripts[currentScript] );
 		modeTitle = lua.getString("modeTitle");
 		modeDescrip = lua.getString("modeExplain");
 	}
@@ -484,16 +486,20 @@ void ofApp::prevScript() {
 }
 
 // recall for the scene
-void ofApp::recallScript(int num) {
-	currentScript = num;
+void ofApp::recallScript(string num) {
+	// search scripts for matching string might be a heavy process on the cp
+	int index = 0;
+	int translate;
+		
+	currentScript = translate;
 	reloadScript();
 }
 
 // send the current mode for scene saving in pure data
-void ofApp::sendCurrentScript( int cur ) {
+void ofApp::sendCurrentScript(string name) {
 	// compose the message
 	mess.setAddress( "/currentScript" );
-	mess.addIntArg( cur );
+	mess.addStringArg( name );
 	sender.sendMessage( mess );
 	mess.clear();
 }
