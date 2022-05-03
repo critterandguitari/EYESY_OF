@@ -495,7 +495,6 @@ void ofApp::recallScript(string num) {
 			wow = i;
 		}
 	}
-		
 	currentScript = wow;
 	reloadScript();
 }
