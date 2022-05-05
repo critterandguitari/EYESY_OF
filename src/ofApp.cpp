@@ -23,6 +23,7 @@ string modeTitle;
 string modeDescrip;
 string theWifiName;
 string theIP;
+float compareCpuCount = 0.0;
 
 
 //--------------------------------------------------------------
@@ -130,14 +131,17 @@ void ofApp::setup() {
 //--------------------------------------------------------------
 void ofApp::update() {
     
-    if( ofGetElapsedTimeMillis() > cpuMaxLoop) {
+    float time = ofGetElapsedTimeMillis() % cpuMaxLoop;
+    if( time < compareCpuCount) {
 	thread.lock();
     		theIP = thread.ip;
 		theWifiName = thread.wifi;
-    	thread.unlock();
+   	thread.unlock();
 	//cout << "its the lOOP!" << "\n";
-	ofResetElapsedTimeCounter();
+	
     }
+    compareCpuCount = time;
+
     
     // check for waiting messages
     while(receiver.hasWaitingMessages()){
