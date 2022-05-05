@@ -221,7 +221,7 @@ void ofApp::update() {
 	
 	////// the knobs
         if(m.getAddress() == "/knob1") {
-		k1Local = (float)m.getArgAsInt32(0) / 1023;
+		k1Local = (float)m.getArgAsInt32(0) / 1022.0;
  		lua.setNumber("knob1", k1Local);
 		if(m.getArgAsInt32(1) > 0) {
 			k1Red = true;
@@ -230,7 +230,7 @@ void ofApp::update() {
 		}
 	}
 	if(m.getAddress() == "/knob2") {
-		k2Local = (float)m.getArgAsInt32(0) / 1023;
+		k2Local = (float)m.getArgAsInt32(0) / 1022.0;
 		lua.setNumber("knob2", k2Local);
 		if(m.getArgAsInt32(1) > 0) {
 			k2Red = true;
@@ -239,7 +239,7 @@ void ofApp::update() {
 		}
 	}
 	if(m.getAddress() == "/knob3") {
-		k3Local = (float)m.getArgAsInt32(0) / 1023;
+		k3Local = (float)m.getArgAsInt32(0) / 1022.0;
 		lua.setNumber("knob3", k3Local);
 		if(m.getArgAsInt32(1) > 0) {
 			k3Red = true;
@@ -248,7 +248,7 @@ void ofApp::update() {
 		}
 	}
 	if(m.getAddress() == "/knob4") {
-		k4Local = (float)m.getArgAsInt32(0) / 1023;
+		k4Local = (float)m.getArgAsInt32(0) / 1022.0;
 		lua.setNumber("knob4", k4Local);
 		if(m.getArgAsInt32(1) > 0) {
 			k4Red = true;
@@ -257,7 +257,7 @@ void ofApp::update() {
 		}
 	}	
 	if(m.getAddress() == "/knob5") {
-		k5Local = (float)m.getArgAsInt32(0) / 1023;
+		k5Local = (float)m.getArgAsInt32(0) / 1022.0;
 		lua.setNumber("knob5", k5Local);
 		if(m.getArgAsInt32(1) > 0) {
 			k5Red = true;
