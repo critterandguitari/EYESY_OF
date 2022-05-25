@@ -16,6 +16,8 @@ float peAk = 0;
 float scaleOsd = 1;
 bool grabImgChange = true;
 int osdCounter = 0;
+int grabCounter = 0;
+
 uint64_t cpuMaxLoop = 3000;
 int countPaths;
 bool globalTrig = false;
@@ -24,6 +26,28 @@ string modeDescrip;
 string theWifiName;
 string theIP;
 float compareCpuCount = 0.0;
+string grabPath = "/sdcard/Grabs/";
+ofDirectory grabDir( grabPath );
+ofImage grab1;
+ofImage grab2;
+ofImage grab3;
+ofImage grab4;
+
+// update the screen grabs
+void updateScreenGrabs() {
+	// initiate grab counter
+    	grabDir.listDir(); 			// list them
+    	grabDir.sort();				// sort them by name
+    	grabCounter = grabDir.size();		// get total amount
+	
+	// cout << grabCounter << "\n";
+   	if( grabCounter >= 1 ) { cout << grabDir.getPath(grabCounter-1) << "\n";}
+    	if( grabCounter >= 1 ) { grab1.load( grabDir.getPath(grabCounter-1) );}
+	if( grabCounter >= 2 ) { grab2.load( grabDir.getPath(grabCounter-2) );}
+	if( grabCounter >= 3 ) { grab3.load( grabDir.getPath(grabCounter-3) );}
+	if( grabCounter >= 4 ) { grab4.load( grabDir.getPath(grabCounter-4) );}
+	
+}
 
 
 //--------------------------------------------------------------
@@ -78,6 +102,12 @@ void ofApp::setup() {
     dir.listDir();
     dir.sort();
 
+    // look for grab image directory, if none create
+    if( !grabDir.exists() ) {
+    	grabDir.create( true );
+    }
+
+
     //go through and print out all the paths
     countPaths = static_cast<int>( dir.size() );
     for(int i = 0; i < countPaths; i++){
@@ -100,7 +130,7 @@ void ofApp::setup() {
     // true = change working directory to the script's parent dir
     // so lua will find scripts with relative paths via require
     // note: changing dir does *not* affect the OF data path
-    lua.doScript(scripts[currentScript], true);
+    lua.doScript( scripts[currentScript], true);
     
     // call the script's setup() function
     lua.scriptSetup();
@@ -154,9 +184,9 @@ void ofApp::update() {
             	// grab screen
             	if (m.getArgAsInt32(0) == 9 && m.getArgAsInt32(1) > 0) {
             	    	img.grabScreen(0,0,ofGetWidth(),ofGetHeight());
-            	    	string fileName = "snapshot_"+ofToString(10000+snapCounter)+".png";
-            	    	cout << "saving " + fileName + "...";
-            	    	img.save("/sdcard/Grabs/" + fileName);
+            	    	string fileName = "/screenGrab_" + ofToString( 10000+grabCounter ) + ".png";
+            	    	cout << "saving " +  grabDir.getAbsolutePath() + fileName + "...";
+            	    	img.save( grabDir.getAbsolutePath() + fileName );
             	    	cout << "saved\n";
                 	updateScreenGrabs();
 			
@@ -512,24 +542,6 @@ void ofApp::sendCurrentScript(string name) {
 	mess.clear();
 }
 
-// update the screen grabs
-void ofApp::updateScreenGrabs() {
-	string grabPath = "/sdcard/Grabs/";
-    	ofDirectory grabDir(grabPath);
-	
-	// initiate snap counter
-    	grabDir.listDir(); 			// list them
-    	grabDir.sort();				// sort them by name
-    	int grabAmt = grabDir.size();		// get total amount
-	snapCounter = grabAmt;			// update the Counter
-
-   	cout << grabDir.getPath(grabAmt-1) << "\n"; 
-    	grab1.load( grabDir.getPath(grabAmt-1) );
-	grab2.load( grabDir.getPath(grabAmt-2) );
-	grab3.load( grabDir.getPath(grabAmt-3) );
-	grab4.load( grabDir.getPath(grabAmt-4) );
-	
-}
 
 // osd draw function 
 void ofApp::drawTheOsd()  {
@@ -824,7 +836,7 @@ void ofApp::drawTheOsd()  {
 		
 			ofTranslate(0, spaceTrack+fontHeight);
 			std::stringstream graBz;
-			graBz << "Total Screen Grabs: " << snapCounter;	
+			graBz << "Total Screen Grabs: " << grabCounter;	
 			int grabW = ceil( osdFont.stringWidth( graBz.str() ));
 			ofSetColor(0);
 			ofDrawRectangle(0,0,grabW+4, fontHeight);
@@ -837,19 +849,26 @@ void ofApp::drawTheOsd()  {
 		ofPushMatrix();
 			int grabHeit = ceil(osdH/10);
 			ofTranslate( ceil(osdW/2), ceil(osdH/3) );
-						
-			grab1.resize( ceil(osdW/10), grabHeit);
-			grab1.draw(0,0);
-			ofTranslate( 0, grabHeit + (grabHeit/3) );
-			grab2.resize( ceil(osdW/10), ceil(osdH/10) );
-			grab2.draw(0,0);
-			ofTranslate( 0, grabHeit + (grabHeit/3) );
-			grab3.resize( ceil(osdW/10), ceil(osdH/10) );
-			grab3.draw(0,0);
-			ofTranslate( 0, grabHeit + (grabHeit/3) );
-			grab4.resize( ceil(osdW/10), ceil(osdH/10) );
-			grab4.draw(0,0);
-				
+			
+			if( grabCounter >= 1 ) {
+				grab1.resize( ceil(osdW/10), grabHeit);
+				grab1.draw(0,0);
+				ofTranslate( 0, grabHeit + (grabHeit/3) );
+			}
+			if( grabCounter >= 2 ) {
+				grab2.resize( ceil(osdW/10), ceil(osdH/10) );
+				grab2.draw(0,0);
+				ofTranslate( 0, grabHeit + (grabHeit/3) );
+			}
+			if( grabCounter >= 3 ) {
+				grab3.resize( ceil(osdW/10), ceil(osdH/10) );
+				grab3.draw(0,0);
+				ofTranslate( 0, grabHeit + (grabHeit/3) );
+			}
+			if( grabCounter >= 4 ) {
+				grab4.resize( ceil(osdW/10), ceil(osdH/10) );
+				grab4.draw(0,0);
+			}	
 			
 		ofPopMatrix();
 			

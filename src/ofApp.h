@@ -70,7 +70,7 @@ class ofApp : public ofBaseApp, ofxLuaListener {
         void prevScript();
 	void recallScript(string num);
 	void sendCurrentScript(string name);
-	void updateScreenGrabs();
+	//void updateScreenGrabs();
 	void drawTheOsd();
     
         ofxLua 		lua;
@@ -81,11 +81,7 @@ class ofApp : public ofBaseApp, ofxLuaListener {
         ofxOscReceiver 	receiver;
 	ofxOscSender 	sender;
 	
-	ofImage 	grab1;
-	ofImage 	grab2;
-	ofImage 	grab3;
-	ofImage 	grab4;
-
+	
 	
         // audio stuff
         void audioIn(ofSoundBuffer & input);
@@ -113,6 +109,8 @@ class ofApp : public ofBaseApp, ofxLuaListener {
 	string 		osVersion;
 	ofxOscMessage 	mess;
 	size_t 		sizeScripts;
+	
+	
 	
 		
 	vector<int> 	osdMidi{0,0};
