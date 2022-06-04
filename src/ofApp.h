@@ -108,10 +108,12 @@ class ofApp : public ofBaseApp, ofxLuaListener {
 	int 		totalScenes;
 	string 		osVersion;
 	ofxOscMessage 	mess;
-size_t 		sizeScripts;
+	size_t 		sizeScripts;
 	
-	
-	
+	// persistence stuff
+	bool		persistEnabled;
+	bool		persistFirstRender;
+	ofFbo		persistFbo;
 		
 	vector<int> 	osdMidi{0,0};
 	
