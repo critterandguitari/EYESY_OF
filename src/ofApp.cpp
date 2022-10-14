@@ -155,7 +155,9 @@ void ofApp::setup() {
     modeDescrip = lua.getString("modeExplain");
 
     thread.startThread();
-      
+
+    persistFbo.allocate(ofGetWindowWidth(), ofGetWindowHeight());
+
 }
 
 //--------------------------------------------------------------
@@ -200,7 +202,14 @@ void ofApp::update() {
 			dummyAudio = 0;
 			globalTrig = false;
 		}
-	    	
+
+		// persist toggle button
+		if (m.getArgAsInt32(0) == 3 && m.getArgAsInt32(1) > 0) {
+			persistEnabled = !persistEnabled;
+			persistFirstRender = true;
+			cout << "change persist: " << persistEnabled << "\n";
+		}
+
 		// osd toggle button
        	    	if (m.getArgAsInt32(0) == 1) {
 			osdEnabled = ( m.getArgAsInt32(1) > 0 ) ? true : false; 
@@ -374,6 +383,16 @@ void ofApp::update() {
 
 //--------------------------------------------------------------
 void ofApp::draw() {
+
+    // Re-draw background whenever persistence is disabled
+    if (persistEnabled) {
+        persistFbo.begin();
+        // Clear any remaining artifacts from GPU
+        if (persistFirstRender) {
+            persistFirstRender = false;
+            ofClear(255, 255, 255, 0);
+        }
+    }
     
     // set the audio buffer
     lua.setNumberVector("inL", left);
@@ -399,7 +418,12 @@ void ofApp::draw() {
 	ofTranslate( space, ceil( ofGetHeight() / 24 ) );
 	drawTheOsd();
    }
-    
+
+   if (persistEnabled) {
+        persistFbo.end();
+        persistFbo.draw(0,0);
+   }
+
 }
 
 //--------------------------------------------------------------
